@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090a12">
+<title>Design Kundali | WingSpan</title>
+<style>:root{
+  --bg:#07080d;
+  --bg2:#0d0f18;
+  --panel:#11131d;
+  --panel2:#171a26;
+  --paper:#f2ead8;
+  --paper2:#e8dec7;
+  --ink:#0a0b10;
+  --white:#f5f0e5;
+  --muted:#a7a3a0;
+  --dim:#74727a;
+  --gold:#c9a85d;
+  --gold2:#f0d78f;
+  --line:#3b3a42;
+  --accent:#e38b5f;
+  --serif:"Bodoni 72","Didot","Iowan Old Style","Baskerville","Times New Roman",serif;
+  --sans:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--white);font-family:var(--sans);color-scheme:dark}
+body{display:flex;justify-content:center}
+.app{width:100%;max-width:760px;min-height:100vh;padding:18px 20px 28px;display:flex;flex-direction:column;background:
+ radial-gradient(circle at 18% 15%,#25243b 0,transparent 23%),
+ radial-gradient(circle at 88% 70%,#1b1b30 0,transparent 26%),
+ var(--bg);position:relative;overflow:hidden}
+.app:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:radial-gradient(circle,#fff 0 .7px,transparent .9px);background-size:97px 113px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;position:relative;z-index:20;height:48px;border-bottom:1px solid #ffffff12}
+.brand{font-weight:850;letter-spacing:.28em;color:var(--white)}
+.step{color:#b9a36e}
+main{flex:1;display:flex;align-items:center;padding:18px 0 42px}
+.screen{width:100%;display:none!important;animation:sceneIn .65s cubic-bezier(.16,1,.3,1);position:relative;isolation:isolate}
+.screen:not(.active){display:none!important}
+.screen.active{display:block!important}
+.screen.active.cosmic{display:flex!important}
+@keyframes sceneIn{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
+.screen:not(.cosmic):before{content:"✦";position:absolute;right:2%;top:1%;font-family:var(--serif);font-size:34px;color:#c9a85d38;transform:rotate(13deg);z-index:-1}
+.screen:not(.cosmic):after{content:"";position:absolute;right:4%;bottom:3%;width:88px;height:88px;border:1px solid #c9a85d2b;border-radius:47% 53% 44% 56%;transform:rotate(-18deg);z-index:-1;box-shadow:12px 7px 0 -11px #c9a85d66}
+.eyebrow{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:var(--ink);font-weight:900;margin:0 0 20px;padding:7px 11px 6px;background:var(--gold2);clip-path:polygon(2% 8%,97% 0,100% 87%,4% 100%,0 44%);box-shadow:3px 4px 0 #000;transform:rotate(-1.5deg)}
+h1,h2{font-family:var(--serif);font-weight:400;color:var(--white)}
+h1{font-size:clamp(52px,11vw,88px);line-height:.86;letter-spacing:-.065em;margin:0 0 26px;max-width:690px;text-wrap:balance}
+h2{font-size:clamp(40px,8vw,62px);line-height:.9;letter-spacing:-.055em;margin:0 0 20px;text-wrap:balance}
+p{font-size:17px;line-height:1.58;color:#c1bdc2;max-width:590px;margin:0 0 28px}
+.buttons{display:grid;gap:11px}
+.btn{appearance:none;border:1px solid #e8dfce;background:var(--paper);color:var(--ink);border-radius:9px;padding:16px 18px;font:inherit;font-weight:780;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.btn:before{content:"";position:absolute;inset:-30%;background:linear-gradient(105deg,transparent 38%,#ffffffaa 49%,transparent 60%);transform:translateX(-90%) rotate(-8deg);transition:transform .65s ease}
+.btn:hover:before{transform:translateX(90%) rotate(-8deg)}
+.btn:hover{transform:translateY(-2px) rotate(-.25deg);box-shadow:4px 5px 0 #c9a85d}
+.btn:active{transform:translateY(1px)}
+.btn.secondary{background:transparent;color:var(--white);border-color:#ffffff38;box-shadow:none}
+.btn.secondary:hover{border-color:#c9a85d88;box-shadow:3px 4px 0 #c9a85d55}
+.btn .arrow{opacity:.55}
+.field{margin:30px 0}
+.field label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.19em;font-weight:850;color:#9f9ba2;margin-bottom:10px}
+.field input{width:100%;border:0;border-bottom:1px solid #55535c;background:transparent;padding:13px 0;font-size:26px;outline:0;color:var(--white);transition:border-color .25s,box-shadow .25s}
+.field input::placeholder{color:#56545c}
+.field input:focus{border-color:var(--gold2);box-shadow:0 7px 0 -6px var(--gold2)}
+.field input[type=date]{color-scheme:dark}
+.field input[type=file]{font-size:14px;border:1px dashed #66636b;padding:16px;border-radius:8px;background:#ffffff05}
+.field input[type=file]::file-selector-button{border:1px solid #c9a85d66;background:#f2ead8;color:#0a0b10;padding:8px 11px;border-radius:6px;font-weight:750;margin-right:10px}
+.note{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.5}
+.back{border:0;background:none;padding:0;color:#77757d;font:inherit;cursor:pointer;margin-top:17px;transition:color .2s}.back:hover{color:var(--gold2)}
+
+/* shared cinematic atmosphere */
+.cosmic{margin:-18px -20px -28px;padding:38px 20px 44px;min-height:calc(100vh - 48px);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;background:
+ radial-gradient(ellipse at 50% 35%,#292947 0,#151727 28%,#090b13 65%,#05060a 100%);color:var(--white)}
+.cosmic:before{content:"";position:absolute;inset:-20%;opacity:.68;background-image:
+ radial-gradient(circle,#fff 0 1px,transparent 1.5px),
+ radial-gradient(circle,#e5cf96 0 1px,transparent 1.5px),
+ radial-gradient(circle,#fff 0 .8px,transparent 1.3px);
+ background-size:83px 91px,137px 149px,211px 173px;background-position:10px 20px,42px 66px,88px 12px;animation:starDrift 32s linear infinite}
+.cosmic:after{content:"";position:absolute;width:680px;height:680px;border:1px solid #d7bd7030;border-radius:50%;left:50%;top:35%;transform:translate(-50%,-50%);box-shadow:0 0 110px #665fb333,inset 0 0 90px #665fb322;animation:cosmicPulse 7s ease-in-out infinite}
+.cosmic>*{position:relative;z-index:2}
+.cosmic .eyebrow{color:var(--ink);background:var(--gold2)}
+.cosmic h1,.cosmic h2{text-shadow:0 4px 34px #000b}
+.cosmic p{color:#d1cfda}
+.cosmic .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+@keyframes starDrift{to{background-position:118px 140px,-12px 5px,-45px 88px}}
+@keyframes cosmicPulse{50%{transform:translate(-50%,-50%) scale(1.045);opacity:.58}}
+
+/* hand-drawn / sticker language */
+.mystic-mark{height:210px;position:relative;display:grid;place-items:center;margin:0 auto 25px;width:min(430px,92vw)}
+.mystic-mark .om{font-family:var(--serif);font-size:116px;font-weight:400;color:#ead69f;line-height:1;filter:drop-shadow(0 0 25px #d4b86644);animation:omFloat 5s ease-in-out infinite}
+@keyframes omFloat{50%{transform:translateY(-6px) scale(1.025)}}
+.mystic-ring{position:absolute;width:190px;height:190px;border:1px solid #c39a4a88;border-radius:50% 47% 53% 49%;animation:slowSpin 28s linear infinite;box-shadow:0 0 45px #c39a4a14}
+.mystic-ring:before,.mystic-ring:after{content:"✦";position:absolute;color:var(--gold2);font-size:15px;text-shadow:0 0 12px #f0d48b88}.mystic-ring:before{top:-9px;left:50%}.mystic-ring:after{bottom:-9px;left:50%}
+.mystic-glyphs{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;color:#bda86e;font-size:21px}.mystic-glyphs span{filter:drop-shadow(0 0 8px #c7a25b66)}.mystic-glyphs span:nth-child(2){align-self:flex-start}.mystic-glyphs span:nth-child(3){align-self:flex-end}.mystic-glyphs span:nth-child(4){align-self:flex-start}
+@keyframes slowSpin{to{transform:rotate(360deg)}}
+
+/* planetary reveal */
+.planet-scene{height:270px;display:grid;place-items:center;position:relative;margin-bottom:12px;overflow:hidden}
+.planet-system{width:220px;height:220px;position:relative;filter:drop-shadow(0 0 30px #c7a25b20)}
+.planet-orbit{position:absolute;border:1px solid #b89b5b66;border-radius:50%;inset:0;animation:slowSpin 10s linear infinite}.planet-orbit:nth-child(2){inset:24px;animation-duration:7s;animation-direction:reverse}.planet-orbit:nth-child(3){inset:54px;animation-duration:5s}
+.sun{position:absolute;width:52px;height:52px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff0b0,#d69a43 55%,#8b542b);box-shadow:0 0 35px #d6a45177,0 0 80px #d6a45122;animation:sunPulse 3s ease-in-out infinite}
+@keyframes sunPulse{50%{box-shadow:0 0 50px #d6a45199,0 0 100px #d6a45133}}
+.planet{position:absolute;width:14px;height:14px;border-radius:50%;background:#d8c38b;top:7px;left:50%;margin-left:-7px;box-shadow:0 0 12px #e7d6a655}.planet.p2{top:31px}.planet.p3{top:68px;width:19px;height:19px;margin-left:-9.5px;background:#8d8dbd}.planet.p4{top:25px;width:10px;height:10px;margin-left:-5px;background:#a96e4b}
+.cosmic-copy{text-align:center;position:relative;z-index:3}.cosmic-copy h2{font-size:40px}.cosmic-copy p{margin-left:auto;margin-right:auto}
+
+/* kundali artifact */
+.kundali-wrap{display:grid;place-items:center;margin:4px auto 34px}
+.kundali{width:min(315px,76vw);aspect-ratio:1;position:relative;transform:rotate(45deg);border:1.5px solid #d8c38b;background:#12141e;box-shadow:0 22px 60px #0008,0 0 0 8px #f2ead812}
+.kundali:before{content:"";position:absolute;inset:16%;border:1px solid #d8c38b}.kundali:after{content:"";position:absolute;inset:16%;border:1px solid #d8c38b;transform:rotate(90deg)}
+.kundali .diag{position:absolute;inset:0}.kundali .diag:before,.kundali .diag:after{content:"";position:absolute;background:#d8c38b}.kundali .diag:before{width:141%;height:1px;left:-20.5%;top:50%;transform:rotate(45deg)}.kundali .diag:after{width:141%;height:1px;left:-20.5%;top:50%;transform:rotate(-45deg)}
+.kundali .orb{position:absolute;inset:34%;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;transform:rotate(-45deg);font-family:var(--serif);font-size:30px;color:var(--gold2);box-shadow:0 0 25px #c39a4a22}
+.kundali .orb:after{content:"✦";font-family:var(--sans);position:absolute;font-size:11px;top:10px}.kundali .symbol{position:absolute;font-family:var(--serif);font-size:18px;color:var(--gold2);transform:rotate(-45deg);filter:drop-shadow(0 0 6px #c39a4a44)}
+.s1{top:5%;left:45%}.s2{right:7%;top:45%}.s3{bottom:7%;left:45%}.s4{left:7%;top:45%}
+
+/* report artifact */
+.report{border:1px solid #5a5761;background:linear-gradient(145deg,#151822,#0e1018);padding:20px;position:relative;box-shadow:0 24px 70px #0009;border-radius:4px}
+.report:after{content:"";position:absolute;inset:8px;border:1px solid #ffffff0b;pointer-events:none}
+.report:before{content:"DESIGN KUNDALI • WINGSPAN";position:absolute;right:16px;top:16px;font-size:8px;letter-spacing:.16em;color:#77747c}
+.report-title{font-family:var(--serif);font-size:28px;color:var(--white);padding-right:100px;margin-bottom:8px}.report-sub{font-size:10px;color:#89868d;text-transform:uppercase;letter-spacing:.12em}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid #46434c;border-left:1px solid #46434c;margin-top:26px}.cell{min-height:105px;padding:13px;border-right:1px solid #46434c;border-bottom:1px solid #46434c;transition:background .25s}.cell:hover{background:#ffffff08}
+.cell small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#8c8990;margin-bottom:9px}.cell strong{font-family:var(--serif);font-size:22px;line-height:1.02;font-weight:400;color:#f2ead8}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 22px}.chip{border:1px solid #c9a85d77;background:#c9a85d12;color:#e7d7ad;padding:6px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;transform:rotate(-1deg)}.chip:nth-child(even){transform:rotate(1.5deg)}
+.meter{margin:18px 0}.meterline{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px;color:#c9c6cb}.bar{height:4px;background:#2b2d36;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#b18a42,#f0d78f);transform-origin:left;animation:meterIn .9s cubic-bezier(.16,1,.3,1)}@keyframes meterIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.reveal{font-size:12px;line-height:1.55;color:#aaa6ad;border-left:2px solid var(--accent);padding-left:12px;margin:18px 0 25px}.reveal strong{color:var(--paper)}
+.report-actions{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;margin-top:16px}.report-actions .btn{font-size:13px}.footer{text-align:center;font-size:12px;color:#77747c;padding-top:18px}.footer strong{color:var(--paper)}
+@media(max-width:460px){
+  .app{padding:16px 16px 24px}
+  .cosmic{margin:-16px -16px -24px;padding:30px 16px 36px}
+  .mystic-mark{height:190px}.mystic-mark .om{font-size:104px}
+  .planet-scene{height:235px}
+  .grid{grid-template-columns:1fr 1fr}.cell{min-height:92px;padding:11px}
+  .report-actions{grid-template-columns:1fr}.report-actions .btn{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+@media print{
+  body{background:#07080d}.app{max-width:none;padding:0}
+  .top,.screen:not(#s10),#s10>.eyebrow,#s10>h2,#s10>p,#s10>.report-actions{display:none!important}
+  main{padding:0}.screen.active{display:block!important}.report{box-shadow:none;border:2px solid #777}
+  .footer{padding-bottom:20px}
+}
+/* celestial-chart moodboard layer */
+.app{background:
+ radial-gradient(circle at 50% -10%,#263954 0,transparent 32%),
+ radial-gradient(circle at 8% 62%,#151e31 0,transparent 30%),
+ radial-gradient(circle at 92% 78%,#182238 0,transparent 28%),
+ #060a12}
+.app:after{content:"";position:fixed;inset:14px;pointer-events:none;border:1px solid #c8aa6330;box-shadow:inset 0 0 0 1px #c8aa6310;z-index:30}
+.top{border-bottom-color:#c8aa6326}
+.step{font-family:var(--serif);letter-spacing:.18em;color:#cdb679}
+.screen:not(.cosmic):before{content:"✦  ·  ◌  ·  ✦";font-size:15px;letter-spacing:12px;right:3%;top:0;color:#c9a85d45}
+.screen:not(.cosmic):after{width:120px;height:120px;border-color:#c9a85d24;border-radius:50%;box-shadow:inset 0 0 0 14px #c9a85d06,0 0 35px #c9a85d08}
+.eyebrow{font-family:var(--sans);background:#d8bd78;box-shadow:3px 4px 0 #020308;position:relative}
+.eyebrow:after{content:"";position:absolute;right:-8px;top:-5px;width:8px;height:8px;border:1px solid #d8bd78;border-radius:50%;background:#080b12}
+h1,h2{font-family:var(--serif);text-shadow:0 3px 28px #0009}
+p{color:#b8b8bd}
+.btn{background:#e8ddc6;border-color:#e8ddc6;box-shadow:0 7px 0 #151821,0 12px 30px #0006}
+.btn:hover{box-shadow:4px 7px 0 #c9a85d,0 14px 35px #0008}
+.btn.secondary{background:#0c1019;border-color:#6c624e;color:#eee7d8;box-shadow:0 5px 0 #020308}
+.field input{border-bottom-color:#665f51}
+.field input:focus{border-color:#d8bd78;box-shadow:0 7px 0 -6px #d8bd78}
+.cosmic{background:
+ radial-gradient(circle at 50% 24%,#30435d 0,transparent 23%),
+ radial-gradient(circle at 50% 80%,#131c2c 0,transparent 40%),
+ linear-gradient(160deg,#07101c,#080b13 52%,#05070d)}
+.cosmic:before{opacity:.5}
+.cosmic:after{width:760px;height:760px;border-color:#d8bd7833;box-shadow:0 0 120px #7183a833,inset 0 0 100px #c9a85d0e}
+.mystic-mark{height:250px;margin-bottom:20px}
+.mystic-ring{width:214px;height:214px;border-color:#d2b46d99;border-radius:50%;box-shadow:0 0 0 8px #d2b46d0b,0 0 45px #c39a4a16}
+.mystic-ring.ring-inner{width:165px;height:165px;border-color:#d2b46d55;animation:slowSpin 19s linear infinite reverse}
+.mystic-ring.ring-inner:before,.mystic-ring.ring-inner:after{content:"·";font-size:25px}
+.mystic-glyphs{inset:10px;color:#d1b66e;font-size:18px}
+.celestial-core{width:72px;height:72px;border:1px solid #e2ca83;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#e9cf85 0,#9f7840 28%,#131722 62%);box-shadow:0 0 25px #d6b96855,0 0 70px #d6b96822}
+.celestial-core i{position:absolute;width:48px;height:48px;border:1px solid #f1d99455;border-radius:50%}
+.celestial-core b{font-family:var(--serif);font-size:20px;color:#fff1bc;font-weight:400}
+.chart-ticks{position:absolute;width:246px;height:246px;border-radius:50%;background:repeating-conic-gradient(from 0deg,#d8bd7830 0deg 1deg,transparent 1deg 15deg);mask:radial-gradient(circle,transparent 72%,#000 73%,#000 75%,transparent 76%);-webkit-mask:radial-gradient(circle,transparent 72%,#000 73%,#000 75%,transparent 76%)}
+.planet-scene{height:300px}
+.planet-system{width:260px;height:260px}
+.planet-orbit{border-color:#d0b36c66}
+.zodiac-ring{position:absolute;inset:-27px;border:1px solid #d0b36c35;border-radius:50%;font-family:var(--serif);font-size:12px;letter-spacing:3px;color:#d5bb79;display:grid;place-items:center;white-space:nowrap;transform:rotate(-14deg);opacity:.8;animation:slowSpin 50s linear infinite}
+.sun{width:58px;height:58px;background:radial-gradient(circle at 35% 30%,#fff2b5,#d5a44c 48%,#76502c 100%);box-shadow:0 0 45px #e0b45f88,0 0 110px #d6a45122}
+.kundali{background:radial-gradient(circle,#172238,#0d121d 70%);border-color:#d7bd78;box-shadow:0 25px 80px #000b,0 0 0 8px #d7bd7810}
+.kundali:before,.kundali:after{border-color:#d7bd7866}
+.kundali .diag:before,.kundali .diag:after{background:#d7bd7866}
+.kundali .orb{border-color:#e2c87d;color:#f0d78f;background:#0a0e17;box-shadow:0 0 30px #d5b35b33}
+.report{background:
+ radial-gradient(circle at 100% 0,#27344b 0,transparent 32%),
+ linear-gradient(145deg,#121924,#090d15);border-color:#5d6570}
+.report:after{border-color:#c9a85d14}
+.chip{border-color:#c9a85d66;background:#c9a85d0d}
+@media(max-width:460px){.mystic-mark{height:215px}.mystic-ring{width:185px;height:185px}.mystic-ring.ring-inner{width:143px;height:143px}.chart-ticks{width:213px;height:213px}.planet-scene{height:255px}.planet-system{width:225px;height:225px}.zodiac-ring{font-size:9px;letter-spacing:2px;inset:-20px}}
+
+/* premium editorial typography */
+body{font-feature-settings:"liga","kern";-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.brand{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.34em}
+.step{font-family:var(--sans);font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
+.eyebrow{font-family:var(--sans);font-size:8px;font-weight:700;letter-spacing:.24em;padding:8px 12px 7px}
+h1,h2{font-family:var(--serif);font-weight:400;font-variant-ligatures:common-ligatures;letter-spacing:-.045em}
+h1{font-size:clamp(56px,10vw,82px);line-height:.88;letter-spacing:-.055em;max-width:650px}
+h2{font-size:clamp(42px,7.5vw,60px);line-height:.91;letter-spacing:-.045em}
+p{font-family:var(--sans);font-size:16px;line-height:1.65;letter-spacing:-.008em;color:#bbb9be;max-width:560px}
+.field label,.note,.back{font-family:var(--sans)}
+.field label{font-size:8px;letter-spacing:.22em;font-weight:650}
+.field input{font-family:var(--sans);font-size:24px;font-weight:400;letter-spacing:-.015em}
+.btn{font-family:var(--sans);font-size:14px;letter-spacing:-.01em;font-weight:650}
+.btn .arrow{font-size:21px;font-weight:300}
+.cosmic h1,.cosmic h2{letter-spacing:-.055em}
+.cosmic-copy h2{font-size:clamp(42px,7.5vw,58px);line-height:.9}
+.cosmic-copy p{max-width:500px}
+.report-title{font-family:var(--serif);font-size:30px;line-height:1;letter-spacing:-.035em}
+.report-sub,.report:before{font-family:var(--sans);font-weight:500;letter-spacing:.16em}
+.cell small{font-family:var(--sans);font-size:8px;letter-spacing:.18em;font-weight:600}
+.cell strong{font-family:var(--serif);font-size:23px;letter-spacing:-.025em}
+.chip{font-family:var(--sans);font-size:8px;font-weight:650;letter-spacing:.14em}
+.meterline{font-family:var(--sans);font-size:10px;letter-spacing:.02em}
+.reveal,.footer{font-family:var(--sans)}
+.reveal{font-size:12px;line-height:1.65;letter-spacing:-.005em}
+.footer{font-size:10px;letter-spacing:.01em}
+.mystic-mark .om{font-family:var(--serif)}
+.celestial-core b{font-family:var(--serif);font-weight:400}
+.kundali .orb,.kundali .symbol{font-family:var(--serif)}
+@media(max-width:460px){
+ h1{font-size:clamp(50px,14vw,70px)}
+ h2{font-size:clamp(39px,10vw,52px)}
+ p{font-size:15px}
+}
+
+/* premium celestial homepage */
+#s1{min-height:calc(100vh - 66px);justify-content:flex-start;padding:24px 0 18px;overflow:hidden}
+#s1 .hero-skyline{width:100%;display:flex;justify-content:space-between;align-items:center;color:#8f8d90;font-family:var(--sans);font-size:7px;letter-spacing:.2em;text-transform:uppercase;position:relative;z-index:4}
+#s1 .sky-mark{color:#e3c77d;font-size:16px;transform:rotate(15deg)}
+#s1 .hero-copy{width:min(760px,100%);text-align:center;position:relative;z-index:4;margin:18px auto 0}
+#s1 .hero-copy .eyebrow{margin-bottom:16px}
+#s1 .hero-copy h1{font-size:clamp(54px,9vw,78px);line-height:.88;margin-bottom:18px;letter-spacing:-.055em}
+#s1 .hero-copy h1 em{font-style:italic;font-weight:400;color:#e8d6aa}
+#s1 .hero-copy p{max-width:500px;margin:0 auto;font-size:14px;line-height:1.55;color:#b6b5ba}
+#s1 .orbital-stage{width:min(760px,115vw);height:min(570px,67vh);min-height:390px;position:relative;margin:-12px auto -34px;z-index:2}
+#s1 .orbital-stage:before{content:"";position:absolute;width:78%;height:78%;left:11%;top:8%;border:1px solid #d3b87119;border-radius:50%;box-shadow:0 0 90px #8fa9c41a}
+#s1 .orbital-stage:after{content:"";position:absolute;inset:2% 5%;background:radial-gradient(ellipse at 50% 50%,#b89b5710 0,transparent 48%);pointer-events:none}
+#s1 .axis{position:absolute;background:#d8bd7825;z-index:1}
+#s1 .axis-x{height:1px;width:88%;left:6%;top:48%}
+#s1 .axis-y{width:1px;height:92%;left:50%;top:3%}
+#s1 .orbit{position:absolute;left:50%;top:48%;border:1px solid #d7bd7850;border-radius:50%;transform:translate(-50%,-50%) rotate(-8deg);box-shadow:inset 0 0 25px #9fb1c51a}
+#s1 .orbit:after{content:"";position:absolute;inset:6px;border:1px dashed #d7bd7818;border-radius:50%}
+#s1 .orbit-1{width:31%;height:31%}
+#s1 .orbit-2{width:43%;height:43%}
+#s1 .orbit-3{width:55%;height:55%}
+#s1 .orbit-4{width:67%;height:67%}
+#s1 .orbit-5{width:79%;height:79%}
+#s1 .planet{position:absolute;border-radius:50%;display:block;top:50%;left:0;transform:translate(-50%,-50%);box-shadow:0 0 18px #d7bd7844}
+#s1 .planet-a{width:7px;height:7px;background:#e6d3a2;left:18%}
+#s1 .planet-b{width:11px;height:11px;background:radial-gradient(circle at 35% 30%,#f0d995,#9c733d);left:72%}
+#s1 .planet-c{width:17px;height:17px;background:radial-gradient(circle at 30% 25%,#8b9ab4,#30384b);left:9%}
+#s1 .planet-d{width:12px;height:12px;background:radial-gradient(circle at 35% 25%,#d2b977,#584833);left:88%}
+#s1 .planet-e{width:22px;height:22px;background:radial-gradient(circle at 32% 27%,#cfd2d3,#6b6e72);left:47%}
+#s1 .hero-sun{position:absolute;left:50%;top:48%;width:92px;height:92px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff4c8 0,#e6c875 17%,#8f6938 55%,#182031 100%);box-shadow:0 0 0 1px #efd891,0 0 28px #e7c66a66,0 0 110px #d6a4511f;z-index:3}
+#s1 .hero-sun:before{content:"";position:absolute;inset:-11px;border:1px solid #e1c47b66;border-radius:50%;box-shadow:0 0 0 6px #d7bd7808}
+#s1 .hero-sun:after{content:"";position:absolute;width:150%;height:1px;background:#e0c67e44;left:-25%;top:50%}
+#s1 .hero-sun span{position:absolute;width:18px;height:18px;border:1px solid #fff0b4;border-radius:50%;left:25%;top:21%;opacity:.7}
+#s1 .orbit-label{position:absolute;font-family:var(--sans);font-size:7px;letter-spacing:.24em;color:#c7b98f;display:flex;align-items:center;gap:8px;z-index:4}
+#s1 .orbit-label b{width:5px;height:5px;background:#e8cc83;border-radius:50%;box-shadow:0 0 10px #e8cc83}
+#s1 .orbit-label:after{content:"";height:1px;width:90px;background:#d7bd7840}
+#s1 .label-creativity{left:3%;top:29%}
+#s1 .label-growth{right:3%;top:29%;flex-direction:row-reverse}
+#s1 .label-discipline{left:3%;bottom:25%}
+#s1 .label-impact{right:3%;bottom:25%;flex-direction:row-reverse}
+#s1 .orbital-caption{position:absolute;left:50%;bottom:13%;transform:translateX(-50%);font-family:var(--sans);font-size:7px;line-height:1.7;letter-spacing:.22em;text-align:center;color:#716f74;white-space:nowrap}
+#s1 .hero-action{position:relative;z-index:5;text-align:center;margin-top:-2px}
+#s1 .hero-action .btn{width:min(360px,82vw);margin:0 auto;padding:17px 21px;font-family:var(--serif);font-size:17px;justify-content:center;gap:30px;border-radius:4px;background:#eee1c4}
+#s1 .hero-action .arrow{font-family:var(--sans);font-size:22px}
+#s1 .micro-note{display:block;margin:15px auto 0;color:#747278;font-family:var(--sans);font-size:9px;line-height:1.5;letter-spacing:.08em}
+#s1 .micro-note em{font-family:var(--serif);font-size:11px;color:#aaa097}
+@media(max-width:460px){
+ #s1{min-height:calc(100vh - 54px);padding-top:16px}
+ #s1 .hero-skyline{font-size:6px}
+ #s1 .hero-copy{margin-top:15px}
+ #s1 .hero-copy h1{font-size:clamp(48px,14vw,66px)}
+ #s1 .hero-copy p{font-size:13px;max-width:330px}
+ #s1 .orbital-stage{height:390px;min-height:390px;width:126vw;margin:-4px -13vw -18px}
+ #s1 .hero-sun{width:68px;height:68px}
+ #s1 .orbit-label{font-size:6px;letter-spacing:.18em}
+ #s1 .orbit-label:after{width:45px}
+ #s1 .label-creativity{left:10%;top:24%}
+ #s1 .label-growth{right:10%;top:24%}
+ #s1 .label-discipline{left:10%;bottom:20%}
+ #s1 .label-impact{right:10%;bottom:20%}
+ #s1 .orbital-caption{bottom:8%;font-size:6px}
+ #s1 .hero-action .btn{width:min(320px,84vw)}
+}
+/* shared visual grammar - every chapter belongs to the same celestial instrument */
+main{position:relative}
+main:before{content:"";position:absolute;inset:24px 0 0;border:1px solid #c8aa6310;pointer-events:none}
+.screen:not(.cosmic){min-height:min(680px,calc(100vh - 130px));display:none!important;padding:58px clamp(18px,7vw,72px) 52px;overflow:hidden}
+.screen:not(.cosmic).active{display:flex!important;flex-direction:column;justify-content:center}
+.screen:not(.cosmic):before{content:"";position:absolute;inset:18px;border:1px solid #c8aa6315;pointer-events:none;z-index:-1}
+.screen:not(.cosmic):after{content:"";position:absolute;width:380px;height:380px;right:-180px;bottom:-170px;border:1px solid #c8aa6318;border-radius:50%;box-shadow:0 0 0 22px #c8aa6305,0 0 0 60px #c8aa6303;z-index:-1}
+.screen:not(.cosmic)>.eyebrow{align-self:flex-start}
+.screen:not(.cosmic)>h2{max-width:610px}
+.screen:not(.cosmic)>p{max-width:570px}
+.screen:not(.cosmic)>.field{max-width:590px}
+.screen:not(.cosmic)>.buttons{max-width:590px}
+.screen:not(.cosmic)>.back{align-self:flex-start}
+
+/* little instrument marks, consistent with the homepage */
+.screen:not(.cosmic) .eyebrow:before{content:"01";font-family:var(--sans);font-size:7px;letter-spacing:.12em;color:#8d7950;margin-right:9px}
+#s3 .eyebrow:before{content:"02"}
+#s4 .eyebrow:before{content:"03"}
+#s6 .eyebrow:before{content:"05"}
+#s7 .eyebrow:before{content:"06"}
+#s8 .eyebrow:before{content:"07"}
+#s9 .eyebrow:before{content:"08"}
+#s10 .eyebrow:before{content:"09"}
+
+#s2:after,#s3:after,#s4:after{right:-140px;bottom:4%;width:430px;height:430px}
+#s2:before,#s3:before,#s4:before{content:"";background:
+ repeating-conic-gradient(from 0deg,#c8aa6310 0deg 1deg,transparent 1deg 15deg);
+ border:1px solid #c8aa6312;border-radius:50%;width:270px;height:270px;inset:auto -100px 8% auto;z-index:-1}
+#s2:after{box-shadow:0 0 0 1px #c8aa6312,0 0 0 34px #c8aa6305}
+#s3:after{right:auto;left:-180px;bottom:-150px}
+#s4:after{right:-160px;top:-160px;bottom:auto}
+
+/* fields become part of the instrument, not generic web forms */
+.field{position:relative}
+.field:after{content:"";position:absolute;right:0;bottom:8px;width:28px;height:28px;border-right:1px solid #c8aa6340;border-bottom:1px solid #c8aa6340;pointer-events:none}
+.field input{background:linear-gradient(90deg,transparent 0,#ffffff03 50%,transparent 100%)}
+.field input::selection{background:#c9a85d55}
+.note{border-left:1px solid #c8aa6355;padding-left:12px}
+
+/* belief screen: make the question feel like a cinematic chapter */
+#s6{text-align:center;align-items:center}
+#s6 .eyebrow{align-self:center}
+#s6 h2{max-width:580px}
+#s6 p{max-width:470px;text-align:center}
+#s6 .buttons{width:min(460px,100%)}
+#s6 .btn{justify-content:center;gap:28px}
+
+/* fake kundali: elevate the chart into a hero object */
+#s7{padding-left:clamp(14px,4vw,45px);padding-right:clamp(14px,4vw,45px)}
+#s7>.eyebrow{align-self:center}
+#s7>.kundali-wrap{margin-top:4px}
+#s7>h2,#s7>p{width:min(650px,100%);margin-left:auto;margin-right:auto;text-align:center}
+#s7>.report{width:min(650px,100%);margin-left:auto;margin-right:auto}
+#s7>.buttons{width:min(650px,100%);margin-left:auto;margin-right:auto}
+#s7 .report{position:relative}
+#s7 .report:before{content:"BIRTH CHART / PLAYFUL READING";letter-spacing:.2em}
+
+/* reveal screen */
+#s8{text-align:left}
+#s8 h2:first-of-type{font-size:clamp(48px,8vw,70px);max-width:620px}
+#s8 .reveal{max-width:590px;background:#c9a85d06;padding:17px 18px}
+#s8 h2:last-of-type{font-family:var(--sans);font-size:9px!important;text-transform:uppercase;letter-spacing:.22em;color:#8e8b91;margin-top:10px}
+#s8 .buttons{width:min(590px,100%)}
+
+/* upload screen */
+#s9 .field{margin-top:12px}
+#s9 input[type=file]{font-family:var(--sans);background:#0c111a;border-color:#76694f}
+#s9 input[type=file]::file-selector-button{font-family:var(--sans);background:#e8ddc6;border-color:#e8ddc6}
+#s9 .note{max-width:590px}
+
+/* real kundali: same artifact language, with stronger chart framing */
+#s10{padding-left:clamp(12px,4vw,42px);padding-right:clamp(12px,4vw,42px)}
+#s10>.eyebrow{align-self:center}
+#s10>h2,#s10>p{width:min(720px,100%);margin-left:auto;margin-right:auto;text-align:center}
+#s10>.report{width:min(720px,100%);margin-left:auto;margin-right:auto}
+#s10 .report{border-color:#806c43}
+#s10 .report:after{inset:10px;border-color:#c8aa6317}
+#s10 .report:before{content:"DESIGN KUNDALI / CAREER CHART"}
+#s10 .report-title{font-size:34px}
+#s10 .report-sub{color:#9f9275}
+#s10 .fill{background:linear-gradient(90deg,#876b39,#ead18b)}
+#s10 .reveal{margin-bottom:14px}
+#s10 .footer{margin-bottom:2px}
+
+/* chapter transition cues */
+#s2.active,#s3.active,#s4.active,#s6.active,#s8.active,#s9.active,#s10.active{animation:chapterIn .7s cubic-bezier(.16,1,.3,1)}
+@keyframes chapterIn{from{opacity:0;transform:translateY(22px) scale(.985);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+
+/* keep mobile compositions deliberate */
+@media(max-width:460px){
+ main:before{inset:18px 0 0}
+ .screen:not(.cosmic){min-height:calc(100vh - 110px);padding:45px 14px 36px}
+ .screen:not(.cosmic):before{inset:10px}
+ .screen:not(.cosmic):after{width:280px;height:280px;right:-160px;bottom:-130px}
+ #s7,#s10{padding-left:8px;padding-right:8px}
+ #s7 .report,#s10 .report{padding:17px}
+ #s7 .report-title,#s10 .report-title{font-size:26px}
+ #s8 h2:first-of-type{font-size:clamp(45px,12vw,60px)}
+}
+
+/* quieter orbital traces */
+#s1 .orbit{border-color:#d7bd7828;box-shadow:none}
+#s1 .orbit:after{border-color:#d7bd780b}
+#s1 .axis{background:#d8bd7815}
+#s1 .orbital-stage:before{border-color:#d3b8710d;box-shadow:0 0 70px #8fa9c40b}
+#s1 .hero-sun:before{border-color:#e1c47b45}
+#s1 .hero-sun:after{background:#e0c67e20}
+#s1 .orbit-label:after{background:#d7bd7820}
+
+/* living orbital system - slow, elegant motion */
+#s1 .orbit{animation:orbitDrift 24s linear infinite}
+#s1 .orbit-1{animation-duration:11s}
+#s1 .orbit-2{animation-duration:17s;animation-direction:reverse}
+#s1 .orbit-3{animation-duration:24s}
+#s1 .orbit-4{animation-duration:34s;animation-direction:reverse}
+#s1 .orbit-5{animation-duration:48s}
+#s1 .planet{animation:planetGlow 3.8s ease-in-out infinite}
+#s1 .planet-b{animation-delay:-1.2s}
+#s1 .planet-c{animation-delay:-2.1s}
+#s1 .planet-d{animation-delay:-.6s}
+#s1 .planet-e{animation-delay:-2.8s}
+#s1 .hero-sun{animation:sunBreathe 5s ease-in-out infinite}
+@keyframes orbitDrift{from{transform:translate(-50%,-50%) rotate(-8deg)}to{transform:translate(-50%,-50%) rotate(352deg)}}
+@keyframes planetGlow{0%,100%{filter:brightness(.95);box-shadow:0 0 12px #d7bd7825}50%{filter:brightness(1.16);box-shadow:0 0 22px #d7bd7848}}
+@keyframes sunBreathe{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.045)}}
+@media(prefers-reduced-motion:reduce){
+ #s1 .orbit{animation:none}
+ #s1 .planet,#s1 .hero-sun{animation:none}
+}
+
+/* secondary DOB action - quiet editorial link */
+#s4 .btn.secondary{
+  appearance:none;
+  display:inline-flex;
+  width:auto;
+  align-self:flex-start;
+  padding:4px 0 5px;
+  margin-top:2px;
+  background:transparent;
+  color:#999398;
+  border:0;
+  border-bottom:1px solid #777178;
+  border-radius:0;
+  box-shadow:none;
+  font-family:var(--serif);
+  font-size:15px;
+  font-weight:400;
+  letter-spacing:-.01em;
+  justify-content:flex-start;
+  gap:7px;
+  transition:color .2s ease,border-color .2s ease,transform .2s ease;
+}
+#s4 .btn.secondary:before{display:none}
+#s4 .btn.secondary:hover{
+  color:#e8d9b8;
+  border-bottom-color:#c9a85d;
+  box-shadow:none;
+  transform:translateX(2px);
+}
+#s4 .btn.secondary .arrow{font-family:var(--sans);font-size:13px;opacity:.55}
+@media(max-width:460px){
+  #s4 .btn.secondary{font-size:14px}
+}
+
+/* chapter objects - simple, quirky, aligned */
+.chapter-object{width:100%;height:82px;position:relative;margin:0 0 10px;display:flex;align-items:center;justify-content:flex-start;overflow:visible}
+.chapter-object:after{content:"";position:absolute;left:0;top:50%;width:190px;height:1px;background:#c8aa6320;transform-origin:left;animation:lineReveal 1s cubic-bezier(.16,1,.3,1)}
+.name-object-line{width:74px;height:74px;border:1px solid #c8aa6355;border-radius:50%;position:relative;animation:instrumentFloat 4s ease-in-out infinite}
+.name-object-line:before,.name-object-line:after{content:"";position:absolute;left:50%;top:50%;background:#c8aa6340;transform:translate(-50%,-50%)}
+.name-object-line:before{width:92px;height:1px}.name-object-line:after{width:1px;height:92px}
+.name-object-orb{position:absolute;width:9px;height:9px;border-radius:50%;background:#d8bd78;box-shadow:0 0 18px #d8bd7866;left:53px;top:18px;animation:nameOrb 3.6s ease-in-out infinite}
+@keyframes nameOrb{50%{transform:translate(12px,28px);box-shadow:0 0 28px #d8bd78aa}}
+.map-object{height:96px}.map-orbit{width:94px;height:58px;border:1px solid #c8aa6355;border-radius:50%;transform:rotate(-22deg);animation:mapSpin 9s linear infinite}.map-pin{position:absolute;width:13px;height:13px;border:1px solid #e2c87d;border-radius:50% 50% 50% 0;transform:rotate(-45deg);left:41px;top:28px;box-shadow:0 0 18px #c8aa6344}.map-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:#e2c87d;left:45px;top:32px}.map-object:before{content:"LAT · LONG · HOME";position:absolute;left:112px;top:25px;font-size:7px;letter-spacing:.2em;color:#7e7a72}
+@keyframes mapSpin{to{transform:rotate(338deg)}}
+.cake-object{height:112px;align-items:flex-end;padding-bottom:6px}.cake{width:104px;height:48px;background:linear-gradient(#d8bd78,#9d7944);border:1px solid #e4cc8d;position:relative;border-radius:3px 3px 7px 7px;box-shadow:0 13px 28px #0005}.cake:before{content:"";position:absolute;left:0;right:0;top:10px;height:5px;background:#f1dfb3;box-shadow:0 9px 0 #b88e54}.cake i{position:absolute;bottom:0;width:2px;height:38px;background:#3c2a22}.cake i:nth-of-type(1){left:27px}.cake i:nth-of-type(2){left:51px}.cake i:nth-of-type(3){left:75px}.flame{position:absolute;width:9px;height:14px;border-radius:60% 40% 55% 45%;background:#e5bd62;bottom:49px;box-shadow:0 0 18px #dca84d88;animation:candleFlicker 1.1s ease-in-out infinite alternate}.f1{left:23px}.f2{left:47px;animation-delay:-.35s}.f3{left:71px;animation-delay:-.7s}@keyframes candleFlicker{to{transform:translateY(-2px) scale(.86) rotate(3deg);opacity:.72}}
+.observatory-scene{width:min(360px,80vw);height:min(360px,80vw);position:relative;margin:0 auto 30px;display:grid;place-items:center}
+.observatory-ring{position:absolute;border:1px solid #d5b86e33;border-radius:50%}.ring-a{inset:4%;animation:calibrate 18s linear infinite}.ring-b{inset:17%;border-style:dashed;animation:calibrate 13s linear infinite reverse}.ring-c{inset:31%;border-color:#d5b86e55;animation:calibrate 9s linear infinite}
+.observatory-axis{position:absolute;background:#d5b86e25}.axis-a{width:108%;height:1px;transform:rotate(17deg)}.axis-b{width:1px;height:108%;transform:rotate(17deg)}
+.observatory-needle{position:absolute;width:46%;height:1px;background:linear-gradient(90deg,transparent,#e2c87d,transparent);transform-origin:80% 50%;animation:needleScan 3.8s ease-in-out infinite}
+.observatory-core{width:76px;height:76px;border:1px solid #e2c87d;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#ead28f 0,#a0783f 20%,#111722 60%);box-shadow:0 0 34px #d8bd7844,0 0 100px #d8bd7816;animation:coreBreathe 3.6s ease-in-out infinite}
+.observatory-core span{width:40px;height:40px;border:1px solid #f0d99466;border-radius:50%}
+.calibration-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:#e2c87d;box-shadow:0 0 14px #e2c87d88}.dot-a{top:13%;left:63%;animation:dotFloat 4s infinite}.dot-b{right:12%;bottom:30%;animation:dotFloat 5s -.8s infinite}.dot-c{left:19%;bottom:16%;animation:dotFloat 4.5s -1.4s infinite}
+@keyframes calibrate{to{transform:rotate(360deg)}}@keyframes needleScan{0%,100%{transform:rotate(-42deg)}50%{transform:rotate(48deg)}}@keyframes coreBreathe{50%{transform:scale(1.045)}}@keyframes dotFloat{50%{transform:translate(7px,-8px);opacity:.55}}
+/* old-paper kundali, deliberately different from the homepage */
+#s7{background:radial-gradient(circle at 50% 45%,#16130f 0,#0b0c10 48%,#07080d 100%)}
+#s7 .kundali-wrap{margin-bottom:20px}
+#s7 .kundali{width:min(250px,62vw);background:#e9dfc6;border-color:#6d5532;box-shadow:0 20px 60px #000b,0 0 0 5px #c9a85d12;filter:sepia(.12)}
+#s7 .kundali:before,#s7 .kundali:after{border-color:#8a6d43}
+#s7 .kundali .diag:before,#s7 .kundali .diag:after{background:#8a6d43}
+#s7 .kundali .orb{border-color:#8a6d43;color:#6b4d2c;background:#e9dfc6;box-shadow:none;font-family:Georgia,serif;font-size:18px}
+#s7 .kundali .symbol{color:#6b4d2c;font-family:Georgia,serif}
+#s7 .kundali-wrap:after{content:"";position:absolute;width:min(315px,76vw);aspect-ratio:1;background:radial-gradient(#5f4a2d1a 1px,transparent 1.4px);background-size:5px 5px;mix-blend-mode:multiply;pointer-events:none;opacity:.35}
+.parchment-report{background:
+radial-gradient(circle at 18% 15%,#ffffff45 0,transparent 25%),
+radial-gradient(circle at 80% 78%,#8d6b3d18 0,transparent 32%),
+repeating-linear-gradient(0deg,#00000006 0 1px,transparent 1px 4px),
+#e8ddc3 !important;
+color:#34291d;border-color:#9b7a4c !important;box-shadow:0 22px 70px #000a,0 0 0 5px #d5bd8820 !important;border-radius:1px;transform:rotate(-.25deg)}
+.parchment-report:after{inset:9px !important;border-color:#765a351c !important}
+.parchment-report:before{color:#755b3b !important}
+.parchment-report .report-title{font-family:Georgia,"Times New Roman",serif;color:#2f2419;font-size:27px;letter-spacing:-.02em}
+.parchment-report .report-sub{font-family:Georgia,serif;color:#735a3b}
+.parchment-report .sanskrit-note{font-family:Georgia,serif;color:#6b4e2d;font-size:12px;font-style:italic;margin-top:9px;letter-spacing:.04em}
+.parchment-report .cell{border-color:#a98b62 !important}.parchment-report .cell small{color:#725b3e}.parchment-report .cell strong{font-family:Georgia,serif;color:#302519;font-size:21px}.parchment-report .cell em{display:block;font-family:Georgia,serif;font-size:11px;color:#7b6447;margin-top:5px;line-height:1.25}
+.parchment-report .chip{background:#6e543514;border-color:#80623b88;color:#5e472d;font-family:Georgia,serif;text-transform:none;letter-spacing:.02em;border-radius:0}
+.parchment-report .paper-rule{height:1px;background:#8b6b451f;margin:20px 0 14px}.paper-footnote{font-family:Georgia,serif !important;color:#59432b !important;font-size:14px !important;line-height:1.55 !important;margin:0 !important;max-width:none !important}
+.literary-intro{font-family:Georgia,"Times New Roman",serif !important;color:#b8ad9c !important}
+#s7 .buttons .btn{font-size:13px}
+@media(max-width:460px){.chapter-object{height:70px}.cake-object{height:92px}.observatory-scene{width:290px;height:290px}.parchment-report .report-title{font-size:23px}.parchment-report .cell strong{font-size:19px}}
+
+</style>
+</head>
+<body>
+<div class="app">
+<main>
+
+<section class="screen active cosmic" id="s1">
+  <div class="hero-skyline">
+    <span class="sky-coord">12° 48' 09" N</span>
+    <span class="sky-date">DESIGN KUNDALI / 001</span>
+    <span class="sky-mark">✦</span>
+  </div>
+  <div class="hero-copy">
+    
+    <h1>Create your<br><em>Design Kundali.</em></h1>
+    <p>Give us your birth details. We’ll do what every good fortune teller does - pretend we know your future.</p>
+  </div>
+  <div class="orbital-stage" aria-hidden="true">
+    <div class="axis axis-x"></div>
+    <div class="axis axis-y"></div>
+    <div class="orbit orbit-1"><i class="planet planet-a"></i></div>
+    <div class="orbit orbit-2"><i class="planet planet-b"></i></div>
+    <div class="orbit orbit-3"><i class="planet planet-c"></i></div>
+    <div class="orbit orbit-4"><i class="planet planet-d"></i></div>
+    <div class="orbit orbit-5"><i class="planet planet-e"></i></div>
+    <div class="hero-sun"><span></span></div>
+    <div class="orbit-label label-creativity"><b></b><span>CREATIVITY</span></div>
+    <div class="orbit-label label-growth"><b></b><span>GROWTH</span></div>
+    <div class="orbit-label label-discipline"><b></b><span>DISCIPLINE</span></div>
+    <div class="orbit-label label-impact"><b></b><span>IMPACT</span></div>
+    <div class="orbital-caption">THE CELESTIAL MAP OF YOUR<br>DESIGN LIFE</div>
+  </div>
+  <div class="hero-action">
+    <button class="btn" onclick="go(2)">Let’s do it <span class="arrow">→</span></button>
+    <span class="micro-note">No bad predictions.<br><em>Only good conversations.</em></span>
+  </div>
+</section>
+
+<section class="screen" id="s2"><div class="chapter-object name-object" aria-hidden="true"><span class="name-object-line"></span><span class="name-object-orb"></span></div><div class="eyebrow">First, who are you?</div><h2>What should we call you?</h2><div class="field"><label>Your name</label><input id="name" autocomplete="name" placeholder="e.g. Amit"></div><div class="buttons"><button class="btn" onclick="nextName()">Continue <span class="arrow">→</span></button></div><button class="back" onclick="go(1)">← Back</button></section>
+
+<section class="screen" id="s3"><div class="chapter-object map-object" aria-hidden="true"><span class="map-pin"></span><span class="map-orbit"></span><span class="map-dot"></span></div><div class="eyebrow">The birthplace matters. Apparently.</div><h2 id="placePrompt">Where were you born?</h2><div class="field"><label>Place of birth</label><input id="place" placeholder="e.g. Bengaluru"></div><div class="buttons"><button class="btn" onclick="nextPlace()">Continue <span class="arrow">→</span></button></div><button class="back" onclick="go(2)">← Back</button></section>
+
+<section class="screen" id="s4"><div class="chapter-object cake-object" aria-hidden="true"><div class="cake"><span class="flame f1"></span><span class="flame f2"></span><span class="flame f3"></span><i></i><i></i><i></i></div></div><div class="eyebrow">The big one</div><h2 id="dobTitle">When did your story begin?</h2><div class="field"><label>Date of birth</label><input id="dob" type="date"></div><div class="note">Don’t have it handy? That’s okay. You can skip this.</div><div class="buttons" style="margin-top:20px"><button class="btn" onclick="generate()">Generate my Kundali <span>✦</span></button><button class="btn secondary" onclick="skipDob()">Enough that I’m still alive <span>→</span></button></div><button class="back" onclick="go(3)">← Back</button></section>
+
+<section class="screen cosmic" id="s5">
+<div class="observatory-scene" aria-hidden="true">
+  <div class="observatory-ring ring-a"></div>
+  <div class="observatory-ring ring-b"></div>
+  <div class="observatory-ring ring-c"></div>
+  <div class="observatory-axis axis-a"></div>
+  <div class="observatory-axis axis-b"></div>
+  <div class="observatory-needle"></div>
+  <div class="observatory-core"><span></span></div>
+  <div class="calibration-dot dot-a"></div>
+  <div class="calibration-dot dot-b"></div>
+  <div class="calibration-dot dot-c"></div>
+</div>
+<div class="cosmic-copy"><div class="eyebrow">Consulting the stars</div><h2>Reading your design destiny...</h2><p>Calibrating the chart, locating the houses and making a little room for doubt.</p></div>
+</section>
+
+<section class="screen" id="s6"><div class="eyebrow">One important question</div><h2>Do you still believe in it?</h2><p>Be honest. We promise the planets won’t judge.</p><div class="buttons"><button class="btn" onclick="believe(true)">Yes, I do <span>✦</span></button><button class="btn secondary" onclick="believe(false)">No, I don’t <span>↘</span></button></div></section>
+
+<section class="screen" id="s7"><div class="eyebrow">Your cosmic reading</div><div class="kundali-wrap"><div class="kundali"><div class="diag"></div><i class="symbol s1">I</i><i class="symbol s2">II</i><i class="symbol s3">III</i><i class="symbol s4">IV</i><div class="orb">K</div></div></div><h2 id="fakeTitle">The stars have spoken.</h2><p class="literary-intro">A little <em>jyotisha</em>, a little theatre. The chart offers a charming account of your <em>svabhava</em> - a supposed inclination toward making sense of complexity, shaping ideas and asking why the familiar must remain familiar.</p><div class="report parchment-report"><div class="report-title">Kundali of the Design Temperament</div><div class="report-sub">A playful reading · for entertainment, not divination</div><div class="sanskrit-note">पत्रम् प्रथमम् · The first reading</div><div class="chips"><span class="chip">Creative mind</span><span class="chip">Curious spirit</span><span class="chip">Independent hand</span></div><div class="grid"><div class="cell"><small>Graha · career influence</small><strong>Budha</strong><em>the messenger</em></div><div class="cell"><small>Bhava · creative house</small><strong>Ideas</strong><em>where thought takes form</em></div><div class="cell"><small>Udaya · rising tendency</small><strong>Problem solving</strong><em>to clarify, arrange, resolve</em></div><div class="cell"><small>Tattva · design element</small><strong>Vayu</strong><em>air, movement, possibility</em></div></div><div class="paper-rule"></div><p class="paper-footnote">Thus the chart declares: <em>you are inclined to make the complicated legible.</em> Whether this is wisdom or simply a flattering sentence, the stars remain politely silent.</p></div><div style="margin-top:20px"><div class="buttons"><button class="btn" onclick="fakeReaction(true)">That sounds like me <span>→</span></button><button class="btn secondary" onclick="fakeReaction(false)">Not quite <span>↘</span></button></div></div></section>
+
+<section class="screen" id="s8"><div class="eyebrow">Plot twist</div><h2 id="revealTitle">Whoa. You got lucky.</h2><p id="revealText">That reading wasn’t based on your career at all. It was deliberately generic. If it felt accurate, that says something interesting about how easily we can see ourselves in a prediction.</p><div class="reveal">Your career is a little less mystical. It leaves evidence - the work you’ve done, the skills you’ve built, the problems you’ve solved and the directions you keep moving toward.</div><h2 style="font-size:28px">So... luck or hard work?</h2><div class="buttons"><button class="btn" onclick="chooseWork(false)">I’ll take my luck <span>✦</span></button><button class="btn secondary" onclick="chooseWork(true)">Show me the hard work <span>→</span></button></div></section>
+
+<section class="screen" id="s9"><div class="eyebrow">Enough astrology</div><h2>Okay then, boss. Upload your resume.</h2><p>I’ll build a Design Kundali from what you’ve actually done - not when Mercury was in retrograde.</p><div class="field"><label>Resume / CV</label><input id="resume" type="file" accept=".pdf,.doc,.docx" style="font-size:15px"></div><div class="note">PDF, DOC and DOCX are accepted. The current demo uses sample intelligence until resume parsing is connected.</div><div class="buttons" style="margin-top:25px"><button class="btn" onclick="analyze()">Read my real Kundali <span>✦</span></button></div></section>
+
+<section class="screen" id="s10"><div class="eyebrow">Now this is interesting.</div><h2>Your Design Kundali.</h2><p id="realIntro">Not a prediction. A reading of the evidence in your career so far.</p><div class="report">
+<div class="report-title">Design Kundali</div><div class="report-sub">Evidence from your career journey</div>
+<div class="chips"><span class="chip">Craft</span><span class="chip">Systems</span><span class="chip">Strategy</span><span class="chip">AI</span><span class="chip">Influence</span></div>
+<div class="grid"><div class="cell"><small>Strongest house</small><strong>Influence</strong></div><div class="cell"><small>Emerging house</small><strong>AI</strong></div><div class="cell"><small>Career tension</small><strong>Craft × Scale</strong></div><div class="cell"><small>Open house</small><strong>Business</strong></div></div>
+<div class="meter"><div class="meterline"><span>Craft</span><b>86</b></div><div class="bar"><div class="fill" style="width:86%"></div></div></div>
+<div class="meter"><div class="meterline"><span>Strategy</span><b>78</b></div><div class="bar"><div class="fill" style="width:78%"></div></div></div>
+<div class="meter"><div class="meterline"><span>Influence</span><b>82</b></div><div class="bar"><div class="fill" style="width:82%"></div></div></div>
+<div class="meter"><div class="meterline"><span>Technology</span><b>69</b></div><div class="bar"><div class="fill" style="width:69%"></div></div></div>
+<div class="meter"><div class="meterline"><span>AI</span><b>61</b></div><div class="bar"><div class="fill" style="width:61%"></div></div></div>
+</div>
+<div class="reveal"><strong>Direction worth exploring:</strong> Design Strategy. Not because your stars say so - because your evidence suggests you may be ready to explore it.</div>
+<div class="report-actions"><button class="btn secondary" onclick="exportPDF()">Export as PDF <span>↓</span></button><button class="btn" onclick="wingspan()">Explore Wingspan <span>→</span></button></div>
+<div class="footer">Don’t predict your future. <strong>Understand your journey through Wingspan.</strong></div>
+</section>
+
+</main></div>
+<script>
+let current=1;const total=10;
+function go(n){document.getElementById('s'+current).classList.remove('active');current=n;document.getElementById('s'+current).classList.add('active');document.getElementById('step').textContent=current===10?'Your real Kundali':current===1?'Design Kundali':current+' / '+total;window.scrollTo({top:0,behavior:'smooth'})}
+function nextName(){const name=document.getElementById('name').value.trim();if(!name){document.getElementById('name').focus();return}document.getElementById('placePrompt').textContent=name+', when you were born, where was it?';go(3)}
+function nextPlace(){const place=document.getElementById('place').value.trim();if(!place){document.getElementById('place').focus();return}const name=document.getElementById('name').value.trim();document.getElementById('dobTitle').textContent=name+', born in '+place+'. What date was that?';go(4)}
+function generate(){startGeneration()}
+function skipDob(){startGeneration()}
+function startGeneration(){go(5);var started=Date.now();window.setTimeout(function(){if(current===5)go(6)},12000);window.setTimeout(function(){if(current===5)go(6)},19000)}
+function believe(yes){if(yes)go(7);else go(9)}
+function fakeReaction(match){if(match){document.getElementById('revealTitle').textContent='Whoa. You got lucky.';document.getElementById('revealText').textContent='That reading wasn’t based on your career at all. It was deliberately generic. If it felt accurate, that says something interesting about how easily we can see ourselves in a prediction.'}else{document.getElementById('revealTitle').textContent='Fair enough. The stars didn’t know much about you.';document.getElementById('revealText').textContent='Exactly. Birth details can make for a fun story, but they don’t tell us what you’ve actually learned, built or struggled through as a designer.'}go(8)}
+function chooseWork(work){go(9);if(!work){document.getElementById('revealTitle').textContent='Fair. Keep the luck.';document.getElementById('revealText').textContent='But if you ever want to replace luck with something more useful, upload your resume. We’ll look at the evidence.'}}
+function analyze(){if(!document.getElementById('resume').files.length){document.getElementById('resume').click();return}go(5);setTimeout(()=>go(10),1800)}
+function exportPDF(){window.print()}
+function wingspan(){window.location.href='https://wingspan.designsbyamit.com/'}
+</script>
+</body>
+</html>

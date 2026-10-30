@@ -1,0 +1,15 @@
+{
+  "buildCommand": "bash scripts/vercel-build.sh",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/purge-agent-output",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/market-refresh",
+      "schedule": "0 4 * * *"
+    }
+  ]
+}

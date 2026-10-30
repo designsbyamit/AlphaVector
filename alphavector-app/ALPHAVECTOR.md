@@ -1,0 +1,27 @@
+# AlphaVector app
+
+A duplicate of WingSpan (same engine, database schema and Blueprint) with a new front door: instead of reading a resume, the person enters their projects in a table. The marketing site lives in a separate project (`alphavector-site`).
+
+## Routes
+- `/` sends signed-in people to `/track`, everyone else to `/start`.
+- `/start` is the new flow: Projects, Strengths, Passion, Market niche (optional), then the analysis and Future Blueprint. Guests can run all of it; saving needs sign-in (same rule as WingSpan).
+- `/track`, `/paths`, `/profile`, `/experience/[id]` are the existing Design Evolution pages for daily learning and progress. `/track` is the old home page, moved from `/`.
+- A Recalibrate button appears on the Blueprint. It keeps the project table (stored in this browser) and restarts the analysis.
+
+## What was added
+- `lib/alphavector/` catalogue of processes and niches, the deterministic Proof Score (`strengths.ts`), the mapper into the engine's data shape (`toExtracted.ts`) and tests.
+- `components/alphavector/` the four steps and the flow controller.
+- `types/wingspan.ts`: optional `hardSkills`, `softSkills`, `feedback`, `remarks`, `energy` on `Project`.
+
+## What was changed from WingSpan
+- Name, logo, accent colour and resume wording replaced with AlphaVector and project-log wording.
+- The marketing homepage, welcome screen and `/wingspan` page were removed.
+- The hard-coded dev session fallback (a fixed user id and email) was removed from `(app)/layout`, `track`, `profile` and `onboarding`. Signed-out visitors are sent to `/login`.
+- The resume upload flow (`FootprintScreen`, `ResumeDrop`) is still in the codebase but no longer routed.
+
+## To run
+Same environment as WingSpan: `DATABASE_URL`, `JWT_SECRET`, the AI provider keys, `NEXT_PUBLIC_APP_URL`. Use a separate database from the live WingSpan one. `npm test` runs the engine tests plus `lib/alphavector`.
+
+## Known limits
+- The engine's role taxonomy, interest list and process checklists are design-focused. Another discipline means editing `lib/alphavector/catalog.ts`, `lib/interests.ts` and `lib/role-taxonomy.ts`.
+- The Blueprint pipeline needs the AI keys and database; it was not run end to end in the build sandbox.

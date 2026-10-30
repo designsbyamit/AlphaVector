@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* AlphaVector site tokens. Each of the three signals owns one colour and keeps it everywhere it appears. */
+@theme {
+  --color-paper: #e9eef1;
+  --color-paper-deep: #dbe3e8;
+  --color-ink: #10222f;
+  --color-ink-soft: #1b3445;
+  --color-muted: #475b68;
+  --color-rule: #b4c2cb;
+
+  /* text-safe variants (>= 4.5:1 on paper) */
+  --color-strength: #0b6463;
+  --color-passion: #a82f63;
+  --color-market: #85560a;
+
+  /* fills for shapes and bars */
+  --color-strength-fill: #0e8c8a;
+  --color-passion-fill: #d0447f;
+  --color-market-fill: #e8a317;
+
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Newsreader Variable", Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line-height: 1.08; }
+  :focus-visible { outline: 3px solid var(--color-ink); outline-offset: 3px; border-radius: 2px; }
+  ::selection { background: var(--color-market-fill); color: var(--color-ink); }
+}
+
+/* The one moment of motion: three distance circles close in on a single point. */
+@keyframes converge {
+  from { transform: scale(var(--from, 1.6)); opacity: 0; }
+  35% { opacity: 1; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+
+.fix-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: converge 1.9s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+.fix-mark { animation: appear 0.5s ease-out 1.7s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fix-ring, .fix-mark { animation: none; }
+}
+
+@media print {
+  header, footer, .no-print { display: none !important; }
+  body { background: #fff; font-size: 12pt; }
+}
