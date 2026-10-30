@@ -1,4 +1,7 @@
-import { isDescribed, isFilled, type ProjectRow } from './types'
+import { isDescribed, isFilled, type ProjectRow, type Stage } from './types'
+
+/** The least the engine needs to say anything reliable: three real projects, each described. */
+export const MIN_PROJECTS = 3
 
 // The evidence meter: a gentle read on how much the project log can prove, with one concrete next step.
 // Points: up to 5 named projects (10 each), 5 described (6 each), 5 with a result (4 each) = 100.
@@ -23,7 +26,7 @@ export function evidence(rows: ProjectRow[]): Evidence {
   const label = pct < 25 ? 'Just started' : pct < 55 ? 'Taking shape' : pct < 85 ? 'Solid' : 'Strong'
 
   let next: string | null = null
-  if (named.length < 3) next = `Add ${3 - named.length} more ${plural(3 - named.length, 'project', 'projects')}. Rough is fine.`
+  if (named.length < MIN_PROJECTS) next = `Add ${MIN_PROJECTS - named.length} more ${plural(MIN_PROJECTS - named.length, 'project', 'projects')}. Rough is fine.`
   else if (described < named.length) {
     const n = named.length - described
     next = `Say what you did on ${n} ${plural(n, 'project', 'projects')}. One sentence is enough.`
@@ -31,4 +34,19 @@ export function evidence(rows: ProjectRow[]): Evidence {
   else if (named.length < 5) next = 'One or two more projects would sharpen the picture.'
 
   return { pct, label, projects: named.length, described, withResult, next }
+}
+
+/**
+ * Why the person cannot continue from the projects step yet, in plain words, or null when they can.
+ * Needs: where they are right now, no unedited example rows, and at least three real projects each with a line about what they did.
+ */
+export function continueGate(stage: Stage, rows: ProjectRow[]): string | null {
+  if (!stage) return 'Tell us where you are right now. It is one tap.'
+  if (rows.some((r) => r.sample)) return 'Change an example to make it yours, or clear the examples.'
+  const real = rows.filter(isFilled)
+  const described = real.filter(isDescribed).length
+  if (described >= MIN_PROJECTS) return null
+  const need = MIN_PROJECTS - described
+  if (real.length < MIN_PROJECTS) return `Add ${MIN_PROJECTS - real.length} more ${plural(MIN_PROJECTS - real.length, 'project', 'projects')} to continue. A line about what you did is enough.`
+  return `Say what you did on ${need} more ${plural(need, 'project', 'projects')} to continue. One sentence is enough.`
 }

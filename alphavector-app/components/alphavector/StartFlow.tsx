@@ -12,8 +12,8 @@ import { MAX_INTERESTS, MIN_INTERESTS } from '@/lib/interests'
 import { cancelCareerPipeline, runCareerPipeline } from '@/lib/pipeline'
 import { buildExtractedData } from '@/lib/alphavector/toExtracted'
 import { computeStrengths } from '@/lib/alphavector/strengths'
-import { evidence } from '@/lib/alphavector/progress'
-import { isDescribed, isFilled } from '@/lib/alphavector/types'
+import { continueGate, evidence, MIN_PROJECTS } from '@/lib/alphavector/progress'
+import { isFilled } from '@/lib/alphavector/types'
 import { useInputs } from './useInputs'
 import { FlowHeader } from './FlowHeader'
 import { HelloBar } from './HelloBar'
@@ -52,16 +52,11 @@ export default function StartFlow() {
   const [step, setStep] = useState<0 | 1>(0)
 
   const real = useMemo(() => inputs.rows.filter((r) => isFilled(r) && !r.sample), [inputs.rows])
-  const hasSample = inputs.rows.some((r) => r.sample)
   const ev = useMemo(() => evidence(real), [real])
   const strengths = useMemo(() => computeStrengths(real).filter((s) => !inputs.dismissed.includes(s.id)), [real, inputs.dismissed])
 
   // Why the person cannot continue yet, in plain words. Null means they can.
-  const gate0: string | null =
-    !inputs.about.stage ? 'Tell us where you are right now. It is one tap.'
-    : hasSample ? 'Change an example to make it yours, or clear the examples.'
-    : !real.some(isDescribed) ? 'Add a project and say what you did.'
-    : null
+  const gate0 = continueGate(inputs.about.stage, inputs.rows)
   const gate1: string | null = inputs.passions.length < MIN_INTERESTS ? `Pick ${MIN_INTERESTS - inputs.passions.length} more that pull you.` : null
 
   const goTop = () => window.scrollTo({ top: 0 })
@@ -109,7 +104,7 @@ export default function StartFlow() {
             <h1 className="max-w-2xl text-[clamp(2rem,5vw,3rem)] font-semibold leading-[1.1] tracking-tight text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-sora)' }}>
               What have you worked on?
             </h1>
-            <p className="mt-3 max-w-xl text-[17px] text-[var(--text-secondary)]">Add three to five projects. Rough is fine. Tell us what you did in plain words and we pick up the skills for you.</p>
+            <p className="mt-3 max-w-xl text-[17px] text-[var(--text-secondary)]">Add at least {MIN_PROJECTS} projects, five if you can. Rough is fine. Tell us what you did in plain words and we pick up the skills for you.</p>
             <div className="mt-8"><HelloBar about={inputs.about} onChange={setAbout} /></div>
             <div className="mt-10 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
               <ProjectGrid rows={inputs.rows} onPatch={patchRow} onAdd={addRow} onRemove={removeRow} onAddRows={addRows} onClearSamples={clearSamples} />
@@ -130,7 +125,7 @@ export default function StartFlow() {
 
       <FlowFooter
         message={(step === 0 ? gate0 ?? ev.next : gate1) ?? (step === 0 ? 'Looks good. Keep going or continue.' : 'Ready. This takes about four minutes.')}
-        hint={step === 0 ? `${ev.projects} ${ev.projects === 1 ? 'project' : 'projects'} so far. Saved on this device.` : undefined}
+        hint={step === 0 ? `${ev.described} of ${MIN_PROJECTS} needed projects described. Saved on this device.` : undefined}
         actions={<>
           {step === 1 && <button type="button" className={quietButton} onClick={() => { setStep(0); goTop() }}><ArrowLeft size={14} aria-hidden /> Back</button>}
           <button type="button" className={primaryButton} disabled={step === 0 ? !!gate0 : !!gate1}

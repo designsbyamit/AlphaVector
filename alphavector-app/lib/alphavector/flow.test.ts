@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { inferProcesses, resolveRow, toggleProcess } from './infer'
-import { evidence } from './progress'
+import { continueGate, evidence, MIN_PROJECTS } from './progress'
 import { parsePasted, sampleRows } from './samples'
 import { buildExtractedData } from './toExtracted'
 import { emptyInputs, isBlank, isDescribed, newRow, type ProjectRow } from './types'
@@ -96,4 +96,17 @@ test('stage sets years and a student gets a sensible timeline', () => {
   inputs.about.stage = '6-10'
   assert.equal(buildExtractedData(inputs, 2026).timeline[0].startDate, '2018')
   assert.match(buildExtractedData(inputs).projects[0].summary ?? '', /in their words: Interviewed users/)
+})
+
+test('continuing needs at least three described projects, a stage and no unedited examples', () => {
+  const three = [1, 2, 3].map((n) => row({ name: `P${n}`, did: 'Designed the screens and tested them' }))
+  assert.equal(MIN_PROJECTS, 3)
+  assert.match(continueGate('', three) ?? '', /where you are/)
+  assert.equal(continueGate('student', three), null)
+  assert.match(continueGate('student', three.slice(0, 2)) ?? '', /Add 1 more project to continue/)
+  assert.match(continueGate('student', [])  ?? '', /Add 3 more projects/)
+  const undescribed = [row({ name: 'A', did: 'Designed the screens and tested them' }), row({ name: 'B' }), row({ name: 'C' })]
+  assert.match(continueGate('3-5', undescribed) ?? '', /Say what you did on 2 more projects/)
+  assert.match(continueGate('student', [...three, ...sampleRows()]) ?? '', /examples/)
+  assert.equal(continueGate('student', [...three, newRow()]), null, 'blank rows are ignored')
 })

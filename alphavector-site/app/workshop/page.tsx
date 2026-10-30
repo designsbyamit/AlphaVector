@@ -75,7 +75,7 @@ export default function Workshop() {
           <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-bold">What the room needs</h2>
           <ul className="mt-5 list-disc space-y-2 pl-6 text-ink-soft marker:text-ink">
             <li>A laptop or phone per person, with internet</li>
-            <li>Participants to bring their projects, ideally five or more each</li>
+            <li>Participants to bring at least three projects each, ideally five</li>
             <li>Groups of up to about thirty at a time</li>
           </ul>
         </div>
