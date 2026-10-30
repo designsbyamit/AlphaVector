@@ -12,7 +12,7 @@ test('weights sum to 1', () => {
 
 test('a process used in three documented projects across three industries scores 100', () => {
   const rows = ['Bank', 'Health', 'Retail'].map((industry, i) =>
-    row({ name: `P${i}`, industry, hard: ['user-research'], impact: 'x', feedback: 'y' }))
+    row({ name: `P${i}`, industry, hard: ['user-research'], impact: 'x', feedback: 'Praised' }))
   const s = computeStrengths(rows).find((x) => x.id === 'user-research')!
   assert.equal(s.score, 100)
   assert.equal(s.confidence, 'high')
@@ -44,8 +44,8 @@ test('evidence quality grades the table', () => {
 
 test('buildExtractedData maps the table into the engine shape', () => {
   const inputs = emptyInputs()
-  inputs.about = { name: ' Asha ', currentRole: 'Senior Designer', organisation: 'Acme', years: '8', location: 'Pune' }
-  inputs.rows = [row({ name: 'Checkout redo', client: 'Acme', industry: 'Fintech', hard: ['prototyping'], soft: ['stakeholders'], impact: '+12% conversion', feedback: 'Loved by PMs', energy: 'energising' })]
+  inputs.about = { name: ' Asha ', currentRole: 'Senior Designer', organisation: 'Acme', years: '8', location: 'Pune', stage: '' }
+  inputs.rows = [row({ name: 'Checkout redo', client: 'Acme', industry: 'Fintech', hard: ['prototyping'], soft: ['stakeholders'], impact: '+12% conversion', feedback: 'Praised', energy: 'energising' })]
   inputs.dismissed = ['stakeholders']
   const d = buildExtractedData(inputs, 2026)
   assert.equal(d.candidateName, 'Asha')

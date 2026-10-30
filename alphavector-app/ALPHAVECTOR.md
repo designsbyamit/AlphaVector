@@ -4,13 +4,13 @@ A duplicate of WingSpan (same engine, database schema and Blueprint) with a new 
 
 ## Routes
 - `/` sends signed-in people to `/track`, everyone else to `/start`.
-- `/start` is the new flow: Projects, Strengths, Passion, Market niche (optional), then the analysis and Future Blueprint. Guests can run all of it; saving needs sign-in (same rule as WingSpan).
+- `/start` is the new flow, in two light steps: (1) your projects, in a four-column grid where skills are picked up from plain sentences and strengths appear live; (2) what pulls you, plus an optional market niche. Then one calm wait screen and the Blueprint. Guests can run all of it; saving needs sign-in (same rule as WingSpan).
 - `/track`, `/paths`, `/profile`, `/experience/[id]` are the existing Design Evolution pages for daily learning and progress. `/track` is the old home page, moved from `/`.
 - A Recalibrate button appears on the Blueprint. It keeps the project table (stored in this browser) and restarts the analysis.
 
 ## What was added
-- `lib/alphavector/` catalogue of processes and niches, the deterministic Proof Score (`strengths.ts`), the mapper into the engine's data shape (`toExtracted.ts`) and tests.
-- `components/alphavector/` the four steps and the flow controller.
+- `lib/alphavector/` catalogue of processes and niches, skill inference from plain text (`infer.ts`), the evidence meter (`progress.ts`), example and paste import (`samples.ts`), the deterministic Proof Score (`strengths.ts`), the mapper into the engine's data shape (`toExtracted.ts`) and tests.
+- `components/alphavector/` the sentence intro, project grid, live signal panel, pull step, wait screen and the flow controller.
 - `types/wingspan.ts`: optional `hardSkills`, `softSkills`, `feedback`, `remarks`, `energy` on `Project`.
 
 ## What was changed from WingSpan
