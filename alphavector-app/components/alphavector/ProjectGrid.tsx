@@ -1,8 +1,9 @@
 'use client'
 import { Fragment, useId, useMemo, useState } from 'react'
 import { Check, ClipboardPaste, Frown, Meh, Plus, Search, Smile, Sparkles, ThumbsDown, ThumbsUp, Scale, X } from 'lucide-react'
-import { HARD_PROCESSES, SOFT_PROCESSES, labelOf } from '@/lib/alphavector/catalog'
+import { HARD_PROCESSES, SOFT_PROCESSES, labelOf, shortOf } from '@/lib/alphavector/catalog'
 import { toggleProcess } from '@/lib/alphavector/infer'
+import { acceptSuggestion, addCustom, extraLabel, removeExtra, skipSuggestions, suggestionsFor } from '@/lib/alphavector/suggest'
 import { INDUSTRIES, parsePasted, sampleRows } from '@/lib/alphavector/samples'
 import { isBlank, isDescribed, isFilled, type Energy, type Feedback, type ProjectRow } from '@/lib/alphavector/types'
 import { cx, focusRing, quietButton } from '@/components/onboarding/ui'
@@ -25,8 +26,9 @@ const FELT: Array<{ v: Exclude<Energy, ''>; Icon: typeof Smile; label: string }>
   { v: 'draining', Icon: Frown, label: 'It drained me' },
 ]
 
-function ProcessPicker({ row, onToggle, onClose }: { row: ProjectRow; onToggle: (id: string) => void; onClose: () => void }) {
+function ProcessPicker({ row, onToggle, onAddCustom, onClose }: { row: ProjectRow; onToggle: (id: string) => void; onAddCustom: (label: string) => void; onClose: () => void }) {
   const [q, setQ] = useState('')
+  const [own, setOwn] = useState('')
   const id = useId()
   const match = (l: string) => l.toLowerCase().includes(q.trim().toLowerCase())
   const picked = new Set([...row.hard, ...row.soft])
@@ -63,7 +65,85 @@ function ProcessPicker({ row, onToggle, onClose }: { row: ProjectRow; onToggle: 
         {group('Craft skills', HARD_PROCESSES)}
         {group('Working with people', SOFT_PROCESSES)}
       </div>
+      <form className="mt-5 flex flex-wrap items-center gap-2 border-t border-[var(--border-dim)] pt-4"
+        onSubmit={(e) => { e.preventDefault(); if (own.trim()) { onAddCustom(own); setOwn('') } }}>
+        <label className="text-[13px] font-semibold text-[var(--text-secondary)]" htmlFor={`${id}-own`}>Something we missed?</label>
+        <input id={`${id}-own`} value={own} onChange={(e) => setOwn(e.target.value)} placeholder="Type a skill" maxLength={40} className={cx(cell, 'max-w-[16rem] border border-[var(--border-ws)]')} />
+        <button type="submit" disabled={own.trim().length < 2} className={cx(quietButton, '!px-3 !py-1.5 !text-[13px] disabled:opacity-40')}>Add</button>
+      </form>
     </div>
+  )
+}
+
+/** The pills that keep offering the next most relevant skill. Standard skills first, suggestive ones once those are covered. */
+function SuggestionPills({ row, others, onPatch, onOpenAll, allOpen }: {
+  row: ProjectRow; others: ProjectRow[]; onPatch: (p: Partial<ProjectRow>) => void; onOpenAll: () => void; allOpen: boolean
+}) {
+  const sug = suggestionsFor(row, others)
+  const extra = sug.tier === 'extra'
+  return (
+    <div className="mt-2 px-1">
+      {sug.items.length > 0 && (
+        <>
+          <p className="mb-1.5 text-[12px] text-[var(--text-muted)]">{extra ? 'Other things people do' : 'Tap anything you also did'}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {sug.items.map((s) => (
+              <span key={s.id} className={cx('av-rise inline-flex items-center rounded-full border text-[13px] md:text-[12px]',
+                extra ? 'border-dashed border-[var(--neon-border)]' : 'border-[var(--border-ws)]')}>
+                <button type="button" onClick={() => onPatch(acceptSuggestion(row, s))} aria-label={`Add skill: ${s.full ?? s.label}`} title={s.full ?? s.label}
+                  className={cx('inline-flex items-center gap-1 whitespace-nowrap rounded-l-full py-1.5 pl-2.5 pr-1.5 text-[var(--text-secondary)] hover:bg-[var(--neon-surface)] hover:text-[var(--text-primary)] md:py-1', focusRing)}>
+                  {extra ? <Sparkles size={11} aria-hidden className="text-[var(--neon)]" /> : <Plus size={11} aria-hidden className="text-[var(--neon)]" />}
+                  {s.label}
+                </button>
+                <button type="button" onClick={() => onPatch(skipSuggestions(row, [s.id]))} aria-label={`Skip: ${s.full ?? s.label}`} title="Not this one"
+                  className={cx('rounded-r-full px-1.5 py-1.5 text-[var(--text-dim)] hover:text-red-400 md:py-1', focusRing)}><X size={11} aria-hidden /></button>
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-[var(--text-muted)]">
+        {sug.items.length > 0 && (
+          <button type="button" onClick={() => onPatch(skipSuggestions(row, sug.items.map((i) => i.id)))}
+            className={cx('underline underline-offset-4 hover:text-[var(--text-primary)]', focusRing)}>None of these</button>
+        )}
+        <button type="button" aria-expanded={allOpen} onClick={onOpenAll} className={cx('underline underline-offset-4 hover:text-[var(--text-primary)]', focusRing)}>
+          Search all or type your own
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/** Selected skills as chips, then the pills offering the next ones. Shared by the desktop strip and the mobile card. */
+function SkillsArea({ row: r, others, onPatch, onOpenAll, allOpen }: {
+  row: ProjectRow; others: ProjectRow[]; onPatch: (p: Partial<ProjectRow>) => void; onOpenAll: () => void; allOpen: boolean
+}) {
+  const chips = [...r.hard, ...r.soft]
+  return (
+    <>
+      {(chips.length > 0 || r.extra.length > 0) && (
+        <div className="mt-1.5 flex flex-wrap items-center gap-1.5 px-1">
+          {chips.map((id) => (
+            <button key={id} type="button" onClick={() => onPatch(toggleProcess(r, id))} aria-label={`Remove skill: ${labelOf(id)}`} title={labelOf(id)}
+              className={cx('group av-rise inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--neon-border)] bg-[var(--neon-surface)] py-0.5 pl-2.5 pr-1.5 text-[12px] text-[var(--text-primary)] hover:border-red-400/60', focusRing)}>
+              <span aria-hidden className={cx('h-1.5 w-1.5 rounded-full', r.hard.includes(id) ? 'bg-teal-400' : 'bg-pink-400')} />
+              {shortOf(id)}
+              <X size={11} aria-hidden className="opacity-40 group-hover:opacity-100" />
+            </button>
+          ))}
+          {r.extra.map((id) => (
+            <button key={id} type="button" onClick={() => onPatch(removeExtra(r, id))} aria-label={`Remove skill: ${extraLabel(id)}`}
+              className={cx('group av-rise inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--neon-border)] bg-[var(--neon-surface)] py-0.5 pl-2.5 pr-1.5 text-[12px] text-[var(--text-primary)] hover:border-red-400/60', focusRing)}>
+              <Sparkles size={10} aria-hidden className="text-[var(--neon)]" />
+              {extraLabel(id)}
+              <X size={11} aria-hidden className="opacity-40 group-hover:opacity-100" />
+            </button>
+          ))}
+        </div>
+      )}
+      <SuggestionPills row={r} others={others} onPatch={onPatch} allOpen={allOpen} onOpenAll={onOpenAll} />
+    </>
   )
 }
 
@@ -155,11 +235,10 @@ export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClear
           <tbody className="block md:table-row-group">
             {rows.map((r, i) => {
               const done = isDescribed(r)
-              const chips = [...r.hard, ...r.soft]
               const noteOpen = notes.has(r.id) || r.remarks.trim().length > 0
               return (
                 <Fragment key={r.id}>
-                  <tr className={cx('relative block border-b border-[var(--border-dim)] p-4 md:table-row md:p-0', picker === r.id && 'border-b-0')}>
+                  <tr className="relative block border-b border-[var(--border-dim)] p-4 md:table-row md:border-b-0 md:p-0">
                     {/* Project */}
                     <td className="block md:table-cell md:px-3 md:py-3 md:align-top">
                       <span className={mobileLabel}>The project</span>
@@ -191,21 +270,11 @@ export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClear
                     <td className="mt-3 block md:table-cell md:px-3 md:py-3 md:align-top">
                       <span className={mobileLabel}>What you did</span>
                       <textarea aria-label={`Project ${i + 1}: what you did`} rows={3} className={cx(cell, 'resize-none')}
-                        placeholder={i === 0 ? 'e.g. interviewed 12 students, built a prototype in Figma, presented it to the head' : 'In a sentence or two'}
+                        placeholder={i === 0 ? 'e.g. interviewed 12 students, built a prototype, presented it' : 'In a sentence or two'}
                         value={r.did} onChange={(e) => onPatch(r.id, { did: e.target.value })} />
-                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5 px-1">
-                        {chips.map((id) => (
-                          <button key={id} type="button" onClick={() => onPatch(r.id, toggleProcess(r, id))} aria-label={`Remove skill: ${labelOf(id)}`}
-                            className={cx('group inline-flex items-center gap-1.5 rounded-full border border-[var(--border-ws)] py-0.5 pl-2.5 pr-1.5 text-[12px] text-[var(--text-secondary)] hover:border-red-400/60 hover:text-[var(--text-primary)]', focusRing)}>
-                            <span aria-hidden className={cx('h-1.5 w-1.5 rounded-full', r.hard.includes(id) ? 'bg-teal-400' : 'bg-pink-400')} />
-                            {labelOf(id)}
-                            <X size={11} aria-hidden className="opacity-40 group-hover:opacity-100" />
-                          </button>
-                        ))}
-                        <button type="button" aria-expanded={picker === r.id} onClick={() => setPicker(picker === r.id ? null : r.id)}
-                          className={cx('inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-medium text-[var(--neon)] hover:bg-[var(--neon-surface)]', focusRing)}>
-                          <Plus size={12} aria-hidden />{chips.length ? 'Add' : 'Pick skills'}
-                        </button>
+                      <div className="md:hidden">
+                        <SkillsArea row={r} others={rows.filter((o) => o.id !== r.id && isFilled(o))} onPatch={(p) => onPatch(r.id, p)}
+                          allOpen={picker === r.id} onOpenAll={() => setPicker(picker === r.id ? null : r.id)} />
                       </div>
                     </td>
 
@@ -248,10 +317,16 @@ export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClear
                     </td>
 
                   </tr>
+                  <tr className={cx('hidden border-b border-[var(--border-dim)] md:table-row', picker === r.id && 'border-b-0')}>
+                    <td colSpan={4} className="px-3 pb-4 md:pl-[36%]">
+                      <SkillsArea row={r} others={rows.filter((o) => o.id !== r.id && isFilled(o))} onPatch={(p) => onPatch(r.id, p)}
+                        allOpen={picker === r.id} onOpenAll={() => setPicker(picker === r.id ? null : r.id)} />
+                    </td>
+                  </tr>
                   {picker === r.id && (
                     <tr className="block border-b border-[var(--border-dim)] px-4 pb-4 md:table-row md:px-0">
                       <td colSpan={4} className="block md:table-cell md:px-3 md:pb-4">
-                        <ProcessPicker row={r} onToggle={(id) => onPatch(r.id, toggleProcess(r, id))} onClose={() => setPicker(null)} />
+                        <ProcessPicker row={r} onToggle={(id) => onPatch(r.id, toggleProcess(r, id))} onAddCustom={(label) => onPatch(r.id, addCustom(r, label))} onClose={() => setPicker(null)} />
                       </td>
                     </tr>
                   )}

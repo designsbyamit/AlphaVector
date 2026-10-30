@@ -1,6 +1,7 @@
 import type { ExtractedCareerData, Project, TimelineEntry } from '@/types/wingspan'
 import { labelOf } from './catalog'
 import { computeStrengths, evidenceQuality } from './strengths'
+import { extraKind, extraLabel } from './suggest'
 import { isFilled, STAGES, type Inputs, type ProjectRow } from './types'
 
 const t = (s: string) => s.trim()
@@ -10,6 +11,7 @@ function projectSummary(r: ProjectRow): string {
   if (t(r.did)) parts.push(`What the person did, in their words: ${t(r.did)}`)
   if (r.hard.length) parts.push(`Hard-skill work: ${r.hard.map(labelOf).join('; ')}.`)
   if (r.soft.length) parts.push(`Soft-skill work: ${r.soft.map(labelOf).join('; ')}.`)
+  if (r.extra.length) parts.push(`Other skills used: ${r.extra.map(extraLabel).join('; ')}.`)
   if (t(r.feedback)) parts.push(`Feedback received: ${t(r.feedback)}`)
   if (t(r.remarks)) parts.push(`Remarks: ${t(r.remarks)}`)
   if (r.energy) parts.push(`The person says this work was ${r.energy}.`)
@@ -39,12 +41,16 @@ export function buildExtractedData(inputs: Inputs, now = new Date().getFullYear(
   const projects: Project[] = rows.map((r) => ({
     id: r.id, name: t(r.name), company: t(r.client), industry: t(r.industry) || undefined,
     summary: projectSummary(r), impact: t(r.impact) || undefined,
-    hardSkills: r.hard.map(labelOf), softSkills: r.soft.map(labelOf),
+    hardSkills: [...r.hard.map(labelOf), ...r.extra.filter((x) => extraKind(x) !== 'soft').map(extraLabel)],
+    softSkills: [...r.soft.map(labelOf), ...r.extra.filter((x) => extraKind(x) === 'soft').map(extraLabel)],
     feedback: t(r.feedback) || undefined, remarks: t(r.remarks) || undefined, energy: r.energy || undefined,
   }))
 
   const dismissed = new Set(inputs.dismissed)
-  const skills = computeStrengths(rows).filter((s) => !dismissed.has(s.id)).map((s) => s.label)
+  const skills = [...new Set([
+    ...computeStrengths(rows).filter((s) => !dismissed.has(s.id)).map((s) => s.label),
+    ...rows.flatMap((r) => r.extra.map(extraLabel)),
+  ])]
 
   const industries = [...new Set(rows.map((r) => t(r.industry)).filter(Boolean))]
   const rawText = [

@@ -9,7 +9,7 @@ A duplicate of WingSpan (same engine, database schema and Blueprint) with a new 
 - A Recalibrate button appears on the Blueprint. It keeps the project table (stored in this browser) and restarts the analysis.
 
 ## What was added
-- `lib/alphavector/` catalogue of processes and niches, skill inference from plain text (`infer.ts`), the evidence meter (`progress.ts`), example and paste import (`samples.ts`), the deterministic Proof Score (`strengths.ts`), the mapper into the engine's data shape (`toExtracted.ts`) and tests.
+- `lib/alphavector/` catalogue of processes and niches, skill inference from plain text (`infer.ts`), the suggestion pills that keep offering the next most relevant skill (`suggest.ts`: standard skills first, then suggestive extras), the evidence meter (`progress.ts`), example and paste import (`samples.ts`), the deterministic Proof Score (`strengths.ts`), the mapper into the engine's data shape (`toExtracted.ts`) and tests.
 - `components/alphavector/` the sentence intro, project grid, live signal panel, pull step, wait screen and the flow controller.
 - `types/wingspan.ts`: optional `hardSkills`, `softSkills`, `feedback`, `remarks`, `energy` on `Project`.
 

@@ -59,3 +59,15 @@ export const NICHES: string[] = [
 ]
 
 export const MAX_NICHES = 3
+
+/** Short labels for pills, where space is tight. The full names stay in the picker, tooltips and the strengths panel. */
+const SHORT: Record<string, string> = {
+  'user-research': 'User research', 'research-synthesis': 'Research synthesis', strategy: 'Strategy', 'ia-flows': 'Info architecture',
+  prototyping: 'Prototyping', 'ui-visual': 'UI and visuals', 'interaction-motion': 'Interaction and motion', 'design-systems': 'Design systems',
+  'usability-testing': 'Usability testing', 'data-metrics': 'Data and metrics', 'content-writing': 'UX writing', accessibility: 'Accessibility',
+  'ai-design': 'AI design', 'front-end': 'Front-end code', 'dev-handoff': 'Dev handoff', 'service-journeys': 'Journey mapping',
+  stakeholders: 'Stakeholders', facilitation: 'Workshops', storytelling: 'Presenting', 'cross-functional': 'Cross-team work',
+  influence: 'Influencing', leading: 'Leading a team', mentoring: 'Mentoring', conflict: 'Resolving conflict', decisions: 'Prioritising',
+  'client-comms': 'Client comms', framing: 'Framing problems', change: 'Driving change',
+}
+export const shortOf = (id: string): string => SHORT[id] ?? labelOf(id)

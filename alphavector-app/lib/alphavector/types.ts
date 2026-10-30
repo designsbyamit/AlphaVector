@@ -14,6 +14,10 @@ export interface ProjectRow {
   /** Process ids the person added by hand / removed by hand. These always win over inference. */
   manual: string[]
   removed: string[]
+  /** Suggested skills the person tapped "skip" on. Unlike `removed`, skipping never hides a skill the text implies. */
+  skipped: string[]
+  /** Suggestive skills beyond the standard list (ids from EXTRAS, or `custom:Label` for ones they typed). */
+  extra: string[]
   feedback: Feedback
   impact: string
   remarks: string
@@ -58,7 +62,7 @@ export const emptyAbout = (): About => ({ name: '', currentRole: '', organisatio
 
 export const newRow = (): ProjectRow => ({
   id: `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
-  name: '', client: '', industry: '', did: '', hard: [], soft: [], manual: [], removed: [],
+  name: '', client: '', industry: '', did: '', hard: [], soft: [], manual: [], removed: [], skipped: [], extra: [],
   feedback: '', impact: '', remarks: '', energy: '', sample: false,
 })
 
@@ -72,4 +76,4 @@ export const isDescribed = (r: ProjectRow) => isFilled(r) && (r.did.trim().lengt
 
 /** A row is blank when nothing at all has been typed or picked. */
 export const isBlank = (r: ProjectRow) =>
-  !r.name.trim() && !r.client.trim() && !r.industry.trim() && !r.did.trim() && !r.impact.trim() && !r.remarks.trim() && !r.feedback && !r.energy && r.manual.length === 0
+  !r.name.trim() && !r.client.trim() && !r.industry.trim() && !r.did.trim() && !r.impact.trim() && !r.remarks.trim() && !r.feedback && !r.energy && r.manual.length === 0 && r.extra.length === 0
