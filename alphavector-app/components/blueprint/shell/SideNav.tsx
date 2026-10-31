@@ -2,6 +2,7 @@
 import type { ReactNode } from 'react'
 import { Bookmark, Download, ExternalLink, History, LogIn, LogOut, ScanSearch, SlidersHorizontal, Loader2, type LucideIcon } from 'lucide-react'
 import { SITE_URL } from '@/lib/alphavector/site'
+import { AlphaMark } from '@/components/brand/AlphaMark'
 import type { BlueprintStep } from '@/types/wingspan'
 import { StepNav } from '@/components/ui/StepNav'
 import { FOCUS_RING } from './ui'
@@ -35,7 +36,7 @@ function Brand({ rail }: { rail: boolean }) {
   return (
     <div className={`flex items-center gap-3 ${rail ? 'justify-center' : ''}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/AlphaVector_Symbol.svg" alt={rail ? 'AlphaVector' : ''} width={32} height={32} className="w-8 h-8 shrink-0" />
+      <span role={rail ? 'img' : undefined} aria-label={rail ? 'AlphaVector' : undefined} aria-hidden={rail ? undefined : true} className="text-[var(--text-primary)]"><AlphaMark className="h-8 w-auto shrink-0" /></span>
       {!rail && (
         <div className="min-w-0">
           <p className="text-[16px] font-semibold leading-tight text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-sora)' }}>AlphaVector</p>

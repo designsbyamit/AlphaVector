@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Download, Loader2, Lock, Menu, X } from 'lucide-react'
 import { useWingspan } from '@/context/WingspanContext'
+import { AlphaMark } from '@/components/brand/AlphaMark'
 import { StepErrorBoundary } from '@/components/ui/StepErrorBoundary'
 import { ProfileMap } from '@/components/blueprint/ProfileMap'
 import { CareerIntelligence } from '@/components/blueprint/CareerIntelligence'
@@ -255,7 +256,7 @@ export function BlueprintScreen() {
               <Menu size={20} />
             </button>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/AlphaVector_Symbol.svg" alt="" width={24} height={24} className="w-6 h-6" />
+            <AlphaMark className="h-6 w-auto text-[var(--text-primary)]" />
             <div className="min-w-0 flex-1">
               <p className="text-[14px] font-semibold text-[var(--text-primary)] truncate leading-tight" style={{ fontFamily: 'var(--font-sora)' }}>
                 {current.label}

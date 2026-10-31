@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { BrandLogo } from '@/components/brand/BrandLogo'
 
 function LoginForm() {
   const searchParams = useSearchParams()
@@ -48,7 +49,7 @@ function LoginForm() {
     <div className="min-h-screen flex flex-col items-center justify-center px-4" style={{ backgroundColor: '#23262F' }}>
       <div className="w-full max-w-sm flex flex-col items-center gap-8">
         <div className="text-center flex flex-col items-center gap-4">
-          <img src="/brand/AlphaVector_H.svg" alt="AlphaVector" className="h-12 w-auto" />
+          <span role="img" aria-label="AlphaVector"><BrandLogo markClass="h-12 w-auto" textClass="text-[2rem]" /></span>
           <p className="text-sm text-[var(--text-muted)] font-jakarta leading-relaxed">
             Become a better designer.<br />One experience at a time.
           </p>

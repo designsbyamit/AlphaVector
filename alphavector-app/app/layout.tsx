@@ -18,8 +18,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: 'AlphaVector: your Future Blueprint',
-  description: 'Three signals. One fix on your calling.',
-  icons: { icon: '/brand/AlphaVector_Symbol.svg' },
+  description: 'Your next move deserves more than a guess. For designers: see your strengths, explore career possibilities and choose your next move.',
   verification: {
     google: 'oLN6nHM8tsRnwQYdaYN9reXxItorFTB6FWE0in8dAtQ',
   },

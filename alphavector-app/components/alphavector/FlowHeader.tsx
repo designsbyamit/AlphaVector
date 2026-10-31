@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { ExternalLink } from 'lucide-react'
+import { BrandLogo } from '@/components/brand/BrandLogo'
 import { SITE_URL } from '@/lib/alphavector/site'
 import { cx, focusRing } from '@/components/onboarding/ui'
 
@@ -10,8 +11,7 @@ export function FlowHeader({ onStartOver, step, total }: { onStartOver: () => vo
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-[var(--border-dim)] bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-[45rem] items-center justify-between gap-4 px-4 sm:px-6">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/AlphaVector_H.svg" alt="AlphaVector" className="h-6 w-auto" />
+        <span role="img" aria-label="AlphaVector"><BrandLogo markClass="h-6 w-auto" textClass="text-[1rem]" /></span>
         <div className="flex items-center gap-4 text-[13px] text-[var(--text-muted)]">
           {step && total ? <span>Step {step} of {total}</span> : null}
           <a href={SITE_URL} target="_blank" rel="noopener noreferrer" aria-label="Back to site (opens in a new tab)" title="Opens the site in a new tab. Your progress stays here." className={cx('inline-flex items-center gap-1.5 hover:text-[var(--text-primary)]', focusRing)}>

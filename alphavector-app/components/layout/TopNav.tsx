@@ -1,5 +1,6 @@
 'use client'
 import { SITE_URL } from '@/lib/alphavector/site'
+import { BrandLogo } from '@/components/brand/BrandLogo'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
@@ -34,7 +35,7 @@ export function TopNav({ userName, xp }: TopNavProps) {
       >
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <img src="/brand/AlphaVector_H.svg" alt="AlphaVector" style={{ height: "28px", width: "auto" }} />
+          <span role="img" aria-label="AlphaVector"><BrandLogo markClass="h-7 w-auto" textClass="text-[1.1rem]" /></span>
         </Link>
 
         {/* Center nav — only for logged in */}
