@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SIGNALS } from '@/lib/signals'
 import { START_URL } from '@/lib/config'
+import { LicenseNote } from '@/components/LicenseNote'
 
 export const metadata: Metadata = {
   title: 'The framework',
@@ -76,6 +77,7 @@ export default function Framework() {
         <div className="mt-12">
           <a href={START_URL} className="btn btn-primary">Find your direction</a>
         </div>
+        <LicenseNote subject="this framework" className="mt-10 max-w-2xl" />
       </section>
     </>
   )

@@ -34,5 +34,17 @@ export function generateProjectRepositoryTemplate(): Buffer {
   ])
   XLSX.utils.book_append_sheet(wb, talks, 'Talks & Publications')
 
+  // Licence and a short guide. The importer skips this sheet (see lib/parsers/xlsx.ts).
+  const about = XLSX.utils.aoa_to_sheet([
+    ['About & licence'],
+    ['Fill in the Projects sheet first. The other sheets are optional.'],
+    [''],
+    ['Content in this template is licensed under a Creative Commons Attribution 4.0 International license (CC BY 4.0).'],
+    ['https://creativecommons.org/licenses/by/4.0/'],
+  ])
+  about['A5'].l = { Target: 'https://creativecommons.org/licenses/by/4.0/', Tooltip: 'Creative Commons Attribution 4.0 International license' }
+  about['!cols'] = [{ wch: 110 }]
+  XLSX.utils.book_append_sheet(wb, about, 'About & licence')
+
   return Buffer.from(XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' }))
 }

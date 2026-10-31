@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Logo } from './Logo'
+import { LicenseNote } from './LicenseNote'
 import { NAV, START_URL } from '@/lib/config'
 
 export function Footer() {
@@ -18,6 +19,7 @@ export function Footer() {
           <Link href="/workshop#enquire" className="w-fit hover:underline">Book a workshop</Link>
         </div>
       </div>
+      <div className="mx-auto max-w-6xl border-t border-rule px-5 py-6 sm:px-8"><LicenseNote subject="this site" /></div>
     </footer>
   )
 }

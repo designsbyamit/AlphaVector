@@ -32,3 +32,9 @@ Call to action: **Find your direction.**
 - **Testimonials:** only real, consented quotes, added in `lib/testimonials.ts`. The section stays hidden until then.
 - **Algorithms:** weights, formulas, distance bands and source ratings are not published. They are shared on request through the technical note.
 - **For designers, for now:** the skills, industries and routes are drawn from design careers. Say so plainly.
+
+---
+
+[![CC BY 4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
+
+Content in this document is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/).

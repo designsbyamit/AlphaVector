@@ -129,3 +129,9 @@ Not applied, on purpose or not yet:
 The AlphaVector **app** (`alphavector-app`) is a duplicate of WingSpan and uses WingSpan's theme (lime `#B6FF2E` on dark),
 which is close to but not identical to Signal's lime `#C8F55A`. If the app should match the site exactly, change `--neon` in
 `app/globals.css`; that is the only place the app's accent is defined.
+
+---
+
+[![CC BY 4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
+
+Content in this document is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/).

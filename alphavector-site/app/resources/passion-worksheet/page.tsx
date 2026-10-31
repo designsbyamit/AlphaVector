@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { LicenseNote } from '@/components/LicenseNote'
 
 export const metadata: Metadata = { title: 'Passion worksheet' }
 
@@ -30,6 +31,7 @@ export default function PassionWorksheet() {
           </li>
         ))}
       </ol>
+      <LicenseNote subject="this worksheet" className="mt-12 border-t border-rule pt-5" />
     </article>
   )
 }

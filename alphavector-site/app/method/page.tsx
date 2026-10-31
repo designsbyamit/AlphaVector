@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { CONTACT_EMAIL, START_URL } from '@/lib/config'
+import { LicenseNote } from '@/components/LicenseNote'
 
 export const metadata: Metadata = {
   title: 'The method',
@@ -76,6 +77,7 @@ export default function Method() {
 
       <section className="mx-auto mt-16 max-w-6xl px-5 sm:px-8">
         <a href={START_URL} className="btn btn-primary">Find your direction</a>
+        <LicenseNote subject="this page" className="mt-10 max-w-2xl" />
       </section>
     </>
   )

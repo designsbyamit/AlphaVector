@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { GLOSSARY, HARD_PROCESSES, SOFT_PROCESSES } from '@/lib/processes'
 import { START_URL } from '@/lib/config'
+import { LicenseNote } from '@/components/LicenseNote'
 
 export const metadata: Metadata = {
   title: 'Resources',
@@ -69,6 +70,7 @@ export default function Resources() {
         <div className="mt-12">
           <a href={START_URL} className="btn btn-primary">Find your direction</a>
         </div>
+        <LicenseNote subject="this page and the templates and worksheets you can download from it" className="mt-10 max-w-2xl" />
       </section>
     </>
   )
