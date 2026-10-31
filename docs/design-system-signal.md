@@ -73,10 +73,24 @@ cobalt `#1B2350`, teal `#0F3B3A`, plum `#33203F`, graphite `#22252B`. Text on th
 | Link | cobalt, always underlined in running text. |
 | Table | mono uppercase header in ink-3, hairline rows, ink-2 cells. |
 
+## Pictograms (from the portfolio's covers)
+
+Source: `src/components/ds/ResourceCover.tsx` and `StoryCover.tsx` in the portfolio repo.
+
+- Every pictogram sits on a **field panel**: cobalt, teal, plum or graphite, 6px radius, with a faint white grid (1px lines, 24 to 28px apart, 6 to 7 percent opacity). Fields look the same in both modes.
+- Drawn in thin strokes (1.2 to 2px) in ink `#ECEDEF`. Secondary lines are dashed (`3 5`) at about half opacity.
+- **Exactly one lime accent** per pictogram (`#C8F55A`, filled or stroked): the thing the picture is about. No other hues.
+- Compositions are centred and calm; hub-and-spoke ones are radially symmetrical. Primitives are circles, rounded rectangles, short lines.
+- A mono, uppercase, lime label (`0.625 to 0.6875rem`, tracking `0.08em`) may sit top-left.
+- Decorative only (`aria-hidden`), unless it is the hero diagram, which carries a title and description.
+- Motion (AlphaVector addition): rings close in, lines draw, marks fade in once when scrolled into view. Reduced motion shows the finished picture.
+
+On the AlphaVector site the three signals take three field tones: **Strengths = teal, Passion = plum, Market demand = graphite**. The hero uses cobalt and is symmetrical about the vertical axis: three beacons on an equilateral triangle, equal radii, the lime fix point at the centre.
+
 ## AlphaVector's extension
 
-The portfolio has no data colours. AlphaVector needs three, one per signal, and each signal keeps its colour everywhere
-it appears (diagram, headings, weight tables, the logo). They are deliberately not lime (signal) and not blue (links).
+The portfolio has no data colours. AlphaVector needs three, one per signal, and each signal keeps its colour in headings,
+rules and the logo (pictograms use field tones instead, see above). They are deliberately not lime (signal) and not blue (links).
 
 | Signal | Text | Fill |
 |---|---|---|

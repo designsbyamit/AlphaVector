@@ -1,77 +1,87 @@
 'use client'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 
-// Small animated pictograms in the same language as the hero diagram: thin strokes, soft-filled rings that
-// close in on a point, one signal colour per signal. Each one plays once, when it scrolls into view.
+// Pictograms in the portfolio's language: a coloured field panel with a faint grid, thin ink strokes, dashed
+// connectors at half opacity, and exactly one lime accent. Each plays once when it scrolls into view.
+// The three signals map to three of the portfolio's field tones: Strengths teal, Passion plum, Market graphite.
 export type PictogramKind = 'vector' | 'strengths' | 'passion' | 'market' | 'routes' | 'loop'
+export type FieldTone = 'cobalt' | 'teal' | 'plum' | 'graphite'
 
-const S = { teal: 'var(--color-strength-fill)', rose: 'var(--color-passion-fill)', amber: 'var(--color-market-fill)', ink: 'var(--color-ink)', soft: 'var(--color-muted)' }
-const ring = (cx: number, cy: number, r: number, c: string, from: number, delay = 0) => (
-  <circle key={`${cx}${cy}${r}${c}`} className="fix-ring" style={{ ['--from' as string]: from, animationDelay: `${delay}s` }} cx={cx} cy={cy} r={r} fill={c} fillOpacity="0.1" stroke={c} strokeWidth="3" />
-)
+const I = 'var(--color-on-field)'
+const L = 'var(--color-signal)'
+const dash = { strokeDasharray: '3 5', opacity: 0.55 } as const
 
 const ART: Record<PictogramKind, ReactNode> = {
-  // Size and direction: an arrow drawn from you toward the point where three signals meet.
+  // Size and direction: from you, toward the point where the three signals agree.
   vector: (
     <>
-      <line className="pg-draw" style={{ ['--len' as string]: 112 }} x1="34" y1="126" x2="112" y2="52" stroke={S.ink} strokeWidth="3.5" strokeLinecap="round" />
-      <g className="pg-mark" style={{ ['--delay' as string]: '1.1s' }}>
-        <polyline points="96,50 114,50 114,68" fill="none" stroke={S.ink} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="34" cy="126" r="6" fill={S.ink} />
-      </g>
-      {ring(114, 50, 18, S.teal, 1.8, 0.3)}
-      {ring(130, 50, 18, S.rose, 1.8, 0.45)}
-      {ring(122, 64, 18, S.amber, 1.8, 0.6)}
+      <circle className="fix-mark" style={{ ['--delay' as string]: '0.2s' }} cx="40" cy="86" r="6" fill="none" stroke={I} strokeWidth="1.5" />
+      <line className="pg-draw" style={{ ['--len' as string]: 130 }} x1="46" y1="82" x2="150" y2="36" stroke={I} strokeWidth="1.5" />
+      <polyline className="pg-mark" style={{ ['--delay' as string]: '1.1s' }} points="134,34 152,35 146,52" fill="none" stroke={I} strokeWidth="1.5" strokeLinejoin="round" />
+      <circle className="fix-ring" style={{ ['--from' as string]: 1.6, animationDelay: '0.9s' }} cx="160" cy="32" r="18" fill="none" stroke={I} strokeWidth="1.2" {...dash} />
+      <circle className="pg-mark" style={{ ['--delay' as string]: '1.4s' }} cx="160" cy="32" r="8" fill={L} />
     </>
   ),
+  // Evidence: rows of proof, the strongest one is the signal.
   strengths: (
     <>
-      {ring(80, 80, 50, S.teal, 1.5)}
-      <polyline className="pg-draw" style={{ ['--len' as string]: 110, animationDelay: '0.9s' }} points="54,82 72,100 108,60" fill="none" stroke={S.teal} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      {[0, 1, 2].map((i) => (
+        <g key={i} className="pg-mark" style={{ ['--delay' as string]: `${0.2 + i * 0.35}s` }}>
+          <rect x="44" y={26 + i * 28} width="112" height="20" rx="10" fill="none" stroke={i === 0 ? L : I} strokeWidth="1.5" />
+          <circle cx="56" cy={36 + i * 28} r="5" fill={i === 0 ? L : 'none'} stroke={i === 0 ? L : I} strokeWidth="1.5" />
+          <line x1="72" y1={36 + i * 28} x2={138 - i * 22} y2={36 + i * 28} stroke={I} strokeWidth="1.5" opacity="0.7" />
+        </g>
+      ))}
     </>
   ),
+  // Pull: ripples out from one point, centred.
   passion: (
     <>
-      <circle className="pg-ripple" style={{ ['--delay' as string]: '0s' }} cx="80" cy="80" r="62" fill="none" stroke={S.rose} strokeWidth="2.5" />
-      <circle className="pg-ripple" style={{ ['--delay' as string]: '1.1s' }} cx="80" cy="80" r="62" fill="none" stroke={S.rose} strokeWidth="2.5" />
-      {ring(80, 80, 30, S.rose, 1.6)}
-      <circle className="pg-mark" style={{ ['--delay' as string]: '1s' }} cx="80" cy="80" r="8" fill={S.rose} />
+      {[16, 32, 48, 64].map((r, i) => (
+        <circle key={r} className="fix-ring" style={{ ['--from' as string]: 1.4, animationDelay: `${i * 0.2}s` }} cx="100" cy="60" r={r} fill="none" stroke={I} strokeWidth="1.5" opacity={1 - i * 0.2} />
+      ))}
+      <circle className="pg-ripple" style={{ ['--delay' as string]: '1.2s' }} cx="100" cy="60" r="64" fill="none" stroke={L} strokeWidth="1.2" />
+      <circle className="pg-mark" style={{ ['--delay' as string]: '0.9s' }} cx="100" cy="60" r="8" fill={L} />
     </>
   ),
+  // Demand: bars that rise, the tallest and newest is the signal.
   market: (
     <>
-      {ring(80, 80, 50, S.amber, 1.5)}
-      <polyline className="pg-draw" style={{ ['--len' as string]: 130, animationDelay: '0.9s' }} points="46,104 68,84 86,96 116,58" fill="none" stroke={S.amber} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle className="pg-mark" style={{ ['--delay' as string]: '2s' }} cx="116" cy="58" r="7" fill={S.amber} />
+      {[[46, 30], [76, 46], [106, 62], [136, 82]].map(([x, h], i) => (
+        <rect key={x} className="pg-mark" style={{ ['--delay' as string]: `${0.2 + i * 0.3}s` }} x={x} y={98 - h} width="20" height={h} rx="2" fill={i === 3 ? L : 'none'} stroke={i === 3 ? L : I} strokeWidth="1.5" />
+      ))}
+      <line className="pg-draw" style={{ ['--len' as string]: 130, animationDelay: '0.8s' }} x1="40" y1="100" x2="170" y2="100" stroke={I} strokeWidth="1.2" opacity="0.55" />
     </>
   ),
-  // Three routes at three distances from where you stand.
+  // Three routes at three distances, you at the centre.
   routes: (
     <>
-      {[26, 48, 70].map((r, i) => (
-        <circle key={r} className="fix-ring" style={{ ['--from' as string]: 1.4, animationDelay: `${i * 0.35}s` }} cx="80" cy="80" r={r} fill="none" stroke={S.soft} strokeWidth="2.5" strokeDasharray="3 7" />
+      {[22, 42, 62].map((r, i) => (
+        <circle key={r} className="fix-ring" style={{ ['--from' as string]: 1.4, animationDelay: `${i * 0.3}s` }} cx="100" cy="60" r={r} fill="none" stroke={I} strokeWidth="1.2" {...dash} />
       ))}
-      {[[26, -50], [48, 20], [70, 130]].map(([r, a], i) => (
-        <circle key={r} className="pg-mark" style={{ ['--delay' as string]: `${1 + i * 0.4}s` }} cx={80 + r * Math.cos((a * Math.PI) / 180)} cy={80 + r * Math.sin((a * Math.PI) / 180)} r="7" fill={[S.teal, S.amber, S.rose][i]} />
+      {[[22, 200], [42, 340], [62, 90]].map(([r, a], i) => (
+        <g key={r} className="pg-mark" style={{ ['--delay' as string]: `${1 + i * 0.35}s` }}>
+          <line x1="100" y1="60" x2={100 + r * Math.cos((a * Math.PI) / 180)} y2={60 + r * Math.sin((a * Math.PI) / 180)} stroke={I} strokeWidth="1" opacity="0.5" />
+          <circle cx={100 + r * Math.cos((a * Math.PI) / 180)} cy={60 + r * Math.sin((a * Math.PI) / 180)} r="5" fill="none" stroke={I} strokeWidth="1.5" />
+        </g>
       ))}
-      <circle className="pg-mark" style={{ ['--delay' as string]: '0.8s' }} cx="80" cy="80" r="8" fill={S.ink} />
+      <circle className="pg-mark" style={{ ['--delay' as string]: '0.7s' }} cx="100" cy="60" r="8" fill={L} />
     </>
   ),
-  // A fix you come back to: a slow orbit around the three signals.
+  // The portfolio's own loop motif, slowly turning: two circles that keep being checked against each other.
   loop: (
     <>
-      <circle className="fix-ring" style={{ ['--from' as string]: 1.3 }} cx="80" cy="80" r="52" fill="none" stroke={S.soft} strokeWidth="2.5" strokeDasharray="3 7" />
-      <g className="pg-mark" style={{ ['--delay' as string]: '0.9s' }}>
-        <circle cx="68" cy="74" r="9" fill={S.teal} />
-        <circle cx="92" cy="74" r="9" fill={S.rose} />
-        <circle cx="80" cy="94" r="9" fill={S.amber} />
+      <g className="pg-orbit-c">
+        <circle className="fix-ring" style={{ ['--from' as string]: 1.3 }} cx="76" cy="60" r="34" fill="none" stroke={L} strokeWidth="2" />
+        <circle className="fix-ring" style={{ ['--from' as string]: 1.3, animationDelay: '0.2s' }} cx="124" cy="60" r="34" fill="none" stroke={I} strokeWidth="2" />
       </g>
-      <g className="pg-orbit"><circle cx="80" cy="28" r="7" fill="var(--color-signal)" /></g>
     </>
   ),
 }
 
-export function Pictogram({ kind, className = '' }: { kind: PictogramKind; className?: string }) {
+const bg: Record<FieldTone, string> = { cobalt: 'var(--field-cobalt)', teal: 'var(--field-teal)', plum: 'var(--field-plum)', graphite: 'var(--field-graphite)' }
+
+export function Pictogram({ kind, tone = 'cobalt', label, className = '' }: { kind: PictogramKind; tone?: FieldTone; label?: string; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [seen, setSeen] = useState(false)
   useEffect(() => {
@@ -82,8 +92,12 @@ export function Pictogram({ kind, className = '' }: { kind: PictogramKind; class
     return () => io.disconnect()
   }, [])
   return (
-    <div ref={ref} className={`aspect-square ${className}`} aria-hidden="true">
-      {seen && <svg viewBox="0 0 160 160" className="h-full w-full overflow-visible">{ART[kind]}</svg>}
+    <div ref={ref} className={`field-panel relative overflow-hidden ${className}`} style={{ background: bg[tone], aspectRatio: '16 / 10' }} aria-hidden="true">
+      <div className="field-grid" />
+      {label && <span className="absolute left-4 top-3 font-mono text-[0.625rem] uppercase tracking-[0.08em]" style={{ color: 'var(--color-signal)' }}>{label}</span>}
+      <div className="absolute inset-[10%]">
+        {seen && <svg viewBox="0 0 200 120" className="h-full w-full overflow-visible">{ART[kind]}</svg>}
+      </div>
     </div>
   )
 }

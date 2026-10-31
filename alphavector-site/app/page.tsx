@@ -1,12 +1,17 @@
 import Link from 'next/link'
 import { FixDiagram } from '@/components/FixDiagram'
-import { Pictogram, type PictogramKind } from '@/components/Pictogram'
+import { Pictogram, type PictogramKind, type FieldTone } from '@/components/Pictogram'
 import { Disclosure } from '@/components/Disclosure'
 import { SIGNALS } from '@/lib/signals'
 import { START_URL } from '@/lib/config'
 import { TESTIMONIALS } from '@/lib/testimonials'
 
-const PICTO: Record<string, PictogramKind> = { strengths: 'strengths', passion: 'passion', market: 'market' }
+// Each signal sits on one of the portfolio's field tones, with a one-word label in the cover style.
+const PICTO: Record<string, { kind: PictogramKind; tone: FieldTone; label: string }> = {
+  strengths: { kind: 'strengths', tone: 'teal', label: 'Evidence' },
+  passion: { kind: 'passion', tone: 'plum', label: 'Pull' },
+  market: { kind: 'market', tone: 'graphite', label: 'Demand' },
+}
 
 const ROUTES = [
   ['Safe', 'A step you could take now. Strong evidence, small gap.'],
@@ -29,6 +34,7 @@ export default function Home() {
     <>
       <section className="mx-auto grid max-w-6xl items-center gap-8 px-5 pb-10 pt-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16">
         <div>
+          <p className="status mb-6">For designers, for now</p>
           <h1 className="text-[clamp(2.6rem,5.4vw,4.7rem)] font-light leading-[1]">
             Three signals.<br />One fix on your calling.
           </h1>
@@ -41,12 +47,12 @@ export default function Home() {
           </div>
           <p className="mt-5 text-[0.95rem] text-muted">No sign-in needed to run the analysis. Takes about 20 minutes with your projects to hand.</p>
         </div>
-        <FixDiagram className="mx-auto h-auto w-full max-w-[34rem]" />
+        <FixDiagram className="mx-auto w-full max-w-[34rem]" />
       </section>
 
       {/* What it is, in two sentences */}
-      <section id="what" className="mx-auto mt-20 grid max-w-6xl items-center gap-8 px-5 sm:px-8 md:grid-cols-[0.45fr_1fr]">
-        <Pictogram kind="vector" className="mx-auto w-full max-w-[11rem]" />
+      <section id="what" className="mx-auto mt-20 grid max-w-6xl items-center gap-8 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
+        <Pictogram kind="vector" tone="cobalt" label="Size · direction" className="mx-auto w-full max-w-[20rem]" />
         <div>
           <p className={eyebrow}>What it is</p>
           <h2 className={`mt-3 ${h2}`}>What is AlphaVector?</h2>
@@ -62,7 +68,7 @@ export default function Home() {
         <div className="mt-10 grid gap-x-10 gap-y-12 md:grid-cols-3">
           {SIGNALS.map((s) => (
             <article key={s.key} className={`border-t-[3px] ${s.rule} pt-5`}>
-              <Pictogram kind={PICTO[s.key]} className="w-20" />
+              <Pictogram kind={PICTO[s.key].kind} tone={PICTO[s.key].tone} label={PICTO[s.key].label} className="w-full" />
               <h3 className={`mt-4 text-[1.7rem] font-medium ${s.text}`}>{s.name}</h3>
               <p className="mt-1 font-display text-[1.02rem] font-medium">{s.short}</p>
               <p className="mt-3 text-[1.02rem] text-ink-soft">{s.measures}</p>
@@ -76,8 +82,8 @@ export default function Home() {
       </section>
 
       {/* Where it points you */}
-      <section id="alpha" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.45fr_1fr]">
-        <Pictogram kind="routes" className="mx-auto w-full max-w-[13rem]" />
+      <section id="alpha" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
+        <Pictogram kind="routes" tone="cobalt" label="Three routes" className="mx-auto w-full max-w-[20rem]" />
         <div>
           <p className={eyebrow}>Your alpha, in the right direction</p>
           <h2 className={`mt-3 ${h2}`}>Three routes, not one answer.</h2>
@@ -94,8 +100,8 @@ export default function Home() {
       </section>
 
       {/* Why it lasts */}
-      <section id="career" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.45fr_1fr]">
-        <Pictogram kind="loop" className="mx-auto w-full max-w-[11rem]" />
+      <section id="career" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
+        <Pictogram kind="loop" tone="plum" label="Recalibrate" className="mx-auto w-full max-w-[20rem]" />
         <div>
           <p className={eyebrow}>Why it works throughout your career</p>
           <h2 className={`mt-3 ${h2}`}>A fix is not forever. Check it again.</h2>
@@ -162,7 +168,7 @@ export default function Home() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             <article className="card flex flex-col items-start gap-4">
               <h3 className="text-[1.4rem] font-medium">For you</h3>
-              <p className="text-ink-soft">Run the analysis on your own projects. No sign-in needed, about 20 minutes.</p>
+              <p className="text-ink-soft">Run the analysis on your own projects. Open to designers for now. No sign-in needed, about 20 minutes.</p>
               <a href={START_URL} className="btn btn-primary mt-auto">Find your fix</a>
             </article>
             <article className="card flex flex-col items-start gap-4">
