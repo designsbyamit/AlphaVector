@@ -107,6 +107,15 @@
   to { transform: scale(1); opacity: 1; }
 }
 @keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+@keyframes draw { from { stroke-dashoffset: var(--len, 100); } to { stroke-dashoffset: 0; } }
+@keyframes ripple { 0% { transform: scale(0.45); opacity: 0.8; } 100% { transform: scale(1); opacity: 0; } }
+@keyframes orbit { to { transform: rotate(360deg); } }
+
+/* Pictograms: same easing and family as the hero diagram. */
+.pg-draw { stroke-dasharray: var(--len, 100); animation: draw 1.3s cubic-bezier(0.22, 0.8, 0.2, 1) both; }
+.pg-mark { animation: appear 0.5s ease-out var(--delay, 1.2s) both; }
+.pg-ripple { transform-box: fill-box; transform-origin: center; animation: ripple 3.4s ease-out var(--delay, 0s) infinite; }
+.pg-orbit { transform-origin: 80px 80px; animation: orbit 9s linear infinite; }
 
 .fix-ring {
   transform-box: fill-box;
@@ -117,7 +126,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .fix-ring, .fix-mark { animation: none; }
+  .fix-ring, .fix-mark, .pg-draw, .pg-mark, .pg-ripple, .pg-orbit { animation: none; }
+  .pg-draw { stroke-dasharray: none; }
+  .pg-ripple { opacity: 0.35; }
 }
 
 /* Printed pages (the passion worksheet) go back to dark text on white paper. */

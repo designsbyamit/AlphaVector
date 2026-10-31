@@ -15,7 +15,8 @@ export async function POST(req: Request) {
 
   const v = {} as Record<(typeof FIELDS)[number], string>
   for (const f of FIELDS) v[f] = typeof body[f] === 'string' ? (body[f] as string).trim().slice(0, LIMITS[f]) : ''
-  if (!v.name || !v.organisation) return NextResponse.json({ error: 'Add your name and organisation.' }, { status: 400 })
+  const isDetails = v.kind === 'Technical note request'
+  if (!v.name || (!isDetails && !v.organisation)) return NextResponse.json({ error: isDetails ? 'Add your name.' : 'Add your name and organisation.' }, { status: 400 })
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return NextResponse.json({ error: 'Enter a valid email address so we can reply.' }, { status: 400 })
 
   const key = process.env.RESEND_API_KEY
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
       from: process.env.ENQUIRY_FROM ?? 'AlphaVector <onboarding@resend.dev>',
       to: [to],
       reply_to: v.email,
-      subject: `Workshop enquiry: ${v.organisation}`,
+      subject: isDetails ? `Technical note request: ${v.name}` : `Workshop enquiry: ${v.organisation}`,
       html: `<table cellpadding="6" style="font-family:sans-serif;font-size:14px">${rows.map(([k, val]) => `<tr><td><b>${k}</b></td><td>${esc(val || '-').replace(/\n/g, '<br>')}</td></tr>`).join('')}</table>`,
     }),
   }).catch(() => null)

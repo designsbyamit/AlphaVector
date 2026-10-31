@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { WeightTable } from '@/components/WeightTable'
-import { START_URL } from '@/lib/config'
+import { EnquiryForm } from '@/components/EnquiryForm'
+import { CONTACT_EMAIL, START_URL } from '@/lib/config'
 
 export const metadata: Metadata = {
   title: 'The method',
-  description: 'How to use the AlphaVector framework, the philosophy behind it, and the mathematics and data under every score.',
+  description: 'How to use the AlphaVector framework, the philosophy behind it, and how the scores are built. The technical note is available on request.',
 }
 
 const STEPS = [
@@ -17,26 +17,17 @@ const STEPS = [
   { name: 'Recalibrate', does: 'Once you reach a goal, add the new projects and fix your position again. Your earlier entries are kept.', gets: 'A fresh fix from a new starting point.' },
 ]
 
-const SOURCES = [
-  { name: 'Indeed Hiring Lab, postings index by sector', gives: 'Job-posting trends by sector for the US, UK, Germany, France, Canada and Australia. It does not cover India.', w: '0.95', href: 'https://github.com/hiring-lab/job_postings_tracker' },
-  { name: 'World Bank labour indicators', gives: 'Unemployment and services-employment statistics by country.', w: '0.90', href: 'https://api.worldbank.org/v2' },
-  { name: 'Indeed Hiring Lab, articles', gives: 'Research on hiring, pay and AI exposure.', w: '0.90', href: 'https://hiringlab.indeed.com' },
-  { name: 'Nasscom and Zinnov, India GCC Landscape 2026', gives: 'Global capability centres in India: growth, hiring and skills.', w: '0.85', href: 'https://media.zinnov.com/wp-content/uploads/2026/05/zinnov-nasscom-india-gcc-landscape-2026-report.pdf' },
-  { name: 'LinkedIn Economic Graph research', gives: 'Skills and hiring research. Many pages are script-rendered, so coverage is partial.', w: '0.85', href: 'https://economicgraph.linkedin.com' },
-  { name: 'Secondary reports with unsourced figures', gives: 'Used only when nothing better exists, and held at a low score so they count for little.', w: '0.30 to 0.45', href: '' },
-]
-
 export default function Method() {
   return (
     <>
       <section className="mx-auto max-w-6xl px-5 pt-14 sm:px-8">
         <h1 className="max-w-4xl text-[clamp(2.4rem,5.4vw,4.4rem)] font-light">The method</h1>
-        <p className="mt-6 max-w-2xl text-[1.25rem] text-ink-soft">How to use the framework, why it is built the way it is, and the arithmetic and data under every score.</p>
+        <p className="mt-6 max-w-2xl text-[1.25rem] text-ink-soft">How to use the framework, why it is built the way it is, and how the scores are made.</p>
         <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-x-7 gap-y-2 font-display text-[1rem]">
           <a className="underline underline-offset-6" href="#process">The process</a>
           <a className="underline underline-offset-6" href="#philosophy">The philosophy</a>
-          <a className="underline underline-offset-6" href="#maths">The mathematics</a>
-          <a className="underline underline-offset-6" href="#data">The market data</a>
+          <a className="underline underline-offset-6" href="#scores">How scores are built</a>
+          <a className="underline underline-offset-6" href="#request">The technical note</a>
         </nav>
       </section>
 
@@ -65,83 +56,26 @@ export default function Method() {
         </div>
       </section>
 
-      <section id="maths" className="mx-auto mt-24 max-w-6xl scroll-mt-6 px-5 sm:px-8">
-        <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">The mathematics</h2>
-        <p className="mt-4 max-w-2xl text-ink-soft">Everything below is fixed and reproducible: the same inputs always give the same scores.</p>
-
-        <div className="mt-8 border-y border-rule py-7">
-          <p className="font-display text-[clamp(1.15rem,2.4vw,1.7rem)] font-medium leading-snug">
-            Fit = (0.40 × <span className="text-strength">Strengths</span> + 0.40 × <span className="text-market">Market</span> + 0.20 × <span className="text-passion">Passion</span>) × (0.75 + 0.25 × Confidence)
-          </p>
-          <p className="mt-3 text-[1rem] text-muted">Confidence runs from 0 to 1 and reflects how much evidence you gave. Weak evidence lowers the multiplier but never below 0.75, so thin data lowers confidence without ruling out a direction.</p>
+      <section id="scores" className="mx-auto mt-24 grid max-w-6xl scroll-mt-6 gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">How the scores are built</h2>
+        <div className="max-w-2xl space-y-5 text-ink-soft">
+          <p>Each signal is scored on its own. Strengths are scored from how well your project history proves a skill. Passion is read from how your work felt and the areas you choose. Market demand is scored from dated, cited research.</p>
+          <p>The three are combined into one fit for every possible direction. Strengths and market demand carry the most weight. Passion tilts the answer toward what you want, but it cannot outvote what you can prove or what the market needs. A confidence reading lowers every score a little when your evidence is thin.</p>
+          <p>The three routes are chosen by how far each direction sits from the work you already do, and near-duplicates are rejected so you never get three versions of the same job.</p>
+          <p>The rules are fixed, so the same inputs always give the same scores. Some component scores, such as how strong a direction&apos;s current demand is, are estimates made by AI agents from your evidence and the cited briefing. The Blueprint shows them so you can question them.</p>
         </div>
-
-        <div className="mt-12 grid gap-10 md:grid-cols-3">
-          <WeightTable title="Strengths (Experience)" signal="strength" rows={[['Capability', 0.3], ['Project evidence', 0.25], ['Transferable skills', 0.2], ['Context fit', 0.15], ['Recency', 0.1]]} />
-          <WeightTable title="Market demand" signal="market" rows={[['Current demand', 0.25], ['Growth', 0.2], ['Future potential', 0.2], ['Adjacency', 0.15], ['Relevance', 0.1], ['Safety (100 minus risk)', 0.1]]} />
-          <WeightTable title="Passion (Interest)" signal="passion" rows={[['Direct interest', 0.3], ['Behavioural signals', 0.25], ['Stated interest', 0.2], ['Curiosity', 0.15], ['Adjacency', 0.1]]} />
-        </div>
-
-        <div className="mt-14 grid gap-10 lg:grid-cols-2">
-          <div>
-            <h3 className="text-[1.4rem] font-medium">The proof score behind your strengths</h3>
-            <p className="mt-3 text-ink-soft">For each process you tick, the app scores how well your history proves it:</p>
-            <p className="mt-3 font-display text-[1.1rem] font-medium">Proof = 100 × (0.40 × coverage + 0.35 × depth + 0.25 × breadth)</p>
-            <ul className="mt-4 list-disc space-y-2 pl-6 text-[1.02rem] text-ink-soft marker:text-ink">
-              <li>Coverage: projects using it divided by three, capped at one. Three projects earns full marks, so long histories are not penalised.</li>
-              <li>Depth: the average richness of those projects. A project starts at 0.4, plus 0.3 if you wrote an impact and 0.3 if you recorded feedback.</li>
-              <li>Breadth: distinct industries it appeared in divided by three, capped at one.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-[1.4rem] font-medium">How the three routes are chosen</h3>
-            <p className="mt-3 text-ink-soft">Every candidate direction gets a capability distance from 0 (you already do it) to 100 (a different field). The three routes are then picked by distance:</p>
-            <ul className="mt-4 list-disc space-y-2 pl-6 text-[1.02rem] text-ink-soft marker:text-ink">
-              <li>Safe: no further than 35.</li>
-              <li>Growth: between 20 and 60.</li>
-              <li>Bold: between 45 and 85. Anything beyond 85 is not credible and is not offered.</li>
-            </ul>
-            <p className="mt-4 text-[1.02rem] text-ink-soft">The highest-scoring candidate in each band is chosen, and picks that are near-duplicates of each other are rejected, so you never get three versions of the same job.</p>
-          </div>
-        </div>
-
-        <aside className="card mt-14 max-w-3xl">
-          <h3 className="text-[1.3rem] font-medium">What is arithmetic and what is judgment</h3>
-          <p className="mt-2 text-ink-soft">The weights, the formulas and the selection rules are fixed. The component scores they combine, such as how strong a direction&apos;s current demand is, are judgments made by AI agents working from your evidence and the cited market briefing. They are grounded in what you entered and what the sources say, but they are estimates, and the Blueprint shows the scores so you can question them.</p>
-        </aside>
       </section>
 
-      <section id="data" className="mx-auto mt-24 max-w-6xl scroll-mt-6 px-5 sm:px-8">
-        <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">The market data</h2>
-        <p className="mt-4 max-w-2xl text-ink-soft">
-          Market facts are stored as dated, cited observations: a metric, a region, a value, a period and the document it came from. Sources are checked on a schedule and re-read only when they change. When a fact disappears from a source it is marked superseded and kept, not deleted. Each source carries a reliability score from 0 to 1, and weaker sources are held at lower scores.
-        </p>
-        <div className="mt-8 overflow-x-auto">
-          <table className="w-full min-w-[40rem] border-collapse text-[1rem]">
-            <thead>
-              <tr className="border-b border-rule text-left font-display">
-                <th scope="col" className="py-2 pr-4 font-medium">Source</th>
-                <th scope="col" className="py-2 pr-4 font-medium">What it gives</th>
-                <th scope="col" className="py-2 text-right font-medium">Reliability</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SOURCES.map((s) => (
-                <tr key={s.name} className="border-b border-rule align-top">
-                  <th scope="row" className="py-3 pr-4 text-left font-medium">
-                    {s.href ? <a className="underline underline-offset-4" href={s.href} rel="noopener noreferrer" target="_blank">{s.name}</a> : s.name}
-                  </th>
-                  <td className="py-3 pr-4 text-ink-soft">{s.gives}</td>
-                  <td className="py-3 text-right font-display font-medium tabular-nums">{s.w}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <section id="request" className="mx-auto mt-24 grid max-w-6xl scroll-mt-6 gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">Want the detail?</h2>
+          <p className="mt-4 max-w-sm text-ink-soft">The weights, formulas and market sources are shared with schools, institutes and partners on request. Tell us what you would like to know and we will send the technical note.</p>
         </div>
-        <p className="mt-5 max-w-2xl text-[1rem] text-muted">Some publishers block automated reading or serve their data only through scripts. Those are not used, and the list above only grows with sources that permit it.</p>
-        <div className="mt-12">
-          <a href={START_URL} className="btn btn-primary">Find your fix</a>
-        </div>
+        <div className="relative max-w-3xl"><EnquiryForm contactEmail={CONTACT_EMAIL} mode="details" /></div>
+      </section>
+
+      <section className="mx-auto mt-16 max-w-6xl px-5 sm:px-8">
+        <a href={START_URL} className="btn btn-primary">Find your fix</a>
       </section>
     </>
   )

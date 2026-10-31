@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 }
 
 const BETS = [
-  { name: 'Safe', range: 'Within 35 of what you already do', body: 'The most natural next step from your current work. High confidence, lowest risk, and the one you could start applying for now.' },
-  { name: 'Growth', range: '20 to 60 from what you already do', body: 'An adjacent step up that stretches you into a neighbouring discipline or a bigger scope. Real gaps to close, with a clear route.' },
-  { name: 'Bold', range: '45 to 85 from what you already do', body: 'An emerging direction that is still credible for someone with exactly your history. Higher risk and higher upside. Beyond 85 away, a direction is not offered at all.' },
+  { name: 'Safe', range: 'Closest to what you already do', body: 'The most natural next step from your current work. High confidence, lowest risk, and the one you could start applying for now.' },
+  { name: 'Growth', range: 'A step further from what you do', body: 'An adjacent step up that stretches you into a neighbouring discipline or a bigger scope. Real gaps to close, with a clear route.' },
+  { name: 'Bold', range: 'Furthest from what you do', body: 'An emerging direction that is still credible for someone with exactly your history. Higher risk and higher upside. A direction too far from your history is not offered at all.' },
 ]
 
 export default function Framework() {
@@ -47,8 +47,8 @@ export default function Framework() {
           <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">Where the signals meet</h2>
         </div>
         <div className="space-y-5 text-ink-soft">
-          <p>Every possible direction gets a score on each dimension. Strengths and market demand carry 40 percent each. Passion carries 20 percent. That ordering is deliberate: passion tilts the answer toward what you want, but it cannot outvote what you can prove or what the world will hire for.</p>
-          <p>The result is then scaled by confidence in the evidence. A thin project log lowers confidence, which lowers every score a little, instead of pretending to certainty. The full arithmetic is on the <a className="font-medium text-ink underline underline-offset-4" href="/method#maths">method page</a>.</p>
+          <p>Every possible direction gets a score on each dimension. Strengths and market demand count most. Passion tilts the answer toward what you want, but it cannot outvote what you can prove or what the market needs.</p>
+          <p>The result is then scaled by confidence in the evidence. A thin project log lowers confidence, which lowers every score a little, instead of pretending to certainty. The weights and formulas are shared on request: <a className="font-medium text-ink underline underline-offset-4" href="/method#request">request the technical note</a>.</p>
         </div>
       </section>
 
@@ -71,7 +71,7 @@ export default function Framework() {
         <ul className="mt-6 max-w-2xl list-disc space-y-3 pl-6 text-ink-soft marker:text-ink">
           <li>It does not predict your future. It estimates where your evidence and the current market agree.</li>
           <li>It is only as good as your project log. Vague entries produce vague strengths, and the app tells you when evidence is thin.</li>
-          <li>Market figures come from dated public sources of differing reliability, and coverage of some regions is thinner than others. Each source is listed with its weight.</li>
+          <li>Market figures come from dated public sources of differing reliability, and coverage of some regions is thinner than others. The source list is shared with the technical note.</li>
         </ul>
         <div className="mt-12">
           <a href={START_URL} className="btn btn-primary">Find your fix</a>
