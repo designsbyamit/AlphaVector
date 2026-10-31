@@ -1,12 +1,13 @@
 'use client'
 import { Fragment, useId, useMemo, useState } from 'react'
-import { Check, ClipboardPaste, Frown, Meh, Plus, Search, Smile, Sparkles, ThumbsDown, ThumbsUp, Scale, X } from 'lucide-react'
+import { Check, ClipboardPaste, FileSpreadsheet, FileText, Frown, Globe, Meh, Plus, Search, Smile, Sparkles, ThumbsDown, ThumbsUp, Scale, Upload, X } from 'lucide-react'
 import { HARD_PROCESSES, SOFT_PROCESSES, labelOf, shortOf } from '@/lib/alphavector/catalog'
 import { toggleProcess } from '@/lib/alphavector/infer'
 import { acceptSuggestion, addCustom, extraLabel, removeExtra, skipSuggestions, suggestionsFor } from '@/lib/alphavector/suggest'
 import { INDUSTRIES, parsePasted, sampleRows } from '@/lib/alphavector/samples'
 import { isBlank, isDescribed, isFilled, type Energy, type Feedback, type ProjectRow } from '@/lib/alphavector/types'
 import { cx, focusRing, quietButton } from '@/components/onboarding/ui'
+import { ImportPanel, type ImportMode } from './ImportPanel'
 
 const cell = cx(
   'w-full rounded-lg bg-transparent px-2.5 py-2 text-[15px] leading-snug text-[var(--text-primary)]',
@@ -147,19 +148,23 @@ function SkillsArea({ row: r, others, onPatch, onOpenAll, allOpen }: {
   )
 }
 
-export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClearSamples }: {
+export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClearSamples, onPerson }: {
   rows: ProjectRow[]
   onPatch: (id: string, p: Partial<ProjectRow>) => void
   onAdd: () => string
   onRemove: (id: string) => void
   onAddRows: (r: ProjectRow[]) => void
   onClearSamples: () => void
+  /** Name and latest role found by an import, used to fill the intro if it is still blank. */
+  onPerson: (p: { name: string; role: string }) => void
 }) {
   const [picker, setPicker] = useState<string | null>(null)
   const [notes, setNotes] = useState<Set<string>>(new Set())
   const [focusId, setFocusId] = useState<string | null>(null)
   const [pasteOpen, setPasteOpen] = useState(false)
   const [pasteText, setPasteText] = useState('')
+  const [importMode, setImportMode] = useState<ImportMode | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
   const listId = useId()
   const empty = rows.every(isBlank)
   const hasSample = rows.some((r) => r.sample)
@@ -179,9 +184,10 @@ export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClear
     <section aria-labelledby="grid-h">
       <h2 id="grid-h" className="sr-only">Your projects</h2>
 
-      {empty && !pasteOpen && (
-        <div className="av-rise mb-6 grid gap-3 sm:grid-cols-3">
+      {empty && !pasteOpen && !importMode && (
+        <div className="av-rise mb-6 grid gap-3 sm:grid-cols-2">
           {[
+            { Icon: Upload, title: 'Import from a file', body: 'A resume, a project spreadsheet or a portfolio link. You check the rows after.', go: () => setImportMode('resume') },
             { Icon: Sparkles, title: 'See an example', body: 'Three sample projects to show what good looks like.', go: () => onAddRows(sampleRows()) },
             { Icon: ClipboardPaste, title: 'Paste a list', body: 'One project per line, or rows copied from Excel or Sheets.', go: () => setPasteOpen(true) },
             { Icon: Plus, title: 'Start typing', body: 'Just fill in the first row below. Rough is fine.', go: () => setFocusId(rows[0].id) },
@@ -209,6 +215,38 @@ export function ProjectGrid({ rows, onPatch, onAdd, onRemove, onAddRows, onClear
                 className={cx('rounded-lg bg-[var(--neon)] px-4 py-1.5 text-[13px] font-bold text-[#0a0a0a] disabled:opacity-40', focusRing)}>Make rows</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {!empty && !importMode && !pasteOpen && (
+        <p className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 px-1 text-[13px] text-[var(--text-muted)]">
+          <span>Add faster from</span>
+          {([['resume', 'a resume', FileText], ['sheet', 'a spreadsheet', FileSpreadsheet], ['portfolio', 'a portfolio link', Globe]] as const).map(([m, label, Icon]) => (
+            <button key={m} type="button" onClick={() => setImportMode(m)} className={cx('inline-flex items-center gap-1.5 font-medium text-[var(--text-secondary)] underline underline-offset-4 hover:text-[var(--text-primary)]', focusRing)}>
+              <Icon size={13} aria-hidden />{label}
+            </button>
+          ))}
+          <button type="button" onClick={() => setPasteOpen(true)} className={cx('inline-flex items-center gap-1.5 font-medium text-[var(--text-secondary)] underline underline-offset-4 hover:text-[var(--text-primary)]', focusRing)}>
+            <ClipboardPaste size={13} aria-hidden />a pasted list
+          </button>
+        </p>
+      )}
+
+      {importMode && (
+        <ImportPanel key={importMode} initial={importMode} onClose={() => setImportMode(null)}
+          onImported={(r, source) => {
+            onAddRows(r.rows)
+            onPerson(r.person)
+            const n = r.rows.length
+            setNotice(`Added ${n} ${n === 1 ? 'row' : 'rows'} from ${source}${r.fromRoles ? ` (${r.fromRoles} from your roles)` : ''}. Check them and fix anything that is off.`)
+            setImportMode(null)
+          }} />
+      )}
+
+      {notice && (
+        <div role="status" className="av-rise mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--neon-border)] bg-[var(--neon-surface)] px-4 py-3 text-[14px] text-[var(--text-primary)]">
+          <span>{notice}</span>
+          <button type="button" onClick={() => setNotice(null)} className={cx('font-semibold underline underline-offset-4', focusRing)}>Got it</button>
         </div>
       )}
 

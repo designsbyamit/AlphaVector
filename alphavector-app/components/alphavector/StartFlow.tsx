@@ -107,7 +107,8 @@ export default function StartFlow() {
             <p className="mt-3 max-w-xl text-[17px] text-[var(--text-secondary)]">Add at least {MIN_PROJECTS} projects, five if you can. Rough is fine. Tell us what you did in plain words and we pick up the skills for you.</p>
             <div className="mt-8"><HelloBar about={inputs.about} onChange={setAbout} /></div>
             <div className="mt-10 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-              <ProjectGrid rows={inputs.rows} onPatch={patchRow} onAdd={addRow} onRemove={removeRow} onAddRows={addRows} onClearSamples={clearSamples} />
+              <ProjectGrid rows={inputs.rows} onPatch={patchRow} onAdd={addRow} onRemove={removeRow} onAddRows={addRows} onClearSamples={clearSamples}
+                onPerson={(p) => setAbout({ ...(!inputs.about.name.trim() && p.name ? { name: p.name } : {}), ...(!inputs.about.currentRole.trim() && p.role ? { currentRole: p.role } : {}) })} />
               <SignalPanel rows={inputs.rows} dismissed={inputs.dismissed}
                 onDismiss={(id) => setInputs((v) => ({ ...v, dismissed: [...v.dismissed, id] }))} onUndo={() => setInputs((v) => ({ ...v, dismissed: [] }))} />
             </div>

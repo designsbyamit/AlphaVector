@@ -4,7 +4,7 @@ A duplicate of WingSpan (same engine, database schema and Blueprint) with a new 
 
 ## Routes
 - `/` sends signed-in people to `/track`, everyone else to `/start`.
-- `/start` is the new flow, in two light steps: (1) your projects, in a four-column grid where skills are picked up from plain sentences and strengths appear live; (2) what pulls you, plus an optional market niche. Then one calm wait screen and the Blueprint. Guests can run all of it; saving needs sign-in (same rule as WingSpan).
+- `/start` is the new flow, in two light steps: (1) your projects, in a four-column grid where skills are picked up from plain sentences and strengths appear live; (2) what pulls you, plus an optional market niche. Then one calm wait screen and the Blueprint. You can type, paste, load an example, or import from a resume, a project spreadsheet or a portfolio link (WingSpan's reader at `/api/extract`; imported rows land in the same table to check). Guests can run all of it; saving needs sign-in (same rule as WingSpan).
 - `/track`, `/paths`, `/profile`, `/experience/[id]` are the existing Design Evolution pages for daily learning and progress. `/track` is the old home page, moved from `/`.
 - A Recalibrate button appears on the Blueprint. It keeps the project table (stored in this browser) and restarts the analysis.
 

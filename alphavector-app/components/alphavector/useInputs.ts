@@ -41,7 +41,13 @@ export function useInputs() {
 
   /** Add several rows at once (paste, examples), replacing any rows that are still completely blank. */
   const addRows = useCallback((incoming: ProjectRow[]) =>
-    setInputs((s) => ({ ...s, rows: [...s.rows.filter((r) => !isBlank(r)), ...incoming] })), [])
+    setInputs((s) => {
+      // Importing the same file twice must not duplicate rows: skip anything whose name is already in the table.
+      const kept = s.rows.filter((r) => !isBlank(r))
+      const have = new Set(kept.map((r) => r.name.trim().toLowerCase()).filter(Boolean))
+      const fresh = incoming.filter((r) => !have.has(r.name.trim().toLowerCase()))
+      return { ...s, rows: [...kept, ...fresh] }
+    }), [])
 
   const clearSamples = useCallback(() =>
     setInputs((s) => { const rows = s.rows.filter((r) => !r.sample); return { ...s, rows: rows.length ? rows : [newRow()] } }), [])
