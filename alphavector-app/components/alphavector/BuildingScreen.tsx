@@ -39,7 +39,7 @@ export function BuildingScreen({ name, activity, phase, error, strengths, onOpen
         <div role="alert">
           <AlertCircle size={28} aria-hidden className="text-red-400" />
           <h1 className="mt-4 text-[28px] font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-sora)' }}>That did not finish</h1>
-          <p className="mt-2 text-[16px] text-[var(--text-secondary)]">{error ?? 'Something went wrong while building your Blueprint.'} Your projects are safe.</p>
+          <p className="mt-2 text-[16px] text-[var(--text-secondary)]">{friendlyError(error)} Your projects are safe.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <button type="button" onClick={onRetry} className={primary}>Try again</button>
             <button type="button" onClick={onBack} className={secondary}><ArrowLeft size={15} aria-hidden /> Back to my projects</button>
@@ -85,4 +85,14 @@ export function BuildingScreen({ name, activity, phase, error, strengths, onOpen
       )}
     </main>
   )
+}
+
+/** Turn raw provider errors into a sentence a person can act on. */
+export function friendlyError(error?: string | null): string {
+  if (!error) return 'Something went wrong while building your Blueprint.'
+  if (/invalid api key|invalid_api_key|api key|\b401\b|\b403\b/i.test(error)) {
+    return 'The AI service is not connected on this version of the app yet. This is a setup issue, not something you did.'
+  }
+  if (/\b429\b|rate limit|quota/i.test(error)) return 'The AI service is busy right now. Wait a minute and try again.'
+  return 'Something went wrong while building your Blueprint.'
 }
