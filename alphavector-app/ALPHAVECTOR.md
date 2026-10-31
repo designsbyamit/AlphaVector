@@ -4,13 +4,13 @@ A duplicate of WingSpan (same engine, database schema and Blueprint) with a new 
 
 ## Routes
 - `/` sends signed-in people to `/track`, everyone else to `/start`.
-- `/start` is the new flow, in two light steps: (1) your projects, in a four-column grid where skills are picked up from plain sentences and strengths appear live; (2) what pulls you, plus an optional market niche. Then one calm wait screen and the Blueprint. You can type, paste, load an example, or import from a resume, a project spreadsheet or a portfolio link (WingSpan's reader at `/api/extract`; imported rows land in the same table to check). Guests can run all of it; saving needs sign-in (same rule as WingSpan).
+- `/start` is the new flow, four focused screens: (1) You (name optional, where you are now); (2) Projects (an accordion: one open card at a time with labelled fields, skill pills under 'What did you do?', at least three required; 'Add them another way' opens resume, spreadsheet, portfolio link, paste, or examples); (3) Your strengths (cards you can mark 'Not me', plus a separate 'How solid is this?' card); (4) What pulls you (3 to 5 interests, optional niche). Then one calm wait screen and the Blueprint. Import uses WingSpan's reader at `/api/extract`. Guests can run all of it; saving needs sign-in (same rule as WingSpan).
 - `/track`, `/paths`, `/profile`, `/experience/[id]` are the existing Design Evolution pages for daily learning and progress. `/track` is the old home page, moved from `/`.
 - A Recalibrate button appears on the Blueprint. It keeps the project table (stored in this browser) and restarts the analysis.
 
 ## What was added
 - `lib/alphavector/` catalogue of processes and niches, skill inference from plain text (`infer.ts`), the suggestion pills that keep offering the next most relevant skill (`suggest.ts`: standard skills first, then suggestive extras), the evidence meter (`progress.ts`), example and paste import (`samples.ts`), the deterministic Proof Score (`strengths.ts`), the mapper into the engine's data shape (`toExtracted.ts`) and tests.
-- `components/alphavector/` the sentence intro, project grid, live signal panel, pull step, wait screen and the flow controller.
+- `components/alphavector/` the flow controller (`StartFlow`), `FlowHeader`, `AboutStep`, `ProjectList`, `SkillPills`, `ImportPanel`, `StrengthsReview`, `PullStep`, `BuildingScreen`, and `ui.ts` (the shared look: bordered labelled boxes are inputs, outlined pills/cards are choices, one filled amber button per screen, plain muted text is read-only).
 - `types/wingspan.ts`: optional `hardSkills`, `softSkills`, `feedback`, `remarks`, `energy` on `Project`.
 
 ## What was changed from WingSpan

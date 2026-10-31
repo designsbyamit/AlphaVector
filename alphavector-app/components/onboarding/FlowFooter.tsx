@@ -6,7 +6,7 @@ import type { ReactNode } from 'react'
 import { cx } from './ui'
 
 export function FlowFooter({
-  message, hint, actions, progress, tone = 'default', inset, role,
+  message, hint, actions, progress, tone = 'default', inset, role, width = 'max-w-5xl',
 }: {
   message?: ReactNode
   hint?: ReactNode
@@ -17,6 +17,8 @@ export function FlowFooter({
   /** Left offset classes when a side navigation occupies the left edge (e.g. the Blueprint). */
   inset?: string
   role?: 'status' | 'alert'
+  /** Max-width class for the inner row; defaults to the wide Blueprint layout. */
+  width?: string
 }) {
   return (
     <footer
@@ -40,7 +42,7 @@ export function FlowFooter({
           )}
         </div>
       )}
-      <div className="mx-auto flex min-h-[72px] w-full max-w-5xl flex-col gap-3 px-4 pt-5 sm:min-h-[88px] sm:flex-row sm:items-center sm:gap-6 sm:px-6">
+      <div className={cx('mx-auto flex min-h-[72px] w-full flex-col', width, 'gap-3 px-4 pt-5 sm:min-h-[88px] sm:flex-row sm:items-center sm:gap-6 sm:px-6')}>
         <div className="min-w-0 flex-1" role={role}>
           {message && <div className="text-sm font-medium leading-snug text-[var(--text-primary)]">{message}</div>}
           {hint && <div className="mt-1 text-xs leading-snug text-[var(--text-muted)]">{hint}</div>}

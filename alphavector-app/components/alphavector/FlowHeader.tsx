@@ -2,17 +2,16 @@
 import { useState } from 'react'
 import { cx, focusRing } from '@/components/onboarding/ui'
 
-/** A quiet header: the name, a promise that nothing is lost, and a way out. */
-export function FlowHeader({ onStartOver, label }: { onStartOver: () => void; label?: string }) {
+/** A quiet header: the name, where you are, and a way out. The thin line shows progress through the steps. */
+export function FlowHeader({ onStartOver, step, total }: { onStartOver: () => void; step?: number; total?: number }) {
   const [asking, setAsking] = useState(false)
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-[var(--border-dim)] bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-[var(--border-dim)] bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-[45rem] items-center justify-between gap-4 px-4 sm:px-6">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/brand/AlphaVector_H.svg" alt="AlphaVector" className="h-6 w-auto" />
         <div className="flex items-center gap-4 text-[13px] text-[var(--text-muted)]">
-          {label && <span className="hidden sm:inline">{label}</span>}
-          <span className="hidden sm:inline">Saved on this device</span>
+          {step && total ? <span>Step {step} of {total}</span> : null}
           {asking ? (
             <span className="flex items-center gap-2">
               Clear everything?
@@ -24,6 +23,11 @@ export function FlowHeader({ onStartOver, label }: { onStartOver: () => void; la
           )}
         </div>
       </div>
+      {step && total ? (
+        <div className="h-[2px] bg-[var(--border-dim)]" role="progressbar" aria-valuemin={1} aria-valuemax={total} aria-valuenow={step} aria-label="Progress">
+          <div className="h-full bg-[var(--neon)] transition-[width] duration-500" style={{ width: `${(step / total) * 100}%` }} />
+        </div>
+      ) : null}
     </header>
   )
 }

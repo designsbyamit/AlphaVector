@@ -2,7 +2,8 @@
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Loader2 } from 'lucide-react'
 import type { ActivityEvent } from '@/types/wingspan'
 import type { StrengthScore } from '@/lib/alphavector/strengths'
-import { cx, focusRing, primaryButton, quietButton } from '@/components/onboarding/ui'
+import { cx } from '@/components/onboarding/ui'
+import { lead, primary, secondary, textAction, title } from './ui'
 
 const STAGES: Array<{ label: string; sources: string[] }> = [
   { label: 'Reading your projects', sources: ['aggregator', 'careerDna'] },
@@ -40,16 +41,16 @@ export function BuildingScreen({ name, activity, phase, error, strengths, onOpen
           <h1 className="mt-4 text-[28px] font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-sora)' }}>That did not finish</h1>
           <p className="mt-2 text-[16px] text-[var(--text-secondary)]">{error ?? 'Something went wrong while building your Blueprint.'} Your projects are safe.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <button type="button" onClick={onRetry} className={primaryButton}>Try again</button>
-            <button type="button" onClick={onBack} className={quietButton}><ArrowLeft size={14} aria-hidden /> Back to my projects</button>
+            <button type="button" onClick={onRetry} className={primary}>Try again</button>
+            <button type="button" onClick={onBack} className={secondary}><ArrowLeft size={15} aria-hidden /> Back to my projects</button>
           </div>
         </div>
       ) : (
         <>
-          <h1 className="text-[clamp(1.9rem,5vw,2.6rem)] font-semibold leading-tight text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-sora)' }}>
+          <h1 className={title} style={{ fontFamily: 'var(--font-sora)' }}>
             {phase === 'ready' ? (first ? `${first}, your Blueprint is ready` : 'Your Blueprint is ready') : first ? `Building your Blueprint, ${first}` : 'Building your Blueprint'}
           </h1>
-          <p className="mt-3 text-[16px] text-[var(--text-secondary)]">
+          <p className={lead}>
             {phase === 'ready' ? 'Three routes, the gaps to close and a roadmap are waiting.' : 'This takes about four minutes. You can leave this tab open and come back.'}
           </p>
 
@@ -65,7 +66,7 @@ export function BuildingScreen({ name, activity, phase, error, strengths, onOpen
           </ol>
 
           {phase === 'ready' && (
-            <button type="button" onClick={onOpen} className={cx(primaryButton, 'av-rise mt-8 w-fit !px-7 !py-3.5 !text-[16px]')}>Open my Blueprint <ArrowRight size={16} aria-hidden /></button>
+            <button type="button" onClick={onOpen} className={cx(primary, 'av-rise mt-8 w-fit !px-7 !py-3.5 !text-[17px]')}>Open my Blueprint <ArrowRight size={16} aria-hidden /></button>
           )}
 
           {strengths.length > 0 && (
@@ -78,7 +79,7 @@ export function BuildingScreen({ name, activity, phase, error, strengths, onOpen
           )}
 
           {phase === 'running' && (
-            <button type="button" onClick={onBack} className={cx('mt-10 w-fit text-[14px] text-[var(--text-muted)] underline underline-offset-4 hover:text-[var(--text-primary)]', focusRing)}>Stop and edit my projects</button>
+            <button type="button" onClick={onBack} className={cx('mt-10 w-fit', textAction)}>Stop and edit my projects</button>
           )}
         </>
       )}
