@@ -67,7 +67,7 @@ export default function Resources() {
           ))}
         </dl>
         <div className="mt-12">
-          <a href={START_URL} className="btn btn-primary">Find your fix</a>
+          <a href={START_URL} className="btn btn-primary">Find your direction</a>
         </div>
       </section>
     </>

@@ -9,21 +9,37 @@ import { TESTIMONIALS } from '@/lib/testimonials'
 // Each signal sits on one of the portfolio's field tones, with a one-word label in the cover style.
 const PICTO: Record<string, { kind: PictogramKind; tone: FieldTone; label: string }> = {
   strengths: { kind: 'strengths', tone: 'teal', label: 'Evidence' },
-  passion: { kind: 'passion', tone: 'plum', label: 'Pull' },
+  passion: { kind: 'passion', tone: 'plum', label: 'Energy' },
   market: { kind: 'market', tone: 'graphite', label: 'Demand' },
 }
 
-const ROUTES = [
-  ['Safe', 'A step you could take now. Strong evidence, small gap.'],
-  ['Growth', 'A real stretch, with a clear bridge of skills and projects.'],
-  ['Bold', 'The highest upside and the longest road. Worth it only if pull and demand are both real.'],
+const QUESTIONS = [
+  'Am I developing the right skills?',
+  'Am I still relevant as AI reshapes the industry?',
+  'Should I stay in UX, move into product strategy, explore AI, or lead?',
+  'Am I progressing, or just getting better at the same things?',
 ]
 
+const OUTCOMES = [
+  ['Your design DNA', 'What makes you good at what you do, and what makes you different.'],
+  ['Your sweet spot', 'Where your strengths, interests and market opportunities meet.'],
+  ['Your career possibilities', 'Three directions worth exploring, from a safe step to a bold one, including ones you may not have considered.'],
+  ['Your growth roadmap', 'What to learn, build, explore and do next.'],
+]
+
+const STEPS = [
+  ['Bring your projects', 'A few lines on each is enough. Rough notes are fine, and you can add a CV or portfolio link instead.'],
+  ['See what we see', 'Check the strengths and patterns we pick up, and remove anything that does not sound like you.'],
+  ['Choose your direction', 'Explore the possibilities, pick the one that feels right, and get a practical way forward.'],
+]
+
+const COME_BACK = ['You finish a significant project', 'You learn a new skill', 'Your interests change', 'A new opportunity appears', 'The industry shifts']
+
 const STAGES = [
-  ['Studying or just starting', 'Your evidence is thin, and AlphaVector says so. Routes stay close to what you have actually done.'],
+  ['Studying or just starting', 'You have less to show so far, and AlphaVector says so. The directions stay close to what you have actually done.'],
   ['Early career', 'Your first real choice of direction, with the skills and projects that turn a first role into a second.'],
-  ['Mid career', 'Pivots get risky. You see how far a new field really is from your work, so a bold move is a decision, not a leap of faith.'],
-  ['Senior and leading', 'The question shifts from skills to position. Your history, scope and recognition anchor where you can credibly go next.'],
+  ['Mid career', 'Pivots feel risky. You see how far a new field really is from your work, so a bold move is an informed one.'],
+  ['Senior and leading', 'The question moves from skills to position. Your history, scope and recognition show where you can credibly go next.'],
 ]
 
 const h2 = 'text-[clamp(1.9rem,3.6vw,2.9rem)] font-light'
@@ -35,44 +51,50 @@ export default function Home() {
       <section className="mx-auto grid max-w-6xl items-center gap-8 px-5 pb-10 pt-12 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16">
         <div>
           <p className="status mb-6">For designers, for now</p>
-          <h1 className="text-[clamp(2.6rem,5.4vw,4.7rem)] font-light leading-[1]">
-            Three signals.<br />One fix on your calling.
+          <h1 className="text-[clamp(2.4rem,5vw,4.3rem)] font-light leading-[1.02]">
+            Your next move deserves more than a guess.
           </h1>
-          <p className="mt-7 max-w-[34rem] text-[1.25rem] leading-relaxed text-ink-soft">
-            A vector has a size and a direction. So does a career. AlphaVector reads your project history, your pull toward certain work and the market&apos;s demand, then hands you a position, a route and a way to check you are still on it.
+          <p className="mt-6 font-display text-[1.25rem] font-medium text-ink">Your design career. Less guesswork. More direction.</p>
+          <p className="mt-4 max-w-[34rem] text-[1.15rem] leading-relaxed text-ink-soft">
+            You have built things, solved problems and picked up skills. AlphaVector looks at your work, what drives you and where the industry is heading, so you can see your strengths, explore what could come next and choose your next move.
           </p>
-          <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-            <a href={START_URL} className="btn btn-primary">Find your fix</a>
-            <Link href="#what" className="font-display text-[1.05rem] font-medium underline underline-offset-8 hover:text-ink-soft">What is AlphaVector?</Link>
+          <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href={START_URL} className="btn btn-primary">Find your direction</a>
+            <Link href="#clues" className="font-display text-[1.05rem] font-medium underline underline-offset-8 hover:text-ink-soft">How it works</Link>
           </div>
-          <p className="mt-5 text-[0.95rem] text-muted">No sign-in needed to run the analysis. Takes about 20 minutes with your projects to hand.</p>
+          <p className="mt-5 text-[0.95rem] text-muted">Free to start. No sign-up needed. Around 20 minutes, with your projects to hand.</p>
         </div>
         <FixDiagram className="mx-auto w-full max-w-[34rem]" />
       </section>
 
-      {/* What it is, in two sentences */}
-      <section id="what" className="mx-auto mt-20 grid max-w-6xl items-center gap-8 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
-        <Pictogram kind="vector" tone="cobalt" label="Size · direction" className="mx-auto w-full max-w-[20rem]" />
+      {/* The problem */}
+      <section id="problem" className="mx-auto mt-20 grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
-          <p className={eyebrow}>What it is</p>
-          <h2 className={`mt-3 ${h2}`}>What is AlphaVector?</h2>
-          <p className="mt-5 max-w-2xl text-[1.2rem] text-ink">A career-positioning framework and a guided app. It reads your own project history, what pulls you and what the market wants, and tells you where to go next.</p>
-          <p className="mt-3 max-w-2xl text-muted">Your evidence sets the size of the vector. The three signals set its direction.</p>
+          <p className={eyebrow}>Sound familiar?</p>
+          <h2 className={`mt-3 ${h2}`}>Good at what you do. Unsure what to do next?</h2>
         </div>
+        <ul className="divide-y divide-rule border-y border-rule">
+          {QUESTIONS.map((q) => (
+            <li key={q} className="py-4 font-display text-[1.15rem] font-light text-ink">{q}</li>
+          ))}
+        </ul>
       </section>
 
-      {/* The three signals */}
-      <section id="signals" className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
-        <p className={eyebrow}>The parts</p>
-        <h2 className={`mt-3 max-w-3xl ${h2}`}>Three signals, because one distance cannot find you.</h2>
+      {/* The discovery */}
+      <section id="clues" className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
+        <p className={eyebrow}>What it looks at</p>
+        <h2 className={`mt-3 max-w-3xl ${h2}`}>Your experience holds more clues than you think.</h2>
+        <p className="mt-5 max-w-2xl text-ink-soft">
+          Your projects tell a story. Your skills reveal patterns. Your interests point towards possibilities. And the industry offers hints about where things are heading. AlphaVector brings all of it together so you can see the bigger picture.
+        </p>
         <div className="mt-10 grid gap-x-10 gap-y-12 md:grid-cols-3">
           {SIGNALS.map((s) => (
             <article key={s.key} className={`border-t-[3px] ${s.rule} pt-5`}>
               <Pictogram kind={PICTO[s.key].kind} tone={PICTO[s.key].tone} label={PICTO[s.key].label} className="w-full" />
-              <h3 className={`mt-4 text-[1.7rem] font-medium ${s.text}`}>{s.name}</h3>
+              <h3 className={`mt-4 text-[1.6rem] font-medium ${s.text}`}>{s.name}</h3>
               <p className="mt-1 font-display text-[1.02rem] font-medium">{s.short}</p>
               <p className="mt-3 text-[1.02rem] text-ink-soft">{s.measures}</p>
-              <Disclosure title="Why it needs the other two" className="mt-3">
+              <Disclosure title="Why you need all three" className="mt-3">
                 <p><span className="font-display font-medium text-ink">On its own: </span>{s.alone}</p>
                 <p className="text-muted">{s.read}</p>
               </Disclosure>
@@ -81,16 +103,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Where it points you */}
-      <section id="alpha" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
-        <Pictogram kind="routes" tone="cobalt" label="Three routes" className="mx-auto w-full max-w-[20rem]" />
+      {/* The outcome */}
+      <section id="outcome" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
+        <Pictogram kind="routes" tone="cobalt" label="Directions" className="mx-auto w-full max-w-[20rem]" />
         <div>
-          <p className={eyebrow}>Your alpha, in the right direction</p>
-          <h2 className={`mt-3 ${h2}`}>Three routes, not one answer.</h2>
-          <p className="mt-4 max-w-2xl text-ink-soft">Your alpha is the edge that is yours: work you have proven you can do, want to keep doing, and that someone needs done. Each route sits at a different distance from the work you already do, so you choose how far to stretch.</p>
+          <p className={eyebrow}>What you walk away with</p>
+          <h2 className={`mt-3 ${h2}`}>See your strengths, your possibilities and your next moves.</h2>
           <dl className="mt-6 divide-y divide-rule border-y border-rule">
-            {ROUTES.map(([n, d]) => (
-              <div key={n} className="grid gap-1 py-3 sm:grid-cols-[6rem_1fr] sm:gap-6">
+            {OUTCOMES.map(([n, d]) => (
+              <div key={n} className="grid gap-1 py-3 sm:grid-cols-[11rem_1fr] sm:gap-6">
                 <dt className="font-display text-[1.05rem] font-medium">{n}</dt>
                 <dd className="text-ink-soft">{d}</dd>
               </div>
@@ -99,15 +120,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why it lasts */}
+      {/* How it works */}
+      <section id="how" className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
+        <p className={eyebrow}>How it works</p>
+        <h2 className={`mt-3 max-w-3xl ${h2}`}>Bring your projects. We will connect the dots.</h2>
+        <ol className="mt-8 grid gap-8 md:grid-cols-3">
+          {STEPS.map(([t, d], i) => (
+            <li key={t} className="border-t border-rule pt-4">
+              <p className="font-mono text-[0.75rem] uppercase tracking-[0.08em] text-muted">Step {i + 1}</p>
+              <h3 className="mt-2 text-[1.4rem] font-medium">{t}</h3>
+              <p className="mt-2 text-[1.02rem] text-ink-soft">{d}</p>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-8 max-w-2xl text-ink-soft">Grounded in your actual experience and in dated research from named sources, so it is not generic advice.</p>
+      </section>
+
+      {/* A reason to come back */}
       <section id="career" className="mx-auto mt-24 grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[0.6fr_1fr]">
-        <Pictogram kind="loop" tone="plum" label="Recalibrate" className="mx-auto w-full max-w-[20rem]" />
+        <Pictogram kind="loop" tone="plum" label="Keeps up with you" className="mx-auto w-full max-w-[20rem]" />
         <div>
-          <p className={eyebrow}>Why it works throughout your career</p>
-          <h2 className={`mt-3 ${h2}`}>A fix is not forever. Check it again.</h2>
-          <p className="mt-4 max-w-2xl text-ink-soft">Your strengths grow with every project, your pull shifts, and the market moves on its own schedule. Three clocks, so your position is re-fixed whenever one of them changes.</p>
-          <p className="mt-5 font-display text-[1.05rem] font-medium">Log · Fix · Follow · Recalibrate</p>
-          <Disclosure title="Where you are in your career" className="mt-4">
+          <p className={eyebrow}>Your career is not a fixed destination</p>
+          <h2 className={`mt-3 ${h2}`}>As you change, your direction can too.</h2>
+          <p className="mt-4 max-w-2xl text-ink-soft">AlphaVector helps you keep track of the journey, revisit your choices and make each next move with more confidence. Come back when:</p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {COME_BACK.map((c) => <li key={c} className="rounded-full border border-rule-control px-3.5 py-1.5 text-[0.95rem] text-ink-soft">{c}</li>)}
+          </ul>
+          <Disclosure title="Where you are in your career" className="mt-6">
             <dl className="space-y-4">
               {STAGES.map(([t, d]) => (
                 <div key={t}><dt className="font-display font-medium text-ink">{t}</dt><dd className="mt-0.5">{d}</dd></div>
@@ -119,28 +158,19 @@ export default function Home() {
 
       {/* Go deeper: closed by default */}
       <section id="deeper" className="mx-auto mt-24 max-w-3xl px-5 sm:px-8">
-        <p className={eyebrow}>Go deeper</p>
+        <p className={eyebrow}>Curious how it works?</p>
         <h2 className={`mt-3 ${h2}`}>The thinking behind it.</h2>
         <div className="mt-6 border-t border-rule">
-          <Disclosure title="The philosophy: purpose is a position">
-            <p>Purpose is easier to locate than to discover in a flash. The old idea, ikigai, puts it where what you are good at, what you love and what the world needs overlap. The trouble is that each circle is usually filled in by guessing.</p>
-            <p>AlphaVector keeps the idea and changes the instrument. Strengths come from what you have done, passion from how that work felt, demand from dated, cited research. When the three disagree, the disagreement is the most useful thing it can tell you.</p>
+          <Disclosure title="Why three signals">
+            <p>People often talk about finding purpose as a flash of insight. It is easier to treat it as a position you can locate. The old idea, ikigai, puts it where what you are good at, what you love and what the world needs overlap. The trouble is that each circle is usually filled in by guessing.</p>
+            <p>AlphaVector keeps the idea and changes the instrument: your strengths come from what you have done, your energy from how that work felt, and the industry picture from dated, cited research. When the three line up, you can move with confidence. When they do not, you know what to build, test or let go of.</p>
           </Disclosure>
-          <Disclosure title="The science, in plain words">
-            <p><span className="font-display font-medium text-strength">Strengths</span> are scored from evidence, not self-description. Every skill is tied to a project, an impact and the feedback you received, and a thin log lowers confidence rather than pretending to certainty.</p>
-            <p><span className="font-display font-medium text-passion">Passion</span> separates intrinsic from extrinsic motivation. How work felt and what you would do unasked count as passion; praise and recognition count as evidence of strength, not of passion.</p>
-            <p><span className="font-display font-medium text-market">Market demand</span> comes from dated, cited observations from named sources, scored by fixed rules, so the same inputs always give the same result.</p>
+          <Disclosure title="How it works behind the scenes">
+            <p><span className="font-display font-medium text-strength">Your strengths</span> come from evidence, not self-description. Every skill is tied to a project, what it led to and the feedback you got. A thin history lowers our confidence instead of pretending to certainty.</p>
+            <p><span className="font-display font-medium text-passion">What energises you</span> separates intrinsic from extrinsic motivation. How work felt and what you would do unasked count towards passion. Praise and recognition count as evidence of strength, not of passion.</p>
+            <p><span className="font-display font-medium text-market">Where the industry is heading</span> comes from dated observations from named sources, read with fixed rules, so the same inputs always give the same result.</p>
             <p className="text-muted">The weights, formulas and sources are shared with schools, institutes and partners on request.</p>
             <p><Link href="/method#request" className="link">Request the technical note</Link></p>
-          </Disclosure>
-          <Disclosure title="What you leave with">
-            <ul className="list-disc space-y-1.5 pl-5 marker:text-muted">
-              <li>Your position, with a ranked strengths profile.</li>
-              <li>Three routes (Safe, Growth, Bold), each with a plain-language risk assessment.</li>
-              <li>The gaps between you and each route, and how long they usually take to close.</li>
-              <li>A roadmap through 30 days, 90 days and the year ahead, with matched learning for every gap.</li>
-              <li>Progress tracking, and a way to recalibrate.</li>
-            </ul>
           </Disclosure>
         </div>
       </section>
@@ -164,12 +194,12 @@ export default function Home() {
 
       <section id="start" className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
         <div className="border-t border-rule pt-10">
-          <h2 className="max-w-2xl text-[clamp(1.9rem,3.6vw,2.9rem)] font-light">Bring your projects. Leave with a position.</h2>
+          <h2 className="max-w-2xl text-[clamp(1.9rem,3.6vw,2.9rem)] font-light">Your next chapter starts with a little clarity.</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             <article className="card flex flex-col items-start gap-4">
               <h3 className="text-[1.4rem] font-medium">For you</h3>
-              <p className="text-ink-soft">Run the analysis on your own projects. Open to designers for now. No sign-in needed, about 20 minutes.</p>
-              <a href={START_URL} className="btn btn-primary mt-auto">Find your fix</a>
+              <p className="text-ink-soft">Bring your projects and see where they could take you. Free to start, no sign-up needed. Open to designers for now.</p>
+              <a href={START_URL} className="btn btn-primary mt-auto">Find your direction</a>
             </article>
             <article className="card flex flex-col items-start gap-4">
               <h3 className="text-[1.4rem] font-medium">For your cohort</h3>
@@ -178,7 +208,7 @@ export default function Home() {
             </article>
             <article className="card flex flex-col items-start gap-4">
               <h3 className="text-[1.4rem] font-medium">For the detail</h3>
-              <p className="text-ink-soft">Want the weights, formulas and sources behind the scores? Ask and we will send the technical note.</p>
+              <p className="text-ink-soft">Want to know exactly how the analysis works? Ask and we will send the technical note.</p>
               <Link href="/method#request" className="btn btn-secondary mt-auto">Request the technical note</Link>
             </article>
           </div>

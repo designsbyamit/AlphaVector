@@ -12,7 +12,7 @@ export function Header() {
             <Link key={n.href} href={n.href} className="whitespace-nowrap py-1 text-ink-soft underline-offset-8 hover:underline">{n.label}</Link>
           ))}
         </nav>
-        <a href={START_URL} className="btn btn-primary btn-sm">Find your fix</a>
+        <a href={START_URL} className="btn btn-primary btn-sm">Find your direction</a>
       </div>
     </header>
   )

@@ -8,19 +8,18 @@ const F = { x: 240, y: 200 }
 const D = 100
 const at = (deg: number) => ({ x: F.x + D * Math.cos((deg * Math.PI) / 180), y: F.y + D * Math.sin((deg * Math.PI) / 180) })
 const BEACONS = [
-  { key: 'strengths', label: 'STRENGTHS', ...at(210), lx: 0, ly: -4, from: 1.5 },
-  { key: 'passion', label: 'PASSION', ...at(330), lx: 0, ly: -4, from: 1.5 },
-  { key: 'market', label: 'MARKET DEMAND', ...at(90), lx: 0, ly: 0, from: 1.5 },
+  { key: 'strengths', label: 'YOUR STRENGTHS', ...at(210), lx: 0, ly: -4, from: 1.5 },
+  { key: 'passion', label: 'WHAT DRIVES YOU', ...at(330), lx: 0, ly: -4, from: 1.5 },
+  { key: 'market', label: 'WHERE THE INDUSTRY IS HEADING', ...at(90), lx: 0, ly: 0, from: 1.5 },
 ]
 
 export function FixDiagram({ className = '' }: { className?: string }) {
   return (
     <div className={`field-panel relative overflow-hidden ${className}`} style={{ background: 'var(--field-cobalt)', aspectRatio: '16 / 15' }}>
       <div className="field-grid" aria-hidden="true" />
-      <span className="absolute left-5 top-4 font-mono text-[0.6875rem] uppercase tracking-[0.08em]" style={{ color: LIME }}>The fix</span>
       <svg viewBox="0 0 480 450" className="absolute inset-0 h-full w-full" role="img" aria-labelledby="fix-title fix-desc">
         <title id="fix-title">Three circles meeting at one point</title>
-        <desc id="fix-desc">Strengths, passion and market demand each draw a circle at the same distance. Where they meet is your fix.</desc>
+        <desc id="fix-desc">Your strengths, what drives you and where the industry is heading each draw a circle at the same distance. Where they meet is your direction.</desc>
         {BEACONS.map((b, i) => (
           <g key={b.key}>
             <circle className="fix-ring" style={{ ['--from' as string]: b.from, animationDelay: `${i * 0.15}s` }} cx={b.x} cy={b.y} r={D} fill="none" stroke={INK} strokeWidth="2" />

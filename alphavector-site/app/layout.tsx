@@ -6,8 +6,8 @@ import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: { default: 'AlphaVector: three signals, one fix on your calling', template: '%s · AlphaVector' },
-  description: 'AlphaVector fixes your career position from three signals: what your projects prove, what pulls you, and what the market wants. Then it gives you the route.',
+  title: { default: 'AlphaVector: your next move deserves more than a guess', template: '%s · AlphaVector' },
+  description: 'For designers: connect your experience, your interests and where the industry is heading to see your strengths, explore career possibilities and choose your next move.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

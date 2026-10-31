@@ -8,13 +8,13 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo />
-          <p className="mt-4 max-w-sm text-[1rem] text-muted">Three signals, one fix on your calling. Built from your own project history and dated market research.</p>
+          <p className="mt-4 max-w-sm text-[1rem] text-muted">Your next move deserves more than a guess. Built from your own projects and dated market research.</p>
         </div>
         <nav aria-label="Footer" className="flex flex-col gap-2 font-display text-[0.95rem]">
           {NAV.map((n) => <Link key={n.href} href={n.href} className="w-fit hover:underline">{n.label}</Link>)}
         </nav>
         <div className="flex flex-col gap-2 font-display text-[0.95rem]">
-          <a href={START_URL} className="w-fit hover:underline">Find your fix</a>
+          <a href={START_URL} className="w-fit hover:underline">Find your direction</a>
           <Link href="/workshop#enquire" className="w-fit hover:underline">Book a workshop</Link>
         </div>
       </div>

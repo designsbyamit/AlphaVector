@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 const STEPS = [
   { name: 'Log your projects', does: 'Fill one table. For each project: name, client, industry, the hard-skill and soft-skill processes you personally did (tick boxes), the feedback you received, the impact, and any remarks.', gets: 'The evidence everything else stands on.' },
-  { name: 'Assess your strengths', does: 'AlphaVector scores every process you ticked by how often, how well documented and how widely you have applied it. You can mark any result as not really you.', gets: 'A ranked strengths profile with a confidence level for each.' },
+  { name: 'See your strengths', does: 'AlphaVector looks at how often, how well documented and how widely you have applied each skill you picked. You can mark any result as not really you.', gets: 'A ranked strengths profile with a confidence level for each.' },
   { name: 'Specify your passion', does: 'Mark each project as energising, neutral or draining, then choose three to five areas that pull you forward.', gets: 'A passion signal that tilts the result toward what you want.' },
   { name: 'Pick a market niche (optional)', does: 'Choose up to three niches to focus the demand analysis, or skip and let the market data decide.', gets: 'A market view aimed where you want to look.' },
-  { name: 'Get your Future Blueprint', does: 'Specialist analysis agents read your evidence and the market briefing. Scoring combines them into three directions.', gets: 'Next roles with risk assessments, the gaps to close, and a full roadmap.' },
+  { name: 'Get your Future Blueprint', does: 'AlphaVector reads your evidence against the market picture and shapes it into three directions.', gets: 'Next roles with risk assessments, the gaps to close, and a full roadmap.' },
   { name: 'Choose a roadmap and follow it', does: 'Pick the route you want. Each gap comes with matched resources, and you tick off actions as you go.', gets: 'A clear record of progress on the route you chose.' },
   { name: 'Recalibrate', does: 'Once you reach a goal, add the new projects and fix your position again. Your earlier entries are kept.', gets: 'A fresh fix from a new starting point.' },
 ]
@@ -75,7 +75,7 @@ export default function Method() {
       </section>
 
       <section className="mx-auto mt-16 max-w-6xl px-5 sm:px-8">
-        <a href={START_URL} className="btn btn-primary">Find your fix</a>
+        <a href={START_URL} className="btn btn-primary">Find your direction</a>
       </section>
     </>
   )

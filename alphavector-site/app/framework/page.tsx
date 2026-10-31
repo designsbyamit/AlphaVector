@@ -19,7 +19,7 @@ export default function Framework() {
       <section className="mx-auto max-w-6xl px-5 pt-14 sm:px-8">
         <h1 className="max-w-4xl text-[clamp(2.4rem,5.4vw,4.4rem)] font-light">The AlphaVector framework</h1>
         <p className="mt-6 max-w-2xl text-[1.25rem] text-ink-soft">
-          A career roadmap is only as reliable as the data under it. This framework builds yours on three dimensions, each measured from evidence rather than self-description, and then looks for where they agree. The technique is trilateration: the way GPS finds you from three distances, because any single one can be wrong.
+          A career roadmap is only as useful as what is under it. AlphaVector looks at three things: what your work shows, what energises you and where the industry is heading. Then it looks for where they agree, the way GPS finds your position from three distances, because any single one can be wrong.
         </p>
       </section>
 
@@ -53,7 +53,7 @@ export default function Framework() {
       </section>
 
       <section className="mx-auto mt-20 max-w-6xl px-5 sm:px-8">
-        <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">Three routes from your fix</h2>
+        <h2 className="text-[clamp(1.7rem,3.2vw,2.5rem)] font-light">Three routes from where you stand</h2>
         <p className="mt-4 max-w-2xl text-ink-soft">The Future Blueprint never gives you one answer. It gives you three, spaced by how far each sits from the work you already do.</p>
         <div className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-3">
           {BETS.map((b) => (
@@ -74,7 +74,7 @@ export default function Framework() {
           <li>Market figures come from dated public sources of differing reliability, and coverage of some regions is thinner than others. The source list is shared with the technical note.</li>
         </ul>
         <div className="mt-12">
-          <a href={START_URL} className="btn btn-primary">Find your fix</a>
+          <a href={START_URL} className="btn btn-primary">Find your direction</a>
         </div>
       </section>
     </>
