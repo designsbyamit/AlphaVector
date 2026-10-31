@@ -1,6 +1,7 @@
 'use client'
 import type { ReactNode } from 'react'
-import { Bookmark, Download, History, LogIn, LogOut, ScanSearch, SlidersHorizontal, Loader2, type LucideIcon } from 'lucide-react'
+import { Bookmark, Download, ExternalLink, History, LogIn, LogOut, ScanSearch, SlidersHorizontal, Loader2, type LucideIcon } from 'lucide-react'
+import { SITE_URL } from '@/lib/alphavector/site'
 import type { BlueprintStep } from '@/types/wingspan'
 import { StepNav } from '@/components/ui/StepNav'
 import { FOCUS_RING } from './ui'
@@ -123,6 +124,7 @@ export function SideNav(p: SideNavProps) {
           trailing={!signedIn ? <span className="text-[11px] text-[var(--text-muted)]">Sign in</span> : undefined}
         />
         <UtilityButton rail={rail} icon={SlidersHorizontal} label="Preferences" onClick={p.onPreferences} />
+        <UtilityButton rail={rail} icon={ExternalLink} label="Back to site" sub="Opens in a new tab" onClick={() => window.open(SITE_URL, '_blank', 'noopener,noreferrer')} />
       </div>
 
       {/* Account */}

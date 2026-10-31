@@ -1,4 +1,5 @@
 'use client'
+import { SITE_URL } from '@/lib/alphavector/site'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
@@ -58,6 +59,7 @@ export function TopNav({ userName, xp }: TopNavProps) {
 
         {/* Right */}
         <div className="flex items-center gap-3 relative">
+          <a href={SITE_URL} target="_blank" rel="noopener noreferrer" className="hidden sm:inline text-xs font-medium text-[rgba(255,255,255,0.45)] hover:text-[rgba(255,255,255,0.8)] underline underline-offset-4">Back to site</a>
           {isLoggedIn ? (
             <>
               <span className="hidden sm:block text-xs font-medium px-2 py-1 rounded-full"

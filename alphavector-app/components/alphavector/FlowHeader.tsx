@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react'
+import { ExternalLink } from 'lucide-react'
+import { SITE_URL } from '@/lib/alphavector/site'
 import { cx, focusRing } from '@/components/onboarding/ui'
 
 /** A quiet header: the name, where you are, and a way out. The thin line shows progress through the steps. */
@@ -12,6 +14,10 @@ export function FlowHeader({ onStartOver, step, total }: { onStartOver: () => vo
         <img src="/brand/AlphaVector_H.svg" alt="AlphaVector" className="h-6 w-auto" />
         <div className="flex items-center gap-4 text-[13px] text-[var(--text-muted)]">
           {step && total ? <span>Step {step} of {total}</span> : null}
+          <a href={SITE_URL} target="_blank" rel="noopener noreferrer" aria-label="Back to site (opens in a new tab)" title="Opens the site in a new tab. Your progress stays here." className={cx('inline-flex items-center gap-1.5 hover:text-[var(--text-primary)]', focusRing)}>
+            <span className="hidden sm:inline underline underline-offset-4">Back to site</span>
+            <ExternalLink size={14} aria-hidden />
+          </a>
           {asking ? (
             <span className="flex items-center gap-2">
               Clear everything?
