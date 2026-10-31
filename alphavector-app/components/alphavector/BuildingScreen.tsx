@@ -3,6 +3,7 @@ import { AlertCircle, ArrowLeft, ArrowRight, Check, Loader2 } from 'lucide-react
 import type { ActivityEvent } from '@/types/wingspan'
 import type { StrengthScore } from '@/lib/alphavector/strengths'
 import { cx } from '@/components/onboarding/ui'
+import { BalanceGame } from './BalanceGame'
 import { lead, primary, secondary, textAction, title } from './ui'
 
 const STAGES: Array<{ label: string; sources: string[] }> = [
@@ -77,6 +78,8 @@ export function BuildingScreen({ name, activity, phase, error, strengths, onOpen
               </ul>
             </section>
           )}
+
+          {phase === 'running' && <div className="mt-10"><BalanceGame /></div>}
 
           {phase === 'running' && (
             <button type="button" onClick={onBack} className={cx('mt-10 w-fit', textAction)}>Stop and edit my projects</button>

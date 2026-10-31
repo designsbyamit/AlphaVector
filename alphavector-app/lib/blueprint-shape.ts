@@ -47,6 +47,7 @@ export function normalizeBlueprint(raw: unknown): Blueprint {
     confidenceScores: b.confidenceScores ?? { timeline: 0, projects: 0, strengths: 0, futurePaths: 0 },
     insights: lst(b.insights),
     rationale: b.rationale && typeof b.rationale === 'object' ? b.rationale : {},
+    positioningByPath: ((Array.isArray(b.positioningByPath) ? b.positioningByPath : []) as unknown as Array<Record<string, unknown> | null>).filter((p): p is Record<string, unknown> => !!p && typeof p === 'object').map((p) => ({ ...p, targetCompanies: lst(p.targetCompanies), targetIdentity: lst(p.targetIdentity) })) as never,
     roadmapMilestones: withLists(b.roadmapMilestones, ['actions', 'hardSkills', 'softSkills', 'positioningMoves']),
     careerAlpha: b.careerAlpha && typeof b.careerAlpha === 'object' && b.careerAlpha.dimensions
       ? {

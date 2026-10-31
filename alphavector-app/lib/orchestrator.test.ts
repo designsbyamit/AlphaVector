@@ -81,3 +81,25 @@ test('directions never step down from the current role', async () => {
   assert.deepEqual(r.draft.candidates.map((x) => x.direction), ['VP of Design', 'Principal Design Consultant', 'Design Director, Fintech'])
   assert.throws(() => canonicalizeDrafts({ candidates: [c('Senior Design Manager')] } as never, 'leader', true, 'Head of Design'))
 })
+
+test('positioning follows each route and never names a bigger role than the route title', () => {
+  const bets: Bet[] = ['safe', 'growth', 'bold'].map((a, i) => ({
+    archetype: a as Bet['archetype'], direction: `Dir ${i}`, careerScore: 70, experienceScore: 1, marketScore: 60, interestScore: 1,
+    resilience: null, whyThisPerson: 'w', whyNow: 'n', rationale: 'r',
+  }))
+  const bp = {
+    futurePaths: [],
+    positioning: { targetRole: 'Design Director, AI Products', targetCompanies: [], targetIdentity: [], positioningStatement: 'x' },
+    positioningByPath: [
+      { pathway: 'Dir 1', targetRole: 'Head of Everything', targetCompanies: ['B'], targetIdentity: ['b'], positioningStatement: 'sb' },
+      { pathway: 'Dir 0', targetRole: 'Director of Dir 0', targetCompanies: ['A'], targetIdentity: ['a'], positioningStatement: 'sa' },
+    ],
+  } as unknown as Blueprint
+  const r = enforceBets(bp, bets)
+  assert.deepEqual(r.positioningByPath?.map((p) => p.targetRole), ['Dir 0', 'Dir 1', 'Dir 2'])
+  assert.deepEqual(r.positioningByPath?.map((p) => p.pathway), ['Dir 0', 'Dir 1', 'Dir 2'])
+  assert.equal(r.positioningByPath?.[0].positioningStatement, 'sa')
+  assert.equal(r.positioningByPath?.[1].positioningStatement, 'sb')
+  assert.equal(r.positioningByPath?.[2].positioningStatement, '')
+  assert.match(betsInstruction(bets), /positioningByPath/)
+})

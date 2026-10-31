@@ -12,8 +12,12 @@ import { Badge, Block, Card, Chip, EmptyState, FieldLabel, INK, PrimaryButton } 
 
 type RoadmapTab = 'milestones' | 'actions'
 
-function Positioning({ blueprint }: { blueprint: Blueprint }) {
-  const p = blueprint.positioning
+function Positioning({ blueprint, selectedPath }: { blueprint: Blueprint; selectedPath: string }) {
+  // The card follows the chosen route. Older saved Blueprints only have one generic block, so the role
+  // is pinned to the route and the generic statement is left out rather than showing a different role.
+  const own = (blueprint.positioningByPath ?? []).find((x) => x?.pathway === selectedPath)
+  const generic = blueprint.positioning
+  const p = own ?? (generic ? { ...generic, targetRole: selectedPath, positioningStatement: '' } : undefined)
   if (!p) return null
   const companies = Array.isArray(p.targetCompanies) ? p.targetCompanies : []
   const identity = Array.isArray(p.targetIdentity) ? p.targetIdentity : []
@@ -141,7 +145,7 @@ export function GrowthRoadmap({ blueprint }: { blueprint: Blueprint }) {
     >
       {tab === 'milestones' && (
         <>
-          <Positioning blueprint={blueprint} />
+          <Positioning blueprint={blueprint} selectedPath={selectedPath} />
           {milestones.length === 0 ? (
             <EmptyState icon={Route} title="No milestones yet" body="Your concrete next steps are under Actions." />
           ) : (

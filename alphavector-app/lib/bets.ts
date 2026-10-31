@@ -40,7 +40,7 @@ export function betsInstruction(bets: Bet[]): string {
   Why now: ${b.whyNow}
   Reasoning from the analysis: ${b.rationale}
   Scores already computed (use as given): career fit ${Math.round(b.careerScore)}, market ${Math.round(b.marketScore)}`).join('\n\n')
-  return `The career directions have ALREADY been chosen by a multi-agent analysis. Generate exactly 3 Future Paths, one per bet below, using these exact titles and betArchetype values. Do not substitute, rename or add other directions. Your job is to write the detail for each (whyItFits, betRationale, evidence, keyTransitionAreas, whyNotOtherPaths, learningInvestment, estimatedTransitionMonths, careerROIScore, timeline, marketDemand, growthPotential, opportunitySize) grounded in the person's real evidence. Every gap's "pathway" and every action/resource/milestone "pathway" must be one of these exact titles.
+  return `The career directions have ALREADY been chosen by a multi-agent analysis. Generate exactly 3 Future Paths, one per bet below, using these exact titles and betArchetype values. Do not substitute, rename or add other directions. Your job is to write the detail for each (whyItFits, betRationale, evidence, keyTransitionAreas, whyNotOtherPaths, learningInvestment, estimatedTransitionMonths, careerROIScore, timeline, marketDemand, growthPotential, opportunitySize) grounded in the person's real evidence. Also return "positioningByPath": exactly 3 entries, one per bet, where "pathway" and "targetRole" are the exact bet title and the companies, identity and statement describe THAT route only (never a bigger role than the title). Every gap's "pathway" and every action/resource/milestone "pathway" must be one of these exact titles.
 
 ${lines}`
 }
@@ -80,10 +80,30 @@ export function enforceBets(blueprint: Blueprint, bets: Bet[]): Blueprint {
         })
       : items
 
+  // Positioning is written per route. Whatever the model wrote, the role shown is the route's own title.
+  const written = Array.isArray(blueprint.positioningByPath) ? blueprint.positioningByPath : []
+  const taken = new Set<number>()
+  const positioningByPath = bets.map((bet) => {
+    const same = (x: unknown) => String(x ?? '').trim().toLowerCase() === bet.direction.trim().toLowerCase()
+    let k = written.findIndex((p, j) => !taken.has(j) && !!p && (same(p.pathway) || same(p.targetRole)))
+    if (k < 0) k = written.findIndex((p, j) => !taken.has(j) && !!p && similarity(String(p.pathway ?? p.targetRole ?? ''), bet.direction) >= 0.5)
+    if (k < 0) k = written.findIndex((p, j) => !taken.has(j) && !!p && similarity(String(p.pathway ?? ''), bet.direction) >= 0.3)
+    if (k >= 0) taken.add(k)
+    const w = k >= 0 ? written[k] : undefined
+    return {
+      pathway: bet.direction,
+      targetRole: bet.direction,
+      targetCompanies: Array.isArray(w?.targetCompanies) ? w.targetCompanies : [],
+      targetIdentity: Array.isArray(w?.targetIdentity) ? w.targetIdentity : [],
+      positioningStatement: typeof w?.positioningStatement === 'string' ? w.positioningStatement : '',
+    }
+  })
+
   const a = blueprint.actions
   return {
     ...blueprint,
     futurePaths,
+    positioningByPath,
     gaps: fix(blueprint.gaps) as Blueprint['gaps'],
     roadmapMilestones: fix(blueprint.roadmapMilestones) as Blueprint['roadmapMilestones'],
     actions: a ? {

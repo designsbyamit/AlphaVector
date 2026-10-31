@@ -290,6 +290,13 @@ const BLUEPRINT_SCHEMA = `{
     "targetIdentity": ["string"],
     "positioningStatement": "string"
   },
+  "positioningByPath": [{
+    "pathway": "string (exact futurePaths title)",
+    "targetRole": "string (exactly the same as pathway)",
+    "targetCompanies": ["string"],
+    "targetIdentity": ["string"],
+    "positioningStatement": "string"
+  }],
   "roadmapMilestones": [
     {
       "phase": "Today|30 Days|90 Days|6 Months|12 Months|18 Months",

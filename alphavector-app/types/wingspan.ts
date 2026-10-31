@@ -210,6 +210,8 @@ export interface Blueprint {
   insights: string[]
   rationale: Record<string, string>
   positioning?: PositioningStrategy
+  /** One positioning block per direction, so the roadmap card always matches the route the person chose. */
+  positioningByPath?: Array<PositioningStrategy & { pathway: string }>
   roadmapMilestones?: RoadmapMilestone[]
   careerAlpha?: CareerAlphaIntelligence
   deepAnalysis?: import('./career-intelligence').DeepAnalysis
