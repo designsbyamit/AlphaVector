@@ -26,8 +26,8 @@ export function StrengthRadar({ strengths }: StrengthRadarProps) {
           <Radar
             name="Strengths"
             dataKey="value"
-            stroke="#FFB23E"
-            fill="#FFB23E"
+            stroke="#a3e635"
+            fill="#a3e635"
             fillOpacity={0.12}
             strokeWidth={1.5}
           />

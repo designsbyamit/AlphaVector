@@ -234,7 +234,7 @@ export function BlueprintScreen() {
   return (
     <MotionConfig reducedMotion="user">
       <ShellContext.Provider value={shell}>
-        <div className="min-h-screen [--ws-ink:#ffb23e] [.light_&]:[--ws-ink:#b45309]">
+        <div className="min-h-screen [--ws-ink:#b6ff2e] [.light_&]:[--ws-ink:#3f6a00]">
 
           {/* Desktop sidebar (lg+) and tablet icon rail (md) */}
           <aside className="hidden md:block fixed inset-y-0 left-0 z-30 w-[72px] lg:w-[264px] border-r border-[var(--border-ws)] bg-[var(--surface)]">

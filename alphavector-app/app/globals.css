@@ -101,10 +101,10 @@
   --text-secondary: #999999;
   --text-muted: #888888;
   --text-dim: #555555;
-  --neon: #ffb23e;
-  --neon-glow: rgba(255, 178, 62, 0.28);
-  --neon-surface: rgba(255, 178, 62, 0.075);
-  --neon-border: rgba(255, 178, 62, 0.20);
+  --neon: #b6ff2e;
+  --neon-glow: rgba(182, 255, 46, 0.28);
+  --neon-surface: rgba(182, 255, 46, 0.075);
+  --neon-border: rgba(182, 255, 46, 0.18);
   --card-inner: #151a21;
 }
 
@@ -119,7 +119,7 @@
   --text-muted: #8b93a8;
   --text-dim: #c4c9d8;
   /* Indigo accent replaces neon green in light mode */
-  --neon: #b45309;
+  --neon: #9EE020;
   --neon-glow: rgba(79, 70, 229, 0.30);
   --neon-surface: rgba(79, 70, 229, 0.07);
   --neon-border: rgba(79, 70, 229, 0.18);
@@ -169,7 +169,7 @@
   body {
     min-height: 100vh;
     background:
-      radial-gradient(circle at 50% -12%, rgba(255,178,62,0.045), transparent 34rem),
+      radial-gradient(circle at 50% -12%, rgba(182,255,46,0.045), transparent 34rem),
       radial-gradient(circle at 0% 65%, rgba(75,115,255,0.035), transparent 30rem),
       var(--bg);
     color: var(--text-primary);
@@ -184,7 +184,7 @@
   }
 
   ::selection {
-    background: rgba(255,178,62,0.22);
+    background: rgba(182,255,46,0.22);
     color: #fff;
   }
 

@@ -47,7 +47,7 @@ export function TopNav({ userName, xp }: TopNavProps) {
               return (
                 <Link key={href} href={href}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    active ? 'text-[#FFB23E] bg-[rgba(255,178,62,0.08)]' : 'text-[rgba(255,255,255,0.45)] hover:text-[rgba(255,255,255,0.8)]'
+                    active ? 'text-[#B6FF2E] bg-[rgba(182,255,46,0.08)]' : 'text-[rgba(255,255,255,0.45)] hover:text-[rgba(255,255,255,0.8)]'
                   }`}>
                   {label}
                 </Link>
@@ -61,12 +61,12 @@ export function TopNav({ userName, xp }: TopNavProps) {
           {isLoggedIn ? (
             <>
               <span className="hidden sm:block text-xs font-medium px-2 py-1 rounded-full"
-                style={{ background: 'rgba(255,178,62,0.1)', color: '#FFB23E', border: '1px solid rgba(255,178,62,0.2)' }}>
+                style={{ background: 'rgba(182,255,46,0.1)', color: '#B6FF2E', border: '1px solid rgba(182,255,46,0.2)' }}>
                 {xp?.toLocaleString()} XP
               </span>
               <button onClick={() => setMenuOpen(o => !o)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all hover:ring-2 hover:ring-[rgba(255,178,62,0.4)]"
-                style={{ background: 'rgba(255,178,62,0.15)', color: '#FFB23E', border: '1px solid rgba(255,178,62,0.2)' }}>
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all hover:ring-2 hover:ring-[rgba(182,255,46,0.4)]"
+                style={{ background: 'rgba(182,255,46,0.15)', color: '#B6FF2E', border: '1px solid rgba(182,255,46,0.2)' }}>
                 {userName.charAt(0).toUpperCase()}
               </button>
               {menuOpen && (
@@ -96,7 +96,7 @@ export function TopNav({ userName, xp }: TopNavProps) {
           ) : (
             <Link href="/login"
               className="px-4 py-1.5 rounded-xl text-xs font-semibold transition-all hover:-translate-y-px"
-              style={{ background: '#FFB23E', color: '#0d0d0d' }}>
+              style={{ background: '#B6FF2E', color: '#0d0d0d' }}>
               Sign in
             </Link>
           )}
