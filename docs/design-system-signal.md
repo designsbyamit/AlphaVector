@@ -118,11 +118,13 @@ Applied on the marketing site (`alphavector-site`):
 - Dark graphite ground, ink ramp, hairlines, lime primary button, cobalt links and focus, Geist and Geist Mono.
 - `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-sm`, `.card`, `.field`, `.link` as plain CSS in `app/globals.css`.
 - Display headings at weight 300; coloured 3px top rules only where they identify a signal.
+- Image fields with the faint grid, used as the ground for every pictogram (hero and section pictograms), and the live-status marker (`.status`, "For designers, for now").
+- A disclosure pattern on native `<details>` (the portfolio's accordion look: hairline rows, a mono `+`).
 
 Not applied, on purpose or not yet:
 - Light mode and a theme toggle (tokens listed above, nothing wired).
-- Chips, tags, tabs, accordion, quote, status and breadcrumb patterns (none are used on the site).
-- Image fields, a design-system reference page, a shared token package, a Figma library.
+- Chips, tags, tabs, quote and breadcrumb patterns (none are used on the site).
+- A design-system reference page, a shared token package, a Figma library.
 
 The AlphaVector **app** (`alphavector-app`) is a duplicate of WingSpan and uses WingSpan's theme (lime `#B6FF2E` on dark),
 which is close to but not identical to Signal's lime `#C8F55A`. If the app should match the site exactly, change `--neon` in
