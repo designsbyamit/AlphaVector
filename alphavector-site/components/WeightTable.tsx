@@ -4,7 +4,7 @@ export function WeightTable({ title, signal, rows }: { title: string; signal: 's
   const text = signal === 'strength' ? 'text-strength' : signal === 'passion' ? 'text-passion' : 'text-market'
   return (
     <div>
-      <h4 className={`font-display text-[1.15rem] font-bold ${text}`}>{title}</h4>
+      <h4 className={`font-display text-[1.15rem] font-medium ${text}`}>{title}</h4>
       <table className="mt-3 w-full text-[1rem]">
         <tbody>
           {rows.map(([name, w]) => (
@@ -15,7 +15,7 @@ export function WeightTable({ title, signal, rows }: { title: string; signal: 's
                   <div className={`h-full ${fill}`} style={{ width: `${w * 250}%`, maxWidth: '100%' }} />
                 </div>
               </td>
-              <td className="w-12 py-2 pl-3 text-right font-display font-semibold tabular-nums">{Math.round(w * 100)}%</td>
+              <td className="w-12 py-2 pl-3 text-right font-display font-medium tabular-nums">{Math.round(w * 100)}%</td>
             </tr>
           ))}
         </tbody>

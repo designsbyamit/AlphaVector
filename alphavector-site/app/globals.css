@@ -1,42 +1,103 @@
 @import "tailwindcss";
 
-/* AlphaVector site tokens. Each of the three signals owns one colour and keeps it everywhere it appears. */
+/*
+ * AlphaVector site skin: the portfolio's "Signal" look (graphite ground, lime signal fill, cobalt links, Geist).
+ * Values come from the portfolio's tokens.css. The system itself is documented in docs/design-system-signal.md
+ * and is deliberately not built out here: this file only carries the skin.
+ *
+ * Token names from the first version of the site are kept so page markup did not have to change:
+ *   paper = page ground   paper-deep = card ground   ink = primary text   ink-soft = body   muted = labels   rule = hairline
+ */
 @theme {
-  --color-paper: #e9eef1;
-  --color-paper-deep: #dbe3e8;
-  --color-ink: #10222f;
-  --color-ink-soft: #1b3445;
-  --color-muted: #475b68;
-  --color-rule: #b4c2cb;
+  /* Surfaces */
+  --color-paper: #0f1013;
+  --color-paper-deep: #181a1f;
+  --color-raised: #22252b;
 
-  /* text-safe variants (>= 4.5:1 on paper) */
-  --color-strength: #0b6463;
-  --color-passion: #a82f63;
-  --color-market: #85560a;
+  /* Ink ramp (text never uses opacity) */
+  --color-ink: #ecedef;
+  --color-ink-soft: #c4c7cd;
+  --color-muted: #a3a7b0;
+  --color-faint: #5d626c;
 
-  /* fills for shapes and bars */
-  --color-strength-fill: #0e8c8a;
-  --color-passion-fill: #d0447f;
+  /* Lines */
+  --color-rule: #34373d;
+  --color-rule-control: #6a6d73;
+
+  /* Action: lime is a fill for the one primary action; cobalt is for links and focus only */
+  --color-signal: #c8f55a;
+  --color-on-signal: #0f1013;
+  --color-link: #7d98ff;
+  --color-link-hover: #a5b8ff;
+
+  /* AlphaVector's three signals. Not part of the portfolio system; each owns one colour wherever it appears.
+     Text variants clear 4.5:1 on paper, paper-deep and raised. */
+  --color-strength: #5ed6ce;
+  --color-passion: #ff8fb4;
+  --color-market: #f2b84b;
+  --color-strength-fill: #2bb3ae;
+  --color-passion-fill: #e05a93;
   --color-market-fill: #e8a317;
 
-  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+
+  --radius-control: 6px;
+  --radius-card: 10px;
 }
 
 @layer base {
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; color-scheme: dark; }
   body {
     background: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-body);
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line-height: 1.08; }
-  :focus-visible { outline: 3px solid var(--color-ink); outline-offset: 3px; border-radius: 2px; }
-  ::selection { background: var(--color-market-fill); color: var(--color-ink); }
+  /* Display type is light and tight; small headings stay at regular weight or above. */
+  h1, h2 { font-family: var(--font-display); font-weight: 300; letter-spacing: -0.035em; line-height: 1.08; }
+  h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; line-height: 1.2; }
+  :focus-visible { outline: 2px solid var(--color-link); outline-offset: 3px; border-radius: 2px; }
+  ::selection { background: var(--color-signal); color: var(--color-on-signal); }
+}
+
+@layer components {
+  /* Buttons: sentence case, 44px target, 6px radius. One primary per view. */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0 1.25rem;
+    border: 1px solid transparent; border-radius: var(--radius-control);
+    font-family: var(--font-display); font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.005em; line-height: 1.2;
+    white-space: nowrap; text-decoration: none; cursor: pointer;
+    transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1), border-color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; }
+  .btn-primary { background: var(--color-signal); color: var(--color-on-signal); }
+  .btn-primary:hover { background: color-mix(in srgb, var(--color-signal) 86%, transparent); }
+  .btn-secondary { border-color: var(--color-rule-control); color: var(--color-ink); background: transparent; }
+  .btn-secondary:hover { border-color: var(--color-ink); background: color-mix(in srgb, var(--color-ink) 5%, transparent); }
+  .btn-sm { min-height: 2.25rem; padding: 0 0.875rem; font-size: 0.875rem; }
+
+  .card { background: var(--color-paper-deep); border: 1px solid var(--color-rule); border-radius: var(--radius-card); padding: 1.5rem; }
+  @media (min-width: 768px) { .card { padding: 2rem; } }
+
+  /* Inline links in running text: cobalt and underlined, always. */
+  .link { color: var(--color-link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+  .link:hover { color: var(--color-link-hover); text-decoration-thickness: 2px; }
+
+  .field {
+    width: 100%; min-height: 2.75rem; padding: 0.625rem 0.875rem;
+    background: var(--color-paper-deep); border: 1px solid var(--color-rule-control); border-radius: var(--radius-control);
+    color: var(--color-ink); font-family: var(--font-body); font-size: 1rem;
+  }
+  .field:hover { border-color: var(--color-muted); }
+  .field::placeholder { color: var(--color-muted); }
 }
 
 /* The one moment of motion: three distance circles close in on a single point. */
@@ -59,7 +120,13 @@
   .fix-ring, .fix-mark { animation: none; }
 }
 
+/* Printed pages (the passion worksheet) go back to dark text on white paper. */
 @media print {
+  :root {
+    --color-paper: #fff; --color-paper-deep: #fff; --color-raised: #fff;
+    --color-ink: #111; --color-ink-soft: #333; --color-muted: #444; --color-rule: #bbb; --color-rule-control: #888;
+    --color-strength: #0b6463; --color-passion: #a82f63; --color-market: #85560a;
+  }
   header, footer, .no-print { display: none !important; }
   body { background: #fff; font-size: 12pt; }
 }

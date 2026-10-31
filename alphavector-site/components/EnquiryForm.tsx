@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 type Status = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind: 'error'; message: string; fallback?: boolean }
 
-const input = 'mt-1.5 w-full rounded-md border border-ink/40 bg-white px-3.5 py-2.5 font-body text-[1.05rem] text-ink placeholder:text-muted/70 hover:border-ink'
+const input = 'field mt-1.5'
 
 export function EnquiryForm({ contactEmail }: { contactEmail: string }) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
@@ -24,8 +24,8 @@ export function EnquiryForm({ contactEmail }: { contactEmail: string }) {
 
   if (status.kind === 'sent') {
     return (
-      <div role="status" className="border-l-[5px] border-strength-fill pl-5">
-        <p className="font-display text-[1.4rem] font-bold">Enquiry sent</p>
+      <div role="status" className="card">
+        <p className="font-display text-[1.4rem] font-medium">Enquiry sent</p>
         <p className="mt-2 text-ink-soft">Thank you. We will reply to the email address you gave.</p>
       </div>
     )
@@ -33,34 +33,34 @@ export function EnquiryForm({ contactEmail }: { contactEmail: string }) {
 
   return (
     <form onSubmit={submit} className="grid gap-5 sm:grid-cols-2" noValidate>
-      <label className="block font-display text-[0.95rem] font-semibold">Your name
+      <label className="block font-display text-[0.95rem] font-medium">Your name
         <input name="name" required autoComplete="name" className={input} />
       </label>
-      <label className="block font-display text-[0.95rem] font-semibold">Email
+      <label className="block font-display text-[0.95rem] font-medium">Email
         <input name="email" type="email" required autoComplete="email" className={input} />
       </label>
-      <label className="block font-display text-[0.95rem] font-semibold">Organisation
+      <label className="block font-display text-[0.95rem] font-medium">Organisation
         <input name="organisation" required autoComplete="organization" className={input} />
       </label>
-      <label className="block font-display text-[0.95rem] font-semibold">Group type
+      <label className="block font-display text-[0.95rem] font-medium">Group type
         <select name="kind" className={input} defaultValue="Institute or college">
           <option>Institute or college</option><option>Training centre</option><option>School</option><option>Company or community</option><option>Other</option>
         </select>
       </label>
-      <label className="block font-display text-[0.95rem] font-semibold">Group size
+      <label className="block font-display text-[0.95rem] font-medium">Group size
         <input name="size" inputMode="numeric" placeholder="e.g. 30" className={input} />
       </label>
-      <label className="block font-display text-[0.95rem] font-semibold">Preferred timing
+      <label className="block font-display text-[0.95rem] font-medium">Preferred timing
         <input name="timing" placeholder="e.g. January, weekday mornings" className={input} />
       </label>
-      <label className="block font-display text-[0.95rem] font-semibold sm:col-span-2">What would you like the group to leave with?
+      <label className="block font-display text-[0.95rem] font-medium sm:col-span-2">What would you like the group to leave with?
         <textarea name="message" rows={4} className={input} />
       </label>
       {/* Honeypot: hidden from people, visible to bots. */}
       <div className="absolute left-[-9999px]" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
 
       <div className="sm:col-span-2">
-        <button type="submit" disabled={status.kind === 'sending'} className="rounded-full bg-ink px-7 py-3.5 font-display text-[1.05rem] font-semibold text-paper hover:bg-ink-soft disabled:opacity-60">
+        <button type="submit" disabled={status.kind === 'sending'} className="btn btn-primary">
           {status.kind === 'sending' ? 'Sending' : 'Send enquiry'}
         </button>
         {status.kind === 'error' && (

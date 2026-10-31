@@ -15,7 +15,7 @@ export function Logo() {
   return (
     <span className="inline-flex items-center gap-2.5">
       <LogoMark />
-      <span className="font-display text-[1.35rem] font-semibold tracking-tight">AlphaVector</span>
+      <span className="font-display text-[1.35rem] font-medium tracking-tight">AlphaVector</span>
     </span>
   )
 }

@@ -22,7 +22,7 @@ export function FixDiagram({ className }: { className?: string }) {
             <line x1={b.x} y1={b.y} x2={FIX.x} y2={FIX.y} stroke={b.color} strokeWidth="1.5" strokeDasharray="3 6" className="fix-mark" />
             <circle cx={b.x} cy={b.y} r="7" fill={b.color} />
             <text x={b.x} y={labelY} textAnchor="middle" fill={b.text} fontSize="26" fontWeight="650" fontFamily="var(--font-display)">{b.label}</text>
-            <text x={b.x} y={labelY + 22} textAnchor="middle" fill="var(--color-muted)" fontSize="17" fontFamily="var(--font-body)" fontStyle="italic">{b.sub}</text>
+            <text x={b.x} y={labelY + 22} textAnchor="middle" fill="var(--color-muted)" fontSize="17" fontFamily="var(--font-body)">{b.sub}</text>
           </g>
         )
       })}
